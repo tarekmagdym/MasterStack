@@ -1,0 +1,21 @@
+{
+  "nav": {
+    "home": "Home",
+    "about": "About Us",
+    "services": "Our Services",
+    "technologies": "Technologies",
+    "saas": "SaaS Solutions",
+    "projects": "Our Work",
+    "contact": "Contact Us",
+    "login": "Login",
+    "language": "العربية"
+  },
+  "common": {
+    "phone": "01127140695",
+    "companyName": "Professional Tech Services",
+    "tagline": "Startup Company",
+    "contactUs": "Contact Us",
+    "lightMode": "Light Mode",
+    "darkMode": "Dark Mode"
+  }
+}

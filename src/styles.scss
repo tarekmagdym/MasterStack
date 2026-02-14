@@ -1,1 +1,123 @@
-/* You can add global styles to this file, and also import other style files */
+// Import IBM Plex Sans font
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700;800&display=swap');
+
+// Import AOS animations
+@import '../node_modules/aos/dist/aos.css';
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background: #f8f9fa;
+  color: #1a1a2e;
+  overflow-x: hidden;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  padding-top: 114px; // Top bar (42px) + Navbar (72px)
+}
+
+// Arabic font
+html[lang="ar"],
+html[dir="rtl"] {
+  font-family: 'IBM Plex Sans Arabic', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+// RTL Support
+[dir="rtl"] {
+  text-align: right;
+}
+
+[dir="ltr"] {
+  text-align: left;
+}
+
+// ============================================
+// DARK MODE
+// ============================================
+html.dark-mode {
+  body {
+    background: #16161f;
+    color: #e8e9f0;
+  }
+
+  // Update scrollbar for dark mode
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #1a1a2e;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #3a3d50;
+    border-radius: 5px;
+    
+    &:hover {
+      background: #4a4d60;
+    }
+  }
+}
+
+// Light mode scrollbar
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 5px;
+  
+  &:hover {
+    background: #a1a1a1;
+  }
+}
+
+// Selection colors
+::selection {
+  background: rgba(38, 202, 188, 0.3);
+  color: #0e3581;
+}
+
+html.dark-mode ::selection {
+  background: rgba(38, 202, 188, 0.4);
+  color: #26cabc;
+}
+
+// Focus styles
+:focus-visible {
+  outline: 2px solid #26cabc;
+  outline-offset: 2px;
+}
+
+// Smooth transitions for theme switching
+* {
+  transition-property: background-color, color, border-color;
+  transition-duration: 0.3s;
+  transition-timing-function: ease;
+}
+
+// Override for interactive elements
+a, button, input, select, textarea {
+  transition: all 0.3s ease !important;
+}
+
+// Responsive adjustments
+@media (max-width: 768px) {
+  body {
+    padding-top: 102px; // Top bar (42px) + Navbar (60px) on mobile
+  }
+}

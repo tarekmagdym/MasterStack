@@ -1,0 +1,21 @@
+{
+  "nav": {
+    "home": "الرئيسية",
+    "about": "من نحن",
+    "services": "خدماتنا",
+    "technologies": "التقنيات",
+    "saas": "حلول SaaS",
+    "projects": "أعمالنا",
+    "contact": "تواصل معنا",
+    "login": "تسجيل الدخول",
+    "language": "ENGLISH"
+  },
+  "common": {
+    "phone": "01127140695",
+    "companyName": "خدمات تقنية احترافية",
+    "tagline": "شركة ناشئة للتكنولوجيا",
+    "contactUs": "تواصل معنا",
+    "lightMode": "وضع النهار",
+    "darkMode": "وضع الليل"
+  }
+}

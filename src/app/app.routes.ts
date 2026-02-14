@@ -1,42 +1,99 @@
 import { Routes } from '@angular/router';
-import { HomeComponent } from './features/home/home.component';
-import { ServicesPageComponent } from './features/services-page/services-page.component';
-import { ProjectsPageComponent } from './features/projects-page/projects-page.component';
-import { AboutPageComponent } from './features/about-page/about-page.component';
-import { ContactPageComponent } from './features/contact-page/contact-page.component';
-import { ActivityLogsComponent } from './admin/activity-logs/activity-logs.component';
-import { AdminsManagementComponent } from './admin/admins-management/admins-management.component';
-import { DashboardComponent } from './admin/dashboard/dashboard.component';
-import { LoginComponent } from './admin/login/login.component';
-import { NotificationsComponent } from './admin/notifications/notifications.component';
-import { ProjectsManagementComponent } from './admin/projects-management/projects-management.component';
-import { ServicesManagementComponent } from './admin/services-management/services-management.component';
-import { SettingsComponent } from './admin/settings/settings.component';
 
 export const routes: Routes = [
-  // Public routes
-  { path: '', component: HomeComponent },
-  { path: 'services', component: ServicesPageComponent },
-  { path: 'projects', component: ProjectsPageComponent },
-  { path: 'about', component: AboutPageComponent },
-  { path: 'contact', component: ContactPageComponent },
-  
-  // Admin routes (lazy loaded)
-  { 
-    path: 'admin/login', 
-    component: LoginComponent 
+  // Public Routes - User Pages
+  {
+    path: '',
+    loadComponent: () => import('./features/home/home.component').then(m => m.HomeComponent),
   },
   {
+    path: 'about',
+    loadComponent: () => import('./features/about-page/about-page.component').then(m => m.AboutPageComponent),
+  },
+  {
+    path: 'services',
+    loadComponent: () => import('./features/services-page/services-page.component').then(m => m.ServicesPageComponent),
+  },
+  {
+    path: 'technologies',
+    loadComponent: () => import('./features/technologies/technologies.component').then(m => m.TechnologiesComponent),
+  },
+  {
+    path: 'saas',
+    loadComponent: () => import('./features/saas/saas.component').then(m => m.SaasComponent),
+  },
+  {
+    path: 'projects',
+    loadComponent: () => import('./features/projects-page/projects-page.component').then(m => m.ProjectsPageComponent),
+  },
+  {
+    path: 'contact',
+    loadComponent: () => import('./features/contact-page/contact-page.component').then(m => m.ContactPageComponent),
+  },
+
+  // Admin Routes - Protected with Auth Guard
+  {
     path: 'admin',
-    canActivate: [AuthGuard],
     children: [
-      { path: 'dashboard', component: DashboardComponent },
-      { path: 'services', component: ServicesManagementComponent },
-      { path: 'projects', component: ProjectsManagementComponent },
-      { path: 'admins', component: AdminsManagementComponent, canActivate: [RoleGuard] },
-      { path: 'settings', component: SettingsComponent },
-      { path: 'logs', component: ActivityLogsComponent },
-      { path: 'notifications', component: NotificationsComponent }
+      {
+        path: '',
+        redirectTo: 'login',
+        pathMatch: 'full'
+      },
+      {
+        path: 'login',
+        loadComponent: () => import('./admin/login/login.component').then(m => m.LoginComponent),
+        title: 'Admin Login'
+      },
+      {
+        path: 'dashboard',
+        loadComponent: () => import('./admin/dashboard/dashboard.component').then(m => m.DashboardComponent),
+        // canActivate: [AuthGuard], // Uncomment when AuthGuard is ready
+        title: 'Admin Dashboard'
+      },
+      {
+        path: 'projects-management',
+        loadComponent: () => import('./admin/projects-management/projects-management.component').then(m => m.ProjectsManagementComponent),
+        // canActivate: [AuthGuard],
+        title: 'Projects Management'
+      },
+      {
+        path: 'services-management',
+        loadComponent: () => import('./admin/services-management/services-management.component').then(m => m.ServicesManagementComponent),
+        // canActivate: [AuthGuard],
+        title: 'Services Management'
+      },
+      {
+        path: 'admins-management',
+        loadComponent: () => import('./admin/admins-management/admins-management.component').then(m => m.AdminsManagementComponent),
+        // canActivate: [AuthGuard, RoleGuard], // For super admin only
+        title: 'Admins Management'
+      },
+      {
+        path: 'notifications',
+        loadComponent: () => import('./admin/notifications/notifications.component').then(m => m.NotificationsComponent),
+        // canActivate: [AuthGuard],
+        title: 'Notifications'
+      },
+      {
+        path: 'activity-logs',
+        loadComponent: () => import('./admin/activity-logs/activity-logs.component').then(m => m.ActivityLogsComponent),
+        // canActivate: [AuthGuard],
+        title: 'Activity Logs'
+      },
+      {
+        path: 'settings',
+        loadComponent: () => import('./admin/settings/settings.component').then(m => m.SettingsComponent),
+        // canActivate: [AuthGuard],
+        title: 'Settings'
+      }
     ]
+  },
+
+  // Wildcard Route - 404 Page
+  {
+    path: '**',
+    redirectTo: '',
+    pathMatch: 'full'
   }
 ];
