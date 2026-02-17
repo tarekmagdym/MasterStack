@@ -1,1 +1,514 @@
-<p>projects-page works!</p>
+<!-- Projects Page with Original Filter Design -->
+
+<!-- Hero Section -->
+<section class="projects-hero">
+  <div class="hero-background">
+    <div class="gradient-orb orb-1"></div>
+    <div class="gradient-orb orb-2"></div>
+    <div class="gradient-orb orb-3"></div>
+  </div>
+  
+  <!-- Decorative Shapes -->
+  <div class="hero-decorative-shapes">
+    <div class="decorative-shape-left-1">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+        <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" stroke-width="2"/>
+      </svg>
+    </div>
+    <div class="decorative-shape-left-2">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+        <polyline points="16 18 22 12 16 6" stroke-width="2"/>
+        <polyline points="8 6 2 12 8 18" stroke-width="2"/>
+      </svg>
+    </div>
+    <div class="decorative-shape-right-1">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+        <rect x="5" y="2" width="14" height="20" rx="2" stroke-width="2"/>
+        <line x1="12" y1="18" x2="12.01" y2="18" stroke-width="2.5" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <div class="decorative-shape-right-2">
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+    </div>
+  </div>
+  
+  <div class="hero-container">
+    <div class="hero-content" data-aos="fade-up">
+      <div class="hero-badge">
+        <svg class="badge-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" stroke-width="2"/>
+        </svg>
+        <span>{{ currentLang === 'ar' ? 'أعمالنا' : 'Our Portfolio' }}</span>
+      </div>
+      
+      <h1 class="hero-title" [attr.lang]="currentLang">
+        <span class="title-line">
+          {{ currentLang === 'ar' ? 'مشاريع نفخر بها' : 'Projects We Are' }}
+        </span>
+        <span class="title-gradient">
+          {{ currentLang === 'ar' ? 'وقصص نجاح ملهمة' : 'Proud Of' }}
+        </span>
+      </h1>
+      
+      <p class="hero-subtitle" [attr.lang]="currentLang">
+        {{ currentLang === 'ar' 
+          ? 'استكشف مجموعة من المشاريع الناجحة التي قمنا بتطويرها لعملائنا في مختلف المجالات'
+          : 'Explore a collection of successful projects we have developed for our clients across various industries'
+        }}
+      </p>
+      
+      <div class="hero-stats" data-aos="fade-up" data-aos-delay="200">
+        <div class="stat-item">
+          <div class="stat-number">{{ currentLang === 'ar' ? '٥٠+' : '50+' }}</div>
+          <div class="stat-label">{{ currentLang === 'ar' ? 'مشروع مكتمل' : 'Completed Projects' }}</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number">{{ currentLang === 'ar' ? '٣٠+' : '30+' }}</div>
+          <div class="stat-label">{{ currentLang === 'ar' ? 'عميل سعيد' : 'Happy Clients' }}</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number">{{ currentLang === 'ar' ? '١٥+' : '15+' }}</div>
+          <div class="stat-label">{{ currentLang === 'ar' ? 'صناعة' : 'Industries' }}</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number">{{ currentLang === 'ar' ? '٩٨%' : '98%' }}</div>
+          <div class="stat-label">{{ currentLang === 'ar' ? 'رضا العملاء' : 'Client Satisfaction' }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Filter Section - ORIGINAL TAB DESIGN -->
+<section class="filter-section">
+  <div class="section-container">
+    <div class="filter-tabs" data-aos="fade-up">
+      <button 
+        *ngFor="let category of categories" 
+        class="filter-tab"
+        [class.active]="selectedCategory === category.id"
+        (click)="filterProjects(category.id)">
+        <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <path [attr.d]="category.icon" stroke-width="2"/>
+        </svg>
+        <span>{{ currentLang === 'ar' ? category.nameAr : category.name }}</span>
+        <span class="tab-count">{{ getProjectCount(category.id) }}</span>
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- Projects Grid Section -->
+<section class="projects-grid-section">
+  <div class="section-container">
+    <div class="projects-grid">
+      <div 
+        *ngFor="let project of filteredProjects; let i = index" 
+        class="project-card" 
+        data-aos="fade-up" 
+        [attr.data-aos-delay]="100 + (i * 50)">
+        
+        <div class="project-image">
+          <img [src]="project.image" [alt]="currentLang === 'ar' ? project.titleAr : project.title" />
+          <div class="project-overlay">
+            <button class="project-quick-view" (click)="viewProjectDetails(project.id)">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" stroke-width="2"/>
+                <circle cx="12" cy="12" r="3" stroke-width="2"/>
+              </svg>
+              {{ currentLang === 'ar' ? 'عرض التفاصيل' : 'View Details' }}
+            </button>
+          </div>
+        </div>
+        
+        <div class="project-content">
+          <div class="project-meta">
+            <div class="project-tags">
+              <span *ngFor="let tag of project.tags" class="project-tag">
+                {{ currentLang === 'ar' ? tag.ar : tag.en }}
+              </span>
+            </div>
+            <div class="project-date">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <rect x="3" y="4" width="18" height="18" rx="2" stroke-width="2"/>
+                <line x1="16" y1="2" x2="16" y2="6" stroke-width="2"/>
+                <line x1="8" y1="2" x2="8" y2="6" stroke-width="2"/>
+                <line x1="3" y1="10" x2="21" y2="10" stroke-width="2"/>
+              </svg>
+              <span>{{ project.year }}</span>
+            </div>
+          </div>
+          
+          <h3 class="project-title" [attr.lang]="currentLang">
+            {{ currentLang === 'ar' ? project.titleAr : project.title }}
+          </h3>
+          
+          <p class="project-description" [attr.lang]="currentLang">
+            {{ currentLang === 'ar' ? project.descriptionAr : project.description }}
+          </p>
+          
+          <div class="project-tech">
+            <div class="tech-icons">
+              <span *ngFor="let tech of project.technologies" class="tech-badge" [title]="tech">
+                {{ tech }}
+              </span>
+            </div>
+          </div>
+          
+          <div class="project-footer">
+            <button class="project-details-btn" (click)="viewProjectDetails(project.id)">
+              {{ currentLang === 'ar' ? 'التفاصيل الكاملة' : 'Full Details' }}
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path d="M5 12h14M12 5l7 7-7 7" stroke-width="2"/>
+              </svg>
+            </button>
+            <a *ngIf="project.liveUrl" [href]="project.liveUrl" target="_blank" class="project-live-btn" [title]="currentLang === 'ar' ? 'زيارة الموقع' : 'Visit Website'">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" stroke-width="2"/>
+                <polyline points="15 3 21 3 21 9" stroke-width="2"/>
+                <line x1="10" y1="14" x2="21" y2="3" stroke-width="2"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Empty State -->
+    <div *ngIf="filteredProjects.length === 0" class="empty-state" data-aos="fade-up">
+      <svg class="empty-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+        <circle cx="12" cy="12" r="10" stroke-width="2"/>
+        <line x1="12" y1="8" x2="12" y2="12" stroke-width="2"/>
+        <line x1="12" y1="16" x2="12.01" y2="16" stroke-width="2.5" stroke-linecap="round"/>
+      </svg>
+      <h3 [attr.lang]="currentLang">
+        {{ currentLang === 'ar' ? 'لا توجد مشاريع' : 'No Projects Found' }}
+      </h3>
+      <p [attr.lang]="currentLang">
+        {{ currentLang === 'ar' ? 'لم نجد مشاريع في هذه الفئة' : 'We couldn\'t find any projects in this category' }}
+      </p>
+    </div>
+    
+    <!-- Load More Button -->
+    <div *ngIf="hasMoreProjects" class="load-more-section" data-aos="fade-up">
+      <button class="load-more-btn" (click)="loadMoreProjects()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <circle cx="12" cy="12" r="10" stroke-width="2"/>
+          <polyline points="8 12 12 16 16 12" stroke-width="2"/>
+          <line x1="12" y1="8" x2="12" y2="16" stroke-width="2"/>
+        </svg>
+        {{ currentLang === 'ar' ? 'تحميل المزيد' : 'Load More Projects' }}
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- Testimonials Section - آراء العملاء - FIXED SLIDER -->
+<section class="testimonials-section">
+  <div class="testimonials-bg">
+    <div class="t-orb t-orb-1"></div>
+    <div class="t-orb t-orb-2"></div>
+  </div>
+
+  <div class="section-container">
+
+    <!-- Header — centered always -->
+    <div class="section-header" data-aos="fade-up">
+      <span class="section-subtitle">{{ currentLang === 'ar' ? 'آراء العملاء' : 'Client Reviews' }}</span>
+      <h2 class="section-title" [attr.lang]="currentLang">
+        {{ currentLang === 'ar' ? 'ماذا يقول عملاؤنا' : 'What Our Clients Say' }}
+      </h2>
+      <p class="section-description" [attr.lang]="currentLang">
+        {{ currentLang === 'ar'
+          ? 'نفخر بثقة عملائنا وشهاداتهم التي تعكس التزامنا بالجودة والتميز'
+          : 'We take pride in our clients\' trust and testimonials reflecting our commitment to quality'
+        }}
+      </p>
+    </div>
+
+    <!-- Rating Overview Bar -->
+    <div class="testimonials-overview" data-aos="fade-up" data-aos-delay="100">
+      <div class="overview-rating">
+        <div class="overview-score">5.0</div>
+        <div class="overview-stars">
+          <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        </div>
+        <div class="overview-count">
+          {{ currentLang === 'ar' ? 'بناءً على 30+ تقييم' : 'Based on 30+ reviews' }}
+        </div>
+      </div>
+
+      <div class="overview-divider"></div>
+
+      <div class="overview-badges">
+        <div class="overview-badge">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" stroke-width="2"/>
+            <polyline points="22 4 12 14.01 9 11.01" stroke-width="2"/>
+          </svg>
+          <span>{{ currentLang === 'ar' ? '98% نسبة الرضا' : '98% Satisfaction' }}</span>
+        </div>
+        <div class="overview-badge">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" stroke-width="2"/>
+            <circle cx="9" cy="7" r="4" stroke-width="2"/>
+            <path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" stroke-width="2"/>
+          </svg>
+          <span>{{ currentLang === 'ar' ? '30+ عميل موثوق' : '30+ Trusted Clients' }}</span>
+        </div>
+        <div class="overview-badge">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke-width="2"/>
+          </svg>
+          <span>{{ currentLang === 'ar' ? 'جودة مضمونة' : 'Quality Guaranteed' }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDER AREA: arrows inline, flush with cards -->
+    <div class="slider-outer" data-aos="fade-up" data-aos-delay="200">
+
+      <button class="slider-arrow slider-arrow-prev" (click)="prevSlide()"
+        [attr.aria-label]="currentLang === 'ar' ? 'التالي' : 'Previous'">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <path d="M15 18l-6-6 6-6" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+
+      <div class="slider-viewport" #sliderViewport
+        (touchstart)="onTouchStart($event)"
+        (touchend)="onTouchEnd($event)">
+        <div class="slider-track"
+          [style.transform]="'translateX(' + sliderOffset + 'px)'"
+          [class.is-transitioning]="isTransitioning">
+
+          <!-- Card 1 — Featured -->
+          <div class="t-card t-card--featured">
+            <div class="t-card__quote">
+              <svg viewBox="0 0 32 32" fill="currentColor">
+                <path d="M10 8C6.686 8 4 10.686 4 14v10h10V14H7.5c0-1.381 1.119-2.5 2.5-2.5V8zm14 0c-3.314 0-6 2.686-6 6v10h10V14h-6.5c0-1.381 1.119-2.5 2.5-2.5V8z"/>
+              </svg>
+            </div>
+            <div class="t-card__stars">
+              <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            </div>
+            <p class="t-card__text" [attr.lang]="currentLang">
+              {{ currentLang === 'ar'
+                ? 'فريق MasterStack استثنائي في كل المعاني. طوّروا لنا منصة SaaS متكاملة في وقت قياسي مع جودة لا تُضاهى. التواصل كان سلساً والنتائج فاقت كل توقعاتنا.'
+                : 'MasterStack team is exceptional in every sense. They developed a complete SaaS platform for us in record time with unmatched quality. Results exceeded all our expectations.'
+              }}
+            </p>
+            <div class="t-card__author">
+              <div class="t-avatar t-avatar--gradient">
+                <span>{{ currentLang === 'ar' ? 'أم' : 'AM' }}</span>
+              </div>
+              <div class="t-author-info">
+                <strong [attr.lang]="currentLang">{{ currentLang === 'ar' ? 'أحمد المنصوري' : 'Ahmed Al-Mansouri' }}</strong>
+                <span [attr.lang]="currentLang">{{ currentLang === 'ar' ? 'المدير التنفيذي، شركة نيوتك' : 'CEO, NewTech Company' }}</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 2 -->
+          <div class="t-card">
+            <div class="t-card__quote">
+              <svg viewBox="0 0 32 32" fill="currentColor">
+                <path d="M10 8C6.686 8 4 10.686 4 14v10h10V14H7.5c0-1.381 1.119-2.5 2.5-2.5V8zm14 0c-3.314 0-6 2.686-6 6v10h10V14h-6.5c0-1.381 1.119-2.5 2.5-2.5V8z"/>
+              </svg>
+            </div>
+            <div class="t-card__stars">
+              <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            </div>
+            <p class="t-card__text" [attr.lang]="currentLang">
+              {{ currentLang === 'ar'
+                ? 'تطبيق الجوال الذي طوّروه لنا غيّر طريقة عمل شركتنا بالكامل. تصميم عصري، أداء رائع، ودعم فني متميز بعد الإطلاق. شراكة نفخر بها.'
+                : 'The mobile app completely transformed how our company operates. Modern design, outstanding performance, and exceptional post-launch technical support. A partnership we\'re proud of.'
+              }}
+            </p>
+            <div class="t-card__author">
+              <div class="t-avatar t-avatar--teal">
+                <span>{{ currentLang === 'ar' ? 'سخ' : 'SK' }}</span>
+              </div>
+              <div class="t-author-info">
+                <strong [attr.lang]="currentLang">{{ currentLang === 'ar' ? 'سارة الخالدي' : 'Sara Al-Khalidi' }}</strong>
+                <span [attr.lang]="currentLang">{{ currentLang === 'ar' ? 'مديرة العمليات، مجموعة الرياض' : 'Operations Director, Riyadh Group' }}</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 3 -->
+          <div class="t-card">
+            <div class="t-card__quote">
+              <svg viewBox="0 0 32 32" fill="currentColor">
+                <path d="M10 8C6.686 8 4 10.686 4 14v10h10V14H7.5c0-1.381 1.119-2.5 2.5-2.5V8zm14 0c-3.314 0-6 2.686-6 6v10h10V14h-6.5c0-1.381 1.119-2.5 2.5-2.5V8z"/>
+              </svg>
+            </div>
+            <div class="t-card__stars">
+              <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            </div>
+            <p class="t-card__text" [attr.lang]="currentLang">
+              {{ currentLang === 'ar'
+                ? 'عمل احترافي من الدرجة الأولى. سلّموا مشروعنا في الموعد المحدد بدون أي تأخير، والكود نظيف ومنظم بشكل ممتاز. سنعمل معهم مجدداً بكل تأكيد.'
+                : 'First-class professional work. Delivered on time with zero delays, and the code is clean and excellently organized. We will definitely work with them again.'
+              }}
+            </p>
+            <div class="t-card__author">
+              <div class="t-avatar t-avatar--blue">
+                <span>{{ currentLang === 'ar' ? 'مع' : 'MA' }}</span>
+              </div>
+              <div class="t-author-info">
+                <strong [attr.lang]="currentLang">{{ currentLang === 'ar' ? 'محمد العامري' : 'Mohammed Al-Ameri' }}</strong>
+                <span [attr.lang]="currentLang">{{ currentLang === 'ar' ? 'مؤسس، منصة ديجيتال برو' : 'Founder, Digital Pro Platform' }}</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 4 -->
+          <div class="t-card">
+            <div class="t-card__quote">
+              <svg viewBox="0 0 32 32" fill="currentColor">
+                <path d="M10 8C6.686 8 4 10.686 4 14v10h10V14H7.5c0-1.381 1.119-2.5 2.5-2.5V8zm14 0c-3.314 0-6 2.686-6 6v10h10V14h-6.5c0-1.381 1.119-2.5 2.5-2.5V8z"/>
+              </svg>
+            </div>
+            <div class="t-card__stars">
+              <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            </div>
+            <p class="t-card__text" [attr.lang]="currentLang">
+              {{ currentLang === 'ar'
+                ? 'دمجوا حلول الذكاء الاصطناعي في نظامنا بطريقة مبتكرة. النتائج أثّرت بشكل مباشر على مبيعاتنا بزيادة 40% خلال ثلاثة أشهر فقط. شراكة استراتيجية حقيقية.'
+                : 'They integrated AI solutions into our system innovatively. Results directly impacted sales with a 40% increase in just three months. A truly strategic partnership.'
+              }}
+            </p>
+            <div class="t-card__author">
+              <div class="t-avatar t-avatar--gradient">
+                <span>{{ currentLang === 'ar' ? 'نب' : 'NB' }}</span>
+              </div>
+              <div class="t-author-info">
+                <strong [attr.lang]="currentLang">{{ currentLang === 'ar' ? 'نورا البكر' : 'Nora Al-Bakr' }}</strong>
+                <span [attr.lang]="currentLang">{{ currentLang === 'ar' ? 'رئيسة التسويق، سمارت ريتيل' : 'Marketing Head, Smart Retail' }}</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 5 -->
+          <div class="t-card">
+            <div class="t-card__quote">
+              <svg viewBox="0 0 32 32" fill="currentColor">
+                <path d="M10 8C6.686 8 4 10.686 4 14v10h10V14H7.5c0-1.381 1.119-2.5 2.5-2.5V8zm14 0c-3.314 0-6 2.686-6 6v10h10V14h-6.5c0-1.381 1.119-2.5 2.5-2.5V8z"/>
+              </svg>
+            </div>
+            <div class="t-card__stars">
+              <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            </div>
+            <p class="t-card__text" [attr.lang]="currentLang">
+              {{ currentLang === 'ar'
+                ? 'تجربة رائعة من البداية للنهاية. فريقهم يستمع بعناية لمتطلباتك ويقدم اقتراحات ذكية تُحسّن المشروع. منصة التجارة الإلكترونية تعمل بسلاسة تامة.'
+                : 'Wonderful experience from start to finish. Their team listens carefully and offers smart suggestions. The e-commerce platform they built runs absolutely flawlessly.'
+              }}
+            </p>
+            <div class="t-card__author">
+              <div class="t-avatar t-avatar--teal">
+                <span>{{ currentLang === 'ar' ? 'عش' : 'OS' }}</span>
+              </div>
+              <div class="t-author-info">
+                <strong [attr.lang]="currentLang">{{ currentLang === 'ar' ? 'عمر الشمري' : 'Omar Al-Shammari' }}</strong>
+                <span [attr.lang]="currentLang">{{ currentLang === 'ar' ? 'مدير تقني، مجموعة تك فيجن' : 'CTO, TechVision Group' }}</span>
+              </div>
+            </div>
+          </div>
+
+        </div><!-- /slider-track -->
+      </div><!-- /slider-viewport -->
+
+      <button class="slider-arrow slider-arrow-next" (click)="nextSlide()"
+        [attr.aria-label]="currentLang === 'ar' ? 'السابق' : 'Next'">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <path d="M9 18l6-6-6-6" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+
+    </div><!-- /slider-outer -->
+
+    <!-- Dots + Counter — centered -->
+    <div class="slider-controls" data-aos="fade-up" data-aos-delay="300">
+      <div class="slider-dots">
+        <button
+          *ngFor="let d of sliderDots; let i = index"
+          class="slider-dot"
+          [class.active]="currentSlide === i"
+          (click)="goToSlide(i)">
+        </button>
+      </div>
+      <div class="slider-counter">
+        <span class="counter-cur">{{ currentSlide + 1 }}</span>
+        <span class="counter-sep">/</span>
+        <span class="counter-tot">{{ totalSlides }}</span>
+      </div>
+    </div>
+
+  </div><!-- /section-container -->
+</section>
+
+<!-- CTA Section -->
+<section class="cta-section">
+  <div class="cta-background">
+    <div class="cta-orb orb-1"></div>
+    <div class="cta-orb orb-2"></div>
+  </div>
+  
+  <div class="cta-container" data-aos="zoom-in">
+    <div class="cta-content">
+      <h2 class="cta-title" [attr.lang]="currentLang">
+        {{ currentLang === 'ar' ? 'هل لديك مشروع في ذهنك؟' : 'Have a Project in Mind?' }}
+      </h2>
+      <p class="cta-text" [attr.lang]="currentLang">
+        {{ currentLang === 'ar' 
+          ? 'دعنا نحول فكرتك إلى واقع رقمي. تواصل معنا اليوم وابدأ رحلتك نحو النجاح'
+          : 'Let us turn your idea into digital reality. Contact us today and start your journey to success'
+        }}
+      </p>
+      <div class="cta-actions">
+        <a routerLink="/contact" class="cta-primary-btn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" stroke-width="2"/>
+          </svg>
+          {{ currentLang === 'ar' ? 'ابدأ مشروعك' : 'Start Your Project' }}
+        </a>
+        <a routerLink="/services" class="cta-secondary-btn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <circle cx="12" cy="12" r="3" stroke-width="2"/>
+            <path d="M12 1v6m0 6v6M5.636 5.636l4.243 4.243m4.243 4.243l4.242 4.242M1 12h6m6 0h6M5.636 18.364l4.243-4.243m4.243-4.243l4.242-4.242" stroke-width="2"/>
+          </svg>
+          {{ currentLang === 'ar' ? 'خدماتنا' : 'Our Services' }}
+        </a>
+      </div>
+    </div>
+  </div>
+</section>

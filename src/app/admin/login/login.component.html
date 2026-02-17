@@ -1,1 +1,191 @@
-<p>login works!</p>
+<!-- ================================================
+     LOGIN COMPONENT - MasterStack Design System
+     ================================================ -->
+<div class="login-wrapper">
+
+  <!-- Background -->
+  <div class="login-bg">
+    <div class="gradient-orb orb-1"></div>
+    <div class="gradient-orb orb-2"></div>
+    <div class="gradient-orb orb-3"></div>
+    <div class="deco-shape deco-tl">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+        <polyline points="16 18 22 12 16 6" stroke-width="2"/>
+        <polyline points="8 6 2 12 8 18" stroke-width="2"/>
+      </svg>
+    </div>
+    <div class="deco-shape deco-tr">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+        <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" stroke-width="2"/>
+      </svg>
+    </div>
+    <div class="deco-shape deco-bl">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+        <rect x="2" y="3" width="20" height="14" rx="2" stroke-width="2"/>
+        <line x1="8" y1="21" x2="16" y2="21" stroke-width="2"/>
+        <line x1="12" y1="17" x2="12" y2="21" stroke-width="2"/>
+      </svg>
+    </div>
+    <div class="deco-dots">
+      <div class="dot"></div><div class="dot"></div>
+      <div class="dot"></div><div class="dot"></div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast-container"
+       [class.visible]="toastVisible"
+       [class.toast-success]="toastType === 'success'"
+       [class.toast-error]="toastType === 'error'">
+    <div class="toast-inner">
+      <div class="toast-icon">
+        <svg *ngIf="toastType === 'success'" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" stroke-width="2.5" stroke-linecap="round"/>
+          <polyline points="22 4 12 14.01 9 11.01" stroke-width="2.5" stroke-linecap="round"/>
+        </svg>
+        <svg *ngIf="toastType === 'error'" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <circle cx="12" cy="12" r="10" stroke-width="2"/>
+          <line x1="15" y1="9" x2="9" y2="15" stroke-width="2" stroke-linecap="round"/>
+          <line x1="9" y1="9" x2="15" y2="15" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="toast-body">
+        <p class="toast-title">{{ toastTitle }}</p>
+        <p class="toast-msg">{{ toastMessage }}</p>
+      </div>
+      <button class="toast-close" (click)="hideToast()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <line x1="18" y1="6" x2="6" y2="18" stroke-width="2" stroke-linecap="round"/>
+          <line x1="6" y1="6" x2="18" y2="18" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </button>
+      <div class="toast-progress"></div>
+    </div>
+  </div>
+
+  <!-- Card -->
+  <div class="login-card" @fadeSlide>
+
+    <!-- Logo + Brand + Subtitle stacked centered -->
+    <div class="login-top">
+      <div class="logo-icon">
+        <img src="src/assets/images/logo.png" alt="MasterStack Logo" />
+      </div>
+      <h1 class="brand-name" [attr.lang]="currentLang">
+        {{ currentLang === 'ar' ? 'نظام ماسترستاك' : 'MasterStack' }}
+      </h1>
+      <p class="brand-sub" [attr.lang]="currentLang">
+        {{ currentLang === 'ar' ? 'مرحباً بك، قم بتسجيل الدخول للوحة الإدارة' : 'Welcome back, sign in to your admin panel' }}
+      </p>
+    </div>
+
+    <!-- Form -->
+    <form class="login-form" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+
+      <!-- Email -->
+      <div class="form-group"
+           [class.has-error]="loginForm.get('email')?.invalid && loginForm.get('email')?.touched"
+           [class.is-valid]="loginForm.get('email')?.valid && loginForm.get('email')?.touched">
+        <label for="email" [attr.lang]="currentLang">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" stroke-width="2"/>
+            <polyline points="22,6 12,13 2,6" stroke-width="2"/>
+          </svg>
+          {{ currentLang === 'ar' ? 'البريد الإلكتروني' : 'Email Address' }}
+        </label>
+        <div class="input-wrap">
+          <input
+            id="email"
+            type="email"
+            formControlName="email"
+            [placeholder]="currentLang === 'ar' ? 'admin@masterstack.dev' : 'admin@masterstack.dev'"
+            autocomplete="email"
+          />
+          <svg class="valid-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <polyline points="20 6 9 17 4 12" stroke-width="2.5" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <span class="error-msg"
+              *ngIf="loginForm.get('email')?.hasError('required') && loginForm.get('email')?.touched"
+              [attr.lang]="currentLang">
+          {{ currentLang === 'ar' ? 'البريد الإلكتروني مطلوب' : 'Email is required' }}
+        </span>
+        <span class="error-msg"
+              *ngIf="loginForm.get('email')?.hasError('email') && loginForm.get('email')?.touched"
+              [attr.lang]="currentLang">
+          {{ currentLang === 'ar' ? 'أدخل بريداً إلكترونياً صحيحاً' : 'Enter a valid email address' }}
+        </span>
+      </div>
+
+      <!-- Password -->
+      <div class="form-group"
+           [class.has-error]="loginForm.get('password')?.invalid && loginForm.get('password')?.touched"
+           [class.is-valid]="loginForm.get('password')?.valid && loginForm.get('password')?.touched">
+        <label for="password" [attr.lang]="currentLang">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <rect x="3" y="11" width="18" height="11" rx="2" ry="2" stroke-width="2"/>
+            <path d="M7 11V7a5 5 0 0 1 10 0v4" stroke-width="2"/>
+          </svg>
+          {{ currentLang === 'ar' ? 'كلمة المرور' : 'Password' }}
+        </label>
+        <div class="input-wrap">
+          <input
+            id="password"
+            [type]="showPassword ? 'text' : 'password'"
+            formControlName="password"
+            [placeholder]="currentLang === 'ar' ? 'أدخل كلمة المرور' : 'Enter your password'"
+            autocomplete="current-password"
+          />
+          <button type="button" class="toggle-pass" (click)="showPassword = !showPassword">
+            <svg *ngIf="!showPassword" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" stroke-width="2"/>
+              <circle cx="12" cy="12" r="3" stroke-width="2"/>
+            </svg>
+            <svg *ngIf="showPassword" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24" stroke-width="2"/>
+              <line x1="1" y1="1" x2="23" y2="23" stroke-width="2"/>
+            </svg>
+          </button>
+        </div>
+        <span class="error-msg"
+              *ngIf="loginForm.get('password')?.hasError('required') && loginForm.get('password')?.touched"
+              [attr.lang]="currentLang">
+          {{ currentLang === 'ar' ? 'كلمة المرور مطلوبة' : 'Password is required' }}
+        </span>
+      </div>
+
+      <!-- Server Error -->
+      <div class="server-error" *ngIf="errorMessage" @errorSlide>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <circle cx="12" cy="12" r="10" stroke-width="2"/>
+          <line x1="12" y1="8" x2="12" y2="12" stroke-width="2"/>
+          <line x1="12" y1="16" x2="12.01" y2="16" stroke-width="2.5"/>
+        </svg>
+        <span [attr.lang]="currentLang">{{ errorMessage }}</span>
+      </div>
+
+      <!-- Submit -->
+      <button type="submit" class="submit-btn" [disabled]="isLoading">
+        <span class="btn-content" *ngIf="!isLoading">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4M10 17l5-5-5-5M13.8 12H3" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span [attr.lang]="currentLang">{{ currentLang === 'ar' ? 'تسجيل الدخول' : 'Sign In' }}</span>
+        </span>
+        <span class="spinner-wrap" *ngIf="isLoading">
+          <span class="spinner"></span>
+          <span [attr.lang]="currentLang">{{ currentLang === 'ar' ? 'جاري الدخول...' : 'Signing in...' }}</span>
+        </span>
+      </button>
+
+    </form>
+
+    <!-- Footer -->
+    <p class="login-footer" [attr.lang]="currentLang">
+      {{ currentLang === 'ar'
+        ? '© ' + currentYear + ' MasterStack. جميع الحقوق محفوظة'
+        : '© ' + currentYear + ' MasterStack. All rights reserved' }}
+    </p>
+
+  </div>
+</div>

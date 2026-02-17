@@ -1,0 +1,278 @@
+// ============================================================
+// MASTERSTACK ADMIN — SHARED THEME
+// Import this in every admin component SCSS
+// ============================================================
+
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700;800&family=IBM+Plex+Sans:wght@400;500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+
+// ── Brand ──────────────────────────────────────────────────
+$blue:        #0e3581;
+$blue-light:  #1a4ba8;
+$teal:        #26cabc;
+$teal-light:  #2de0cf;
+$teal-dim:    rgba(38, 202, 188, 0.12);
+$blue-dim:    rgba(14, 53, 129, 0.10);
+
+// ── Gradients ──────────────────────────────────────────────
+$grad-main:   linear-gradient(135deg, #0e3581 0%, #26cabc 100%);
+$grad-teal:   linear-gradient(135deg, #26cabc 0%, #2de0cf 100%);
+$grad-blue:   linear-gradient(135deg, #0e3581 0%, #1a4ba8 100%);
+
+// ── Dark Surfaces ──────────────────────────────────────────
+$bg:          #0f1117;
+$bg2:         #161922;
+$surface:     #1c1f2e;
+$surface2:    #232738;
+$surface3:    #2a2d3e;
+$border:      rgba(255, 255, 255, 0.07);
+$border2:     rgba(38, 202, 188, 0.20);
+$border3:     rgba(255, 255, 255, 0.12);
+
+// ── Typography ─────────────────────────────────────────────
+$text:        #e8eaf2;
+$text-sub:    #8a8faa;
+$text-dim:    #555a72;
+
+// ── Status Colors ──────────────────────────────────────────
+$success:     #22c55e;
+$warning:     #f59e0b;
+$danger:      #ef4444;
+$info:        #3b82f6;
+
+$success-dim: rgba(34, 197, 94, 0.12);
+$warning-dim: rgba(245, 158, 11, 0.12);
+$danger-dim:  rgba(239, 68, 68, 0.12);
+$info-dim:    rgba(59, 130, 246, 0.12);
+
+// ── Layout ─────────────────────────────────────────────────
+$sidebar-w:   260px;
+$header-h:    64px;
+$radius:      14px;
+$radius-sm:   8px;
+$radius-lg:   20px;
+
+// ── Shadows ────────────────────────────────────────────────
+$shadow:      0 8px 32px rgba(0, 0, 0, 0.35);
+$shadow-sm:   0 4px 16px rgba(0, 0, 0, 0.25);
+$shadow-teal: 0 8px 28px rgba(38, 202, 188, 0.25);
+$shadow-blue: 0 8px 28px rgba(14, 53, 129, 0.30);
+
+// ── Fonts ──────────────────────────────────────────────────
+$font:        'IBM Plex Sans', sans-serif;
+$font-ar:     'IBM Plex Sans Arabic', sans-serif;
+$font-mono:   'IBM Plex Mono', monospace;
+
+// ── Mixins ─────────────────────────────────────────────────
+
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+@mixin card {
+  background: $surface;
+  border: 1px solid $border;
+  border-radius: $radius;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+
+  &:hover {
+    border-color: $border2;
+  }
+}
+
+@mixin btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.65rem 1.4rem;
+  background: $grad-main;
+  color: #fff;
+  border: none;
+  border-radius: $radius-sm;
+  font-size: 0.875rem;
+  font-weight: 600;
+  font-family: $font;
+  cursor: pointer;
+  transition: opacity 0.2s, transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 4px 16px rgba(38, 202, 188, 0.25);
+
+  &:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+    box-shadow: $shadow-teal;
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+}
+
+@mixin btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1.2rem;
+  background: transparent;
+  color: $text-sub;
+  border: 1px solid $border3;
+  border-radius: $radius-sm;
+  font-size: 0.875rem;
+  font-weight: 500;
+  font-family: $font;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &:hover {
+    color: $text;
+    border-color: $teal;
+    background: $teal-dim;
+  }
+}
+
+@mixin btn-danger {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1.2rem;
+  background: $danger-dim;
+  color: $danger;
+  border: 1px solid rgba(239, 68, 68, 0.25);
+  border-radius: $radius-sm;
+  font-size: 0.875rem;
+  font-weight: 600;
+  font-family: $font;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &:hover {
+    background: $danger;
+    color: #fff;
+    box-shadow: 0 4px 16px rgba(239, 68, 68, 0.35);
+  }
+}
+
+@mixin input-base {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background: $surface2;
+  border: 1px solid $border3;
+  border-radius: $radius-sm;
+  color: $text;
+  font-size: 0.9rem;
+  font-family: $font;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+
+  &::placeholder {
+    color: $text-dim;
+  }
+
+  &:focus {
+    border-color: $teal;
+    box-shadow: 0 0 0 3px rgba(38, 202, 188, 0.12);
+  }
+}
+
+@mixin table-base {
+  width: 100%;
+  border-collapse: collapse;
+
+  thead tr {
+    background: $surface2;
+
+    th {
+      padding: 0.85rem 1rem;
+      text-align: left;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: $text-sub;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      border-bottom: 1px solid $border;
+      white-space: nowrap;
+    }
+  }
+
+  tbody tr {
+    border-bottom: 1px solid $border;
+    transition: background 0.15s;
+
+    &:hover {
+      background: $surface2;
+    }
+
+    &:last-child {
+      border-bottom: none;
+    }
+
+    td {
+      padding: 1rem;
+      font-size: 0.875rem;
+      color: $text;
+      vertical-align: middle;
+    }
+  }
+}
+
+@mixin badge($color, $bg) {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.28rem 0.75rem;
+  background: $bg;
+  color: $color;
+  border-radius: 50px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+}
+
+@mixin gradient-text {
+  background: $grad-main;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+@mixin page-enter {
+  animation: pageEnter 0.35s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes pageEnter {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// ── Scrollbar ──────────────────────────────────────────────
+@mixin custom-scrollbar {
+  &::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: $surface;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: $surface3;
+    border-radius: 10px;
+
+    &:hover {
+      background: $teal;
+    }
+  }
+}

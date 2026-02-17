@@ -1,1 +1,722 @@
-<p>services-page works!</p>
+<!-- Services Page - Updated with Better Buttons and Additional Content -->
+
+<!-- Services Hero Section -->
+<!-- Services Page - Updated with Development Icons -->
+
+<!-- Services Hero Section -->
+<section class="services-hero">
+  <div class="hero-background">
+    <div class="gradient-orb orb-1"></div>
+    <div class="gradient-orb orb-2"></div>
+    <div class="gradient-orb orb-3"></div>
+  </div>
+  
+  <!-- Decorative Shapes - UPDATED WITH DEVELOPMENT ICONS -->
+  <div class="hero-decorative-shapes">
+    <div class="decorative-shape-left-1">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+        <polyline points="16 18 22 12 16 6" stroke-width="2"/>
+        <polyline points="8 6 2 12 8 18" stroke-width="2"/>
+      </svg>
+    </div>
+    <div class="decorative-shape-left-2">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+        <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" stroke-width="2"/>
+      </svg>
+    </div>
+    <div class="decorative-shape-left-3">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+        <rect x="2" y="3" width="20" height="14" rx="2" stroke-width="2"/>
+        <line x1="8" y1="21" x2="16" y2="21" stroke-width="2"/>
+        <line x1="12" y1="17" x2="12" y2="21" stroke-width="2"/>
+      </svg>
+    </div>
+    <div class="decorative-shape-right-1">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+        <rect x="5" y="2" width="14" height="20" rx="2" stroke-width="2"/>
+        <line x1="12" y1="18" x2="12.01" y2="18" stroke-width="2.5" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <div class="decorative-shape-right-2">
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+    </div>
+    <div class="decorative-shape-right-3">
+      <div class="line"></div>
+      <div class="line"></div>
+      <div class="line"></div>
+    </div>
+  </div>
+  
+  <div class="hero-container">
+    <div class="hero-content" data-aos="fade-up">
+      <div class="hero-badge">
+        <svg class="badge-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" stroke-width="2"/>
+        </svg>
+        <span>{{ currentLang === 'ar' ? 'خدماتنا' : 'Our Services' }}</span>
+      </div>
+      
+      <h1 class="hero-title" [attr.lang]="currentLang">
+        <span class="title-line">
+          {{ currentLang === 'ar' ? 'حلول رقمية احترافية' : 'Professional Digital Solutions' }}
+        </span>
+        <span class="title-gradient">
+          {{ currentLang === 'ar' ? 'لعملك' : 'For Your Business' }}
+        </span>
+      </h1>
+      
+      <p class="hero-subtitle" [attr.lang]="currentLang">
+        {{ currentLang === 'ar' 
+          ? 'نقدم خدمات تقنية شاملة مصممة خصيصاً لتلبية احتياجاتك وتحويل رؤيتك الرقمية إلى واقع ملموس. من تطوير التطبيقات والمواقع إلى الحلول التقنية المتقدمة، نحن شريكك الموثوق في رحلة التحول الرقمي.'
+          : 'We provide comprehensive technology services specifically designed to meet your needs and transform your digital vision into tangible reality. From app and web development to advanced technical solutions, we are your trusted partner in the digital transformation journey.'
+        }}
+      </p>
+      
+      <!-- Updated Hero Action Buttons -->
+      <div class="hero-actions" data-aos="fade-up" data-aos-delay="200">
+        <a routerLink="/contact" class="hero-primary-btn">
+          <span>{{ currentLang === 'ar' ? 'احصل على استشارة مجانية' : 'Get Free Consultation' }}</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M5 12h14M12 5l7 7-7 7" stroke-width="2"/>
+          </svg>
+        </a>
+        <a routerLink="/projects" class="hero-secondary-btn">
+          <span>{{ currentLang === 'ar' ? 'استكشف مشاريعنا' : 'Explore Our Projects' }}</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7" stroke-width="2"/>
+          </svg>
+        </a>
+      </div>
+      
+      <!-- Additional Hero Stats/Info to Fill Space -->
+      <div class="hero-stats" data-aos="fade-up" data-aos-delay="300">
+        <div class="stat-item">
+          <div class="stat-number">{{ currentLang === 'ar' ? '+٥٠' : '50+' }}</div>
+          <div class="stat-label">{{ currentLang === 'ar' ? 'مشروع ناجح' : 'Successful Projects' }}</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number">{{ currentLang === 'ar' ? '+٤٠' : '40+' }}</div>
+          <div class="stat-label">{{ currentLang === 'ar' ? 'عميل راضٍ' : 'Happy Clients' }}</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number">{{ currentLang === 'ar' ? '٢٤/٧' : '24/7' }}</div>
+          <div class="stat-label">{{ currentLang === 'ar' ? 'دعم فني' : 'Technical Support' }}</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number">{{ currentLang === 'ar' ? '%٩٨' : '98%' }}</div>
+          <div class="stat-label">{{ currentLang === 'ar' ? 'رضا العملاء' : 'Client Satisfaction' }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Rest of the sections remain unchanged... -->
+
+<!-- Main Services Section -->
+<section class="main-services-section">
+  <div class="section-container">
+    <div class="section-header" data-aos="fade-up">
+      <span class="section-subtitle">{{ currentLang === 'ar' ? 'الخدمات الأساسية' : 'Core Services' }}</span>
+      <h2 class="section-title" [attr.lang]="currentLang">
+        {{ currentLang === 'ar' ? 'ما نقدمه' : 'What We Offer' }}
+      </h2>
+      <p class="section-description" [attr.lang]="currentLang">
+        {{ currentLang === 'ar' 
+          ? 'مجموعة متكاملة من الخدمات التقنية المصممة لتلبية جميع احتياجاتك الرقمية'
+          : 'A comprehensive suite of technical services designed to meet all your digital needs'
+        }}
+      </p>
+    </div>
+    
+    <div class="services-main-grid">
+      <!-- Mobile App Development Service -->
+      <div class="service-main-card" data-aos="fade-up" data-aos-delay="100">
+        <div class="service-card-header">
+          <div class="service-icon-wrapper">
+            <div class="service-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <rect x="5" y="2" width="14" height="20" rx="2" stroke-width="2"/>
+                <line x1="12" y1="18" x2="12.01" y2="18" stroke-width="2.5" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <div class="icon-badge">01</div>
+          </div>
+          <h3 [attr.lang]="currentLang">
+            {{ currentLang === 'ar' ? 'تطوير تطبيقات الجوال' : 'Mobile App Development' }}
+          </h3>
+        </div>
+        
+        <div class="service-card-content">
+          <p class="service-description" [attr.lang]="currentLang">
+            {{ currentLang === 'ar' 
+              ? 'نصمم ونطور تطبيقات جوال احترافية تعمل بسلاسة على جميع الأجهزة، مع تجربة مستخدم استثنائية وأداء عالي. سواء كنت تحتاج تطبيق iOS أصلي أو Android أو حل متعدد المنصات، نحن هنا لتحقيق رؤيتك.'
+              : 'We design and develop professional mobile applications that run seamlessly on all devices, with exceptional user experience and high performance. Whether you need a native iOS, Android, or cross-platform solution, we\'re here to realize your vision.'
+            }}
+          </p>
+          
+          <div class="service-features">
+            <h4>{{ currentLang === 'ar' ? 'المميزات الرئيسية' : 'Key Features' }}</h4>
+            <ul>
+              <li>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" stroke-width="2"/>
+                  <polyline points="22 4 12 14.01 9 11.01" stroke-width="2"/>
+                </svg>
+                <span>{{ currentLang === 'ar' ? 'تطوير iOS و Android الأصلي' : 'Native iOS & Android Development' }}</span>
+              </li>
+              <li>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" stroke-width="2"/>
+                  <polyline points="22 4 12 14.01 9 11.01" stroke-width="2"/>
+                </svg>
+                <span>{{ currentLang === 'ar' ? 'حلول متعددة المنصات (React Native, Flutter)' : 'Cross-Platform Solutions (React Native, Flutter)' }}</span>
+              </li>
+              <li>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" stroke-width="2"/>
+                  <polyline points="22 4 12 14.01 9 11.01" stroke-width="2"/>
+                </svg>
+                <span>{{ currentLang === 'ar' ? 'تصميم واجهة مستخدم عصري وجذاب' : 'Modern & Attractive UI/UX Design' }}</span>
+              </li>
+              <li>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" stroke-width="2"/>
+                  <polyline points="22 4 12 14.01 9 11.01" stroke-width="2"/>
+                </svg>
+                <span>{{ currentLang === 'ar' ? 'إشعارات فورية وتحديثات مباشرة' : 'Push Notifications & Real-time Updates' }}</span>
+              </li>
+              <li>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" stroke-width="2"/>
+                  <polyline points="22 4 12 14.01 9 11.01" stroke-width="2"/>
+                </svg>
+                <span>{{ currentLang === 'ar' ? 'تكامل بوابات الدفع الإلكتروني' : 'Payment Gateway Integration' }}</span>
+              </li>
+              <li>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" stroke-width="2"/>
+                  <polyline points="22 4 12 14.01 9 11.01" stroke-width="2"/>
+                </svg>
+                <span>{{ currentLang === 'ar' ? 'تحليلات وإحصائيات متقدمة' : 'Advanced Analytics & Statistics' }}</span>
+              </li>
+            </ul>
+          </div>
+          
+          <div class="service-technologies">
+            <h4>{{ currentLang === 'ar' ? 'التقنيات المستخدمة' : 'Technologies Used' }}</h4>
+            <div class="tech-tags">
+              <span class="tech-tag">Swift</span>
+              <span class="tech-tag">Kotlin</span>
+              <span class="tech-tag">React Native</span>
+              <span class="tech-tag">Flutter</span>
+              <span class="tech-tag">Firebase</span>
+              <span class="tech-tag">Node.js</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="service-card-footer">
+          <a routerLink="/contact" class="service-btn">
+            <span>{{ currentLang === 'ar' ? 'ابدأ مشروع تطبيقك' : 'Start Your App Project' }}</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path d="M5 12h14M12 5l7 7-7 7" stroke-width="2"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Web Development Service -->
+      <div class="service-main-card" data-aos="fade-up" data-aos-delay="200">
+        <div class="service-card-header">
+          <div class="service-icon-wrapper">
+            <div class="service-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <rect x="2" y="3" width="20" height="14" rx="2" stroke-width="2"/>
+                <line x1="8" y1="21" x2="16" y2="21" stroke-width="2"/>
+                <line x1="12" y1="17" x2="12" y2="21" stroke-width="2"/>
+              </svg>
+            </div>
+            <div class="icon-badge">02</div>
+          </div>
+          <h3 [attr.lang]="currentLang">
+            {{ currentLang === 'ar' ? 'تطوير المواقع الإلكترونية' : 'Web Development' }}
+          </h3>
+        </div>
+        
+        <div class="service-card-content">
+          <p class="service-description" [attr.lang]="currentLang">
+            {{ currentLang === 'ar' 
+              ? 'نبني مواقع إلكترونية احترافية سريعة ومتجاوبة مع جميع الأجهزة، محسنة لمحركات البحث، ومصممة لتحقيق أهدافك التجارية. من المواقع التعريفية إلى المتاجر الإلكترونية المعقدة، نوفر حلول ويب شاملة.'
+              : 'We build professional, fast, and responsive websites for all devices, optimized for search engines, and designed to achieve your business goals. From landing pages to complex e-commerce stores, we provide comprehensive web solutions.'
+            }}
+          </p>
+          
+          <div class="service-features">
+            <h4>{{ currentLang === 'ar' ? 'المميزات الرئيسية' : 'Key Features' }}</h4>
+            <ul>
+              <li>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" stroke-width="2"/>
+                  <polyline points="22 4 12 14.01 9 11.01" stroke-width="2"/>
+                </svg>
+                <span>{{ currentLang === 'ar' ? 'تصميم متجاوب مع جميع الأجهزة' : 'Responsive Design for All Devices' }}</span>
+              </li>
+              <li>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" stroke-width="2"/>
+                  <polyline points="22 4 12 14.01 9 11.01" stroke-width="2"/>
+                </svg>
+                <span>{{ currentLang === 'ar' ? 'محسن بالكامل لمحركات البحث (SEO)' : 'Fully SEO Optimized' }}</span>
+              </li>
+              <li>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" stroke-width="2"/>
+                  <polyline points="22 4 12 14.01 9 11.01" stroke-width="2"/>
+                </svg>
+                <span>{{ currentLang === 'ar' ? 'نظام إدارة محتوى سهل الاستخدام' : 'User-Friendly Content Management System' }}</span>
+              </li>
+              <li>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" stroke-width="2"/>
+                  <polyline points="22 4 12 14.01 9 11.01" stroke-width="2"/>
+                </svg>
+                <span>{{ currentLang === 'ar' ? 'سرعة تحميل فائقة وأداء ممتاز' : 'Ultra-Fast Loading & Excellent Performance' }}</span>
+              </li>
+              <li>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" stroke-width="2"/>
+                  <polyline points="22 4 12 14.01 9 11.01" stroke-width="2"/>
+                </svg>
+                <span>{{ currentLang === 'ar' ? 'أمان متقدم وحماية من الاختراقات' : 'Advanced Security & Hack Protection' }}</span>
+              </li>
+              <li>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" stroke-width="2"/>
+                  <polyline points="22 4 12 14.01 9 11.01" stroke-width="2"/>
+                </svg>
+                <span>{{ currentLang === 'ar' ? 'تكامل مع منصات التواصل والأدوات' : 'Integration with Social Media & Tools' }}</span>
+              </li>
+            </ul>
+          </div>
+          
+          <div class="service-technologies">
+            <h4>{{ currentLang === 'ar' ? 'التقنيات المستخدمة' : 'Technologies Used' }}</h4>
+            <div class="tech-tags">
+              <span class="tech-tag">Angular</span>
+              <span class="tech-tag">React</span>
+              <span class="tech-tag">Vue.js</span>
+              <span class="tech-tag">Node.js</span>
+              <span class="tech-tag">WordPress</span>
+              <span class="tech-tag">Laravel</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="service-card-footer">
+          <a routerLink="/contact" class="service-btn">
+            <span>{{ currentLang === 'ar' ? 'احصل على موقعك الآن' : 'Get Your Website Now' }}</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path d="M5 12h14M12 5l7 7-7 7" stroke-width="2"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Subscription Systems Service -->
+      <div class="service-main-card" data-aos="fade-up" data-aos-delay="300">
+        <div class="service-card-header">
+          <div class="service-icon-wrapper">
+            <div class="service-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <circle cx="12" cy="12" r="10" stroke-width="2"/>
+                <path d="M12 6v6l4 2" stroke-width="2"/>
+              </svg>
+            </div>
+            <div class="icon-badge">03</div>
+          </div>
+          <h3 [attr.lang]="currentLang">
+            {{ currentLang === 'ar' ? 'أنظمة الاشتراكات' : 'Subscription Systems' }}
+          </h3>
+        </div>
+        
+        <div class="service-card-content">
+          <p class="service-description" [attr.lang]="currentLang">
+            {{ currentLang === 'ar' 
+              ? 'نبني منصات اشتراكات متكاملة تدير الأعضاء والمدفوعات المتكررة والمحتوى الحصري بكفاءة عالية. حل مثالي للخدمات القائمة على الاشتراكات، الدورات التعليمية، والمحتوى المدفوع.'
+              : 'We build comprehensive subscription platforms that efficiently manage members, recurring payments, and exclusive content. The ideal solution for subscription-based services, educational courses, and paid content.'
+            }}
+          </p>
+          
+          <div class="service-features">
+            <h4>{{ currentLang === 'ar' ? 'المميزات الرئيسية' : 'Key Features' }}</h4>
+            <ul>
+              <li>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" stroke-width="2"/>
+                  <polyline points="22 4 12 14.01 9 11.01" stroke-width="2"/>
+                </svg>
+                <span>{{ currentLang === 'ar' ? 'خطط اشتراك مرنة ومتعددة المستويات' : 'Flexible Multi-tier Subscription Plans' }}</span>
+              </li>
+              <li>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" stroke-width="2"/>
+                  <polyline points="22 4 12 14.01 9 11.01" stroke-width="2"/>
+                </svg>
+                <span>{{ currentLang === 'ar' ? 'فواتير متكررة تلقائية ومدفوعات آمنة' : 'Automated Recurring Billing & Secure Payments' }}</span>
+              </li>
+              <li>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" stroke-width="2"/>
+                  <polyline points="22 4 12 14.01 9 11.01" stroke-width="2"/>
+                </svg>
+                <span>{{ currentLang === 'ar' ? 'لوحة تحكم شاملة للمشتركين والإدارة' : 'Comprehensive Dashboard for Subscribers & Management' }}</span>
+              </li>
+              <li>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" stroke-width="2"/>
+                  <polyline points="22 4 12 14.01 9 11.01" stroke-width="2"/>
+                </svg>
+                <span>{{ currentLang === 'ar' ? 'تقارير مفصلة عن الإيرادات والأداء' : 'Detailed Reports on Revenue & Performance' }}</span>
+              </li>
+              <li>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" stroke-width="2"/>
+                  <polyline points="22 4 12 14.01 9 11.01" stroke-width="2"/>
+                </svg>
+                <span>{{ currentLang === 'ar' ? 'إشعارات بريد إلكتروني تلقائية للمشتركين' : 'Automated Email Notifications for Subscribers' }}</span>
+              </li>
+              <li>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" stroke-width="2"/>
+                  <polyline points="22 4 12 14.01 9 11.01" stroke-width="2"/>
+                </svg>
+                <span>{{ currentLang === 'ar' ? 'إدارة المحتوى الحصري ومستويات الوصول' : 'Exclusive Content Management & Access Levels' }}</span>
+              </li>
+            </ul>
+          </div>
+          
+          <div class="service-technologies">
+            <h4>{{ currentLang === 'ar' ? 'التقنيات المستخدمة' : 'Technologies Used' }}</h4>
+            <div class="tech-tags">
+              <span class="tech-tag">Stripe</span>
+              <span class="tech-tag">PayPal</span>
+              <span class="tech-tag">Laravel</span>
+              <span class="tech-tag">MongoDB</span>
+              <span class="tech-tag">AWS</span>
+              <span class="tech-tag">Redis</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="service-card-footer">
+          <a routerLink="/contact" class="service-btn">
+            <span>{{ currentLang === 'ar' ? 'أطلق منصة الاشتراكات' : 'Launch Subscription Platform' }}</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path d="M5 12h14M12 5l7 7-7 7" stroke-width="2"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Additional Services Section -->
+<section class="additional-services-section">
+  <div class="section-container">
+    <div class="section-header" data-aos="fade-up">
+      <span class="section-subtitle">{{ currentLang === 'ar' ? 'خبرات إضافية' : 'Additional Expertise' }}</span>
+      <h2 class="section-title" [attr.lang]="currentLang">
+        {{ currentLang === 'ar' ? 'المزيد من الطرق لمساعدتك' : 'More Ways We Can Help' }}
+      </h2>
+      <p class="section-description" [attr.lang]="currentLang">
+        {{ currentLang === 'ar' 
+          ? 'نقدم مجموعة واسعة من الخدمات التقنية الإضافية لدعم نمو وتطور عملك'
+          : 'We offer a wide range of additional technical services to support your business growth and development'
+        }}
+      </p>
+    </div>
+    
+    <div class="additional-services-grid">
+      <!-- Cybersecurity -->
+      <div class="additional-service-card" data-aos="fade-up" data-aos-delay="100">
+        <div class="additional-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke-width="2"/>
+          </svg>
+        </div>
+        <h4>{{ currentLang === 'ar' ? 'حلول الأمن السيبراني' : 'Cybersecurity Solutions' }}</h4>
+        <p>{{ currentLang === 'ar' 
+          ? 'نحمي أصولك الرقمية من خلال عمليات تدقيق أمني شاملة، اختبارات اختراق، وتطبيق أفضل ممارسات الأمان لضمان حماية بياناتك.'
+          : 'We protect your digital assets through comprehensive security audits, penetration testing, and implementation of best security practices to ensure your data protection.'
+        }}</p>
+      </div>
+
+      <!-- API Development -->
+      <div class="additional-service-card" data-aos="fade-up" data-aos-delay="200">
+        <div class="additional-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" stroke-width="2"/>
+          </svg>
+        </div>
+        <h4>{{ currentLang === 'ar' ? 'تطوير واجهات برمجة التطبيقات' : 'API Development' }}</h4>
+        <p>{{ currentLang === 'ar' 
+          ? 'نبني واجهات برمجية قوية وقابلة للتوسع REST و GraphQL تسمح بالتكامل السلس بين أنظمتك وتطبيقاتك المختلفة.'
+          : 'We build robust and scalable REST and GraphQL APIs that enable seamless integration between your different systems and applications.'
+        }}</p>
+      </div>
+
+      <!-- Technical Consulting -->
+      <div class="additional-service-card" data-aos="fade-up" data-aos-delay="300">
+        <div class="additional-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" stroke-width="2"/>
+            <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" stroke-width="2"/>
+          </svg>
+        </div>
+        <h4>{{ currentLang === 'ar' ? 'الاستشارات التقنية' : 'Technical Consulting' }}</h4>
+        <p>{{ currentLang === 'ar' 
+          ? 'نقدم إرشادات خبراء حول استراتيجية التكنولوجيا، اختيار الأنظمة المناسبة، وخطط التحول الرقمي لتحقيق أهدافك التجارية.'
+          : 'We provide expert guidance on technology strategy, selecting the right systems, and digital transformation plans to achieve your business goals.'
+        }}</p>
+      </div>
+
+      <!-- AI Integration -->
+      <div class="additional-service-card" data-aos="fade-up" data-aos-delay="400">
+        <div class="additional-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <circle cx="12" cy="12" r="3" stroke-width="2"/>
+            <path d="M12 1v6m0 6v6M5.636 5.636l4.243 4.243m4.243 4.243l4.242 4.242M1 12h6m6 0h6M5.636 18.364l4.243-4.243m4.243-4.243l4.242-4.242" stroke-width="2"/>
+          </svg>
+        </div>
+        <h4>{{ currentLang === 'ar' ? 'تكامل الذكاء الاصطناعي' : 'AI Integration' }}</h4>
+        <p>{{ currentLang === 'ar' 
+          ? 'نساعدك على الاستفادة من قوة الذكاء الاصطناعي والتعلم الآلي لتحسين عملياتك وتقديم تجارب مبتكرة لعملائك.'
+          : 'We help you leverage the power of artificial intelligence and machine learning to improve your operations and deliver innovative experiences to your customers.'
+        }}</p>
+      </div>
+
+      <!-- Data Analytics -->
+      <div class="additional-service-card" data-aos="fade-up" data-aos-delay="500">
+        <div class="additional-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M18 20V10M12 20V4M6 20v-6" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <h4>{{ currentLang === 'ar' ? 'تحليلات البيانات والذكاء التجاري' : 'Data Analytics & Business Intelligence' }}</h4>
+        <p>{{ currentLang === 'ar' 
+          ? 'نحول بياناتك إلى رؤى قابلة للتنفيذ من خلال تحليلات متقدمة ولوحات تحكم تفاعلية تساعدك في اتخاذ قرارات مستنيرة.'
+          : 'We transform your data into actionable insights through advanced analytics and interactive dashboards that help you make informed decisions.'
+        }}</p>
+      </div>
+
+      <!-- Maintenance & Support -->
+      <div class="additional-service-card" data-aos="fade-up" data-aos-delay="600">
+        <div class="additional-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" stroke-width="2"/>
+            <circle cx="9" cy="7" r="4" stroke-width="2"/>
+            <path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" stroke-width="2"/>
+          </svg>
+        </div>
+        <h4>{{ currentLang === 'ar' ? 'الصيانة والدعم الفني' : 'Maintenance & Technical Support' }}</h4>
+        <p>{{ currentLang === 'ar' 
+          ? 'نوفر دعم فني متواصل على مدار الساعة، صيانة دورية، وتحديثات مستمرة لضمان عمل أنظمتك بكفاءة مثالية.'
+          : 'We provide round-the-clock technical support, regular maintenance, and continuous updates to ensure your systems operate at optimal efficiency.'
+        }}</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Process Section -->
+<section class="services-process-section">
+  <div class="section-container">
+    <div class="section-header" data-aos="fade-up">
+      <span class="section-subtitle">{{ currentLang === 'ar' ? 'عمليتنا' : 'Our Process' }}</span>
+      <h2 class="section-title" [attr.lang]="currentLang">
+        {{ currentLang === 'ar' ? 'كيف نعمل معك' : 'How We Work With You' }}
+      </h2>
+      <p class="section-description" [attr.lang]="currentLang">
+        {{ currentLang === 'ar' 
+          ? 'منهجية مجربة وفعالة تضمن تقديم مشروعك في الوقت المحدد وضمن الميزانية المتفق عليها مع أعلى معايير الجودة'
+          : 'A proven and effective methodology that ensures your project is delivered on time and within the agreed budget with the highest quality standards'
+        }}
+      </p>
+    </div>
+    
+    <div class="process-timeline">
+      <!-- Step 1 -->
+      <div class="timeline-step" data-aos="fade-right" data-aos-delay="100">
+        <div class="step-number">01</div>
+        <div class="step-content">
+          <h3>{{ currentLang === 'ar' ? 'الاكتشاف والاستشارة الأولية' : 'Discovery & Initial Consultation' }}</h3>
+          <p>{{ currentLang === 'ar' 
+            ? 'نبدأ بفهم عميق لرؤيتك وأهدافك التجارية من خلال مناقشات تفصيلية. نحلل متطلباتك، نحدد التحديات، ونضع تصور أولي للحل المناسب.'
+            : 'We start with a deep understanding of your vision and business goals through detailed discussions. We analyze your requirements, identify challenges, and create an initial concept for the appropriate solution.'
+          }}</p>
+        </div>
+      </div>
+
+      <!-- Step 2 -->
+      <div class="timeline-step" data-aos="fade-right" data-aos-delay="200">
+        <div class="step-number">02</div>
+        <div class="step-content">
+          <h3>{{ currentLang === 'ar' ? 'التخطيط الاستراتيجي والتصميم' : 'Strategic Planning & Design' }}</h3>
+          <p>{{ currentLang === 'ar' 
+            ? 'نضع خارطة طريق شاملة للمشروع مع جداول زمنية دقيقة ومعالم واضحة. نصمم واجهات مستخدم جذابة ونماذج تفاعلية نعرضها عليك للموافقة قبل البدء بالتطوير.'
+            : 'We create a comprehensive project roadmap with precise timelines and clear milestones. We design attractive user interfaces and interactive prototypes that we present to you for approval before starting development.'
+          }}</p>
+        </div>
+      </div>
+
+      <!-- Step 3 -->
+      <div class="timeline-step" data-aos="fade-right" data-aos-delay="300">
+        <div class="step-number">03</div>
+        <div class="step-content">
+          <h3>{{ currentLang === 'ar' ? 'التطوير والبرمجة' : 'Development & Programming' }}</h3>
+          <p>{{ currentLang === 'ar' 
+            ? 'فريقنا المحترف يبدأ ببناء الحل باستخدام أحدث التقنيات وأفضل الممارسات البرمجية. نلتزم بمعايير عالية للجودة ونبقيك على اطلاع دائم بتقدم المشروع.'
+            : 'Our professional team begins building the solution using the latest technologies and best programming practices. We adhere to high quality standards and keep you constantly updated on project progress.'
+          }}</p>
+        </div>
+      </div>
+
+      <!-- Step 4 -->
+      <div class="timeline-step" data-aos="fade-right" data-aos-delay="400">
+        <div class="step-number">04</div>
+        <div class="step-content">
+          <h3>{{ currentLang === 'ar' ? 'الاختبار وضمان الجودة' : 'Testing & Quality Assurance' }}</h3>
+          <p>{{ currentLang === 'ar' 
+            ? 'نجري اختبارات شاملة على جميع جوانب المشروع لضمان خلوه من الأخطاء وعمله بكفاءة عالية. نختبر الأداء، الأمان، وتجربة المستخدم على مختلف الأجهزة والمتصفحات.'
+            : 'We conduct comprehensive tests on all aspects of the project to ensure it is error-free and operates with high efficiency. We test performance, security, and user experience across various devices and browsers.'
+          }}</p>
+        </div>
+      </div>
+
+      <!-- Step 5 -->
+      <div class="timeline-step" data-aos="fade-right" data-aos-delay="500">
+        <div class="step-number">05</div>
+        <div class="step-content">
+          <h3>{{ currentLang === 'ar' ? 'الإطلاق والدعم المستمر' : 'Launch & Ongoing Support' }}</h3>
+          <p>{{ currentLang === 'ar' 
+            ? 'ننشر المشروع بنجاح ونقدم تدريب شامل لفريقك. نوفر دعم فني مستمر، صيانة دورية، وتحديثات منتظمة لضمان استمرار نجاح مشروعك.'
+            : 'We successfully launch the project and provide comprehensive training for your team. We offer ongoing technical support, regular maintenance, and consistent updates to ensure your project\'s continued success.'
+          }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Why Choose Us Section -->
+<section class="why-choose-section">
+  <div class="section-container">
+    <div class="why-content-grid">
+      <div class="why-text-content" data-aos="fade-right">
+        <span class="section-subtitle">{{ currentLang === 'ar' ? 'لماذا تختارنا' : 'Why Choose Us' }}</span>
+        <h2 class="section-title" [attr.lang]="currentLang">
+          {{ currentLang === 'ar' ? 'شريكك التقني الموثوق للنجاح' : 'Your Trusted Technology Partner for Success' }}
+        </h2>
+        <p class="section-description" [attr.lang]="currentLang">
+          {{ currentLang === 'ar' 
+            ? 'نجمع بين الخبرة التقنية العميقة والفهم الدقيق لاحتياجات الأعمال لتقديم حلول تتجاوز توقعاتك وتحقق نتائج ملموسة لعملك. نحن لا نبني فقط منتجات تقنية، بل نساهم في نمو ونجاح أعمالك.'
+            : 'We combine deep technical expertise with precise understanding of business needs to deliver solutions that exceed your expectations and achieve tangible results for your business. We don\'t just build technical products, we contribute to the growth and success of your business.'
+          }}
+        </p>
+        
+        <div class="why-features-list">
+          <div class="why-feature-item">
+            <div class="feature-number">{{ currentLang === 'ar' ? '٩٨٪' : '98%' }}</div>
+            <div class="feature-label">{{ currentLang === 'ar' ? 'رضا العملاء' : 'Client Satisfaction' }}</div>
+          </div>
+          <div class="why-feature-item">
+            <div class="feature-number">{{ currentLang === 'ar' ? '٢٤/٧' : '24/7' }}</div>
+            <div class="feature-label">{{ currentLang === 'ar' ? 'الدعم الفني' : 'Technical Support' }}</div>
+          </div>
+          <div class="why-feature-item">
+            <div class="feature-number">{{ currentLang === 'ar' ? '+١٠' : '10+' }}</div>
+            <div class="feature-label">{{ currentLang === 'ar' ? 'سنوات خبرة' : 'Years Experience' }}</div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="why-visual-content" data-aos="fade-left">
+        <div class="why-benefits-grid">
+          <!-- Fast Delivery -->
+          <div class="benefit-box">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" stroke-width="2"/>
+            </svg>
+            <h4>{{ currentLang === 'ar' ? 'تسليم سريع ودقيق' : 'Fast & Accurate Delivery' }}</h4>
+          </div>
+
+          <!-- Premium Quality -->
+          <div class="benefit-box">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" stroke-width="2"/>
+            </svg>
+            <h4>{{ currentLang === 'ar' ? 'جودة استثنائية' : 'Exceptional Quality' }}</h4>
+          </div>
+
+          <!-- Secure & Reliable -->
+          <div class="benefit-box">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke-width="2"/>
+            </svg>
+            <h4>{{ currentLang === 'ar' ? 'آمن وموثوق' : 'Secure & Reliable' }}</h4>
+          </div>
+
+          <!-- Dedicated Support -->
+          <div class="benefit-box">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" stroke-width="2"/>
+              <circle cx="9" cy="7" r="4" stroke-width="2"/>
+            </svg>
+            <h4>{{ currentLang === 'ar' ? 'دعم متخصص ومستمر' : 'Specialized Continuous Support' }}</h4>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA Section -->
+<section class="cta-section">
+  <div class="cta-background">
+    <div class="cta-orb orb-1"></div>
+    <div class="cta-orb orb-2"></div>
+  </div>
+  
+  <div class="cta-container" data-aos="zoom-in">
+    <div class="cta-content">
+      <h2 class="cta-title" [attr.lang]="currentLang">
+        {{ currentLang === 'ar' ? 'هل أنت مستعد لبدء مشروعك؟' : 'Ready to Start Your Project?' }}
+      </h2>
+      <p class="cta-text" [attr.lang]="currentLang">
+        {{ currentLang === 'ar' 
+          ? 'دعنا نناقش كيف يمكننا مساعدتك في تحويل أفكارك إلى واقع'
+          : 'Let\'s discuss how we can help transform your ideas into reality'
+        }}
+      </p>
+      <div class="cta-actions">
+        <a routerLink="/contact" class="cta-primary-btn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" stroke-width="2"/>
+          </svg>
+          {{ currentLang === 'ar' ? 'تواصل معنا' : 'Get in Touch' }}
+        </a>
+        <a href="tel:01127140695" class="cta-secondary-btn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" stroke-width="2"/>
+          </svg>
+          {{ currentLang === 'ar' ? 'اتصل بنا الآن' : 'Call Us Now' }}
+        </a>
+      </div>
+    </div>
+  </div>
+</section>

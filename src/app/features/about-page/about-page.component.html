@@ -1,1 +1,876 @@
-<p>about-page works!</p>
+<!-- About Page - Complete with Improved Work Process Section -->
+
+<!-- About Page - Complete with Development Icons -->
+
+<section class="about-hero">
+  <div class="hero-background">
+    <div class="gradient-orb orb-1"></div>
+    <div class="gradient-orb orb-2"></div>
+    <div class="gradient-orb orb-3"></div>
+  </div>
+
+  <!-- DECORATIVE SHAPES - UPDATED WITH DEVELOPMENT ICONS -->
+  <div class="hero-decorative-shapes">
+    <!-- Left Side Shapes -->
+    <div class="decorative-shape-left-1">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+        <polyline points="16 18 22 12 16 6" stroke-width="2"/>
+        <polyline points="8 6 2 12 8 18" stroke-width="2"/>
+      </svg>
+    </div>
+    <div class="decorative-shape-left-2">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+        <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" stroke-width="2"/>
+      </svg>
+    </div>
+    <div class="decorative-shape-left-3">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+        <rect x="3" y="3" width="18" height="18" rx="2" stroke-width="2"/>
+        <path d="M3 9h18M9 21V9" stroke-width="2"/>
+      </svg>
+    </div>
+    
+    <!-- Right Side Shapes -->
+    <div class="decorative-shape-right-1">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+        <rect x="2" y="3" width="20" height="14" rx="2" stroke-width="2"/>
+        <line x1="8" y1="21" x2="16" y2="21" stroke-width="2"/>
+        <line x1="12" y1="17" x2="12" y2="21" stroke-width="2"/>
+      </svg>
+    </div>
+    <div class="decorative-shape-right-2">
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+    </div>
+    <div class="decorative-shape-right-3">
+      <div class="line"></div>
+      <div class="line"></div>
+      <div class="line"></div>
+    </div>
+  </div>
+  
+  <div class="hero-container">
+    <div class="hero-content" data-aos="fade-up">
+      <div class="hero-badge">
+        <svg class="badge-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" stroke-width="2"/>
+          <circle cx="9" cy="7" r="4" stroke-width="2"/>
+          <path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" stroke-width="2"/>
+        </svg>
+        <span>{{ currentLang === 'ar' ? 'من نحن' : 'About Us' }}</span>
+      </div>
+      
+      <h1 class="hero-title">
+        <span class="title-line">
+          {{ currentLang === 'ar' ? 'نبني الحلول الرقمية' : 'Building Digital Solutions' }}
+        </span>
+        <span class="title-gradient">
+          {{ currentLang === 'ar' ? 'التي تحدث فرقاً' : 'That Make a Difference' }}
+        </span>
+      </h1>
+      
+      <p class="hero-subtitle">
+        {{ currentLang === 'ar' 
+          ? 'نحن فريق من المبدعين والمطورين المتحمسين الذين يلتزمون بتحويل الأفكار إلى منتجات رقمية استثنائية'
+          : 'We are a team of passionate creators and developers committed to transforming ideas into exceptional digital products'
+        }}
+      </p>
+      
+      <div class="hero-stats">
+        <div class="stat-box">
+          <div class="stat-number">5+</div>
+          <div class="stat-label">{{ currentLang === 'ar' ? 'سنوات خبرة' : 'Years Experience' }}</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-number">50+</div>
+          <div class="stat-label">{{ currentLang === 'ar' ? 'مشروع مكتمل' : 'Projects Completed' }}</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-number">30+</div>
+          <div class="stat-label">{{ currentLang === 'ar' ? 'عميل راضٍ' : 'Happy Clients' }}</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-number">15+</div>
+          <div class="stat-label">{{ currentLang === 'ar' ? 'عضو فريق' : 'Team Members' }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Rest of the sections remain unchanged... -->
+
+<!-- Our Story Section - Final Updated Version -->
+<section class="story-section">
+  <div class="section-container">
+    <div class="content-grid">
+      <div class="content-text">
+        <span class="section-subtitle">{{ currentLang === 'ar' ? 'قصتنا' : 'Our Story' }}</span>
+        <h2 class="section-title">
+          {{ currentLang === 'ar' ? 'رحلة بدأت بحلم' : 'A Journey That Started With a Dream' }}
+        </h2>
+        <p class="section-description">
+          {{ currentLang === 'ar' 
+            ? 'في عام 2025، اجتمع ثلاثة مطورين شغوفين بفكرة واحدة: تحويل التحديات التقنية إلى فرص نجاح. كانت البداية متواضعة، لكن الطموح كان كبيراً. اليوم، نفخر بأننا أصبحنا فريقاً متكاملاً يقدم حلولاً رقمية مبتكرة تساعد الشركات على النمو والتطور في العالم الرقمي.'
+            : 'In 2025, three passionate developers came together with one idea: turning technical challenges into success opportunities. The beginning was humble, but the ambition was great. Today, we are proud to have become an integrated team providing innovative digital solutions that help companies grow and evolve in the digital world.'
+          }}
+        </p>
+        
+        <!-- Modern Decorative Lines -->
+        <div class="story-decorative-lines">
+          <div class="deco-line line-1"></div>
+          <div class="deco-line line-2"></div>
+          <div class="deco-line line-3"></div>
+        </div>
+        
+        <div class="story-timeline">
+          <div class="timeline-item">
+            <div class="timeline-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" stroke-width="2"/>
+              </svg>
+            </div>
+            <div class="timeline-content">
+              <h4>{{ currentLang === 'ar' ? 'الانطلاقة' : 'The Launch' }}</h4>
+              <p>{{ currentLang === 'ar' ? 'ثلاثة مطورين، فكرة واحدة، وشغف لا محدود بالتكنولوجيا' : 'Three developers, one idea, unlimited passion for technology' }}</p>
+            </div>
+          </div>
+          
+          <div class="timeline-item">
+            <div class="timeline-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path d="M12 2L2 7l10 5 10-5-10-5z" stroke-width="2"/>
+                <path d="M2 17l10 5 10-5M2 12l10 5 10-5" stroke-width="2"/>
+              </svg>
+            </div>
+            <div class="timeline-content">
+              <h4>{{ currentLang === 'ar' ? 'التوسع' : 'Expansion' }}</h4>
+              <p>{{ currentLang === 'ar' ? 'نمو الفريق وتوسع الخدمات لتشمل جميع جوانب التطوير الرقمي' : 'Team growth and service expansion to include all aspects of digital development' }}</p>
+            </div>
+          </div>
+          
+          <div class="timeline-item">
+            <div class="timeline-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" stroke-width="2"/>
+              </svg>
+            </div>
+            <div class="timeline-content">
+              <h4>{{ currentLang === 'ar' ? 'الإنجاز' : 'Achievement' }}</h4>
+              <p>{{ currentLang === 'ar' ? 'شريك موثوق لعشرات الشركات في رحلة تحولها الرقمي' : 'Trusted partner for dozens of companies in their digital transformation journey' }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="content-image">
+        <div class="image-wrapper story-image">
+          <div class="story-visual-container">
+            <!-- Abstract Digital Network Visualization -->
+            <div class="network-visual">
+              <!-- Central Hub -->
+              <div class="network-hub">
+                <div class="hub-core">
+                  <div class="core-pulse"></div>
+                  <div class="core-pulse pulse-2"></div>
+                  <div class="core-pulse pulse-3"></div>
+                </div>
+              </div>
+              
+              <!-- Network Nodes -->
+              <div class="network-node node-1">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <circle cx="12" cy="12" r="3" stroke-width="2"/>
+                  <path d="M12 1v6m0 6v6M5.636 5.636l4.243 4.243m4.243 4.243l4.242 4.242M1 12h6m6 0h6M5.636 18.364l4.243-4.243m4.243-4.243l4.242-4.242" stroke-width="2"/>
+                </svg>
+              </div>
+              
+              <div class="network-node node-2">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <rect x="3" y="3" width="18" height="18" rx="2" stroke-width="2"/>
+                  <path d="M3 9h18M9 21V9" stroke-width="2"/>
+                </svg>
+              </div>
+              
+              <div class="network-node node-3">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <polyline points="16 18 22 12 16 6" stroke-width="2"/>
+                  <polyline points="8 6 2 12 8 18" stroke-width="2"/>
+                </svg>
+              </div>
+              
+              <div class="network-node node-4">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <rect x="2" y="2" width="20" height="8" rx="2" ry="2" stroke-width="2"/>
+                  <rect x="2" y="14" width="20" height="8" rx="2" ry="2" stroke-width="2"/>
+                </svg>
+              </div>
+              
+              <div class="network-node node-5">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" stroke-width="2"/>
+                </svg>
+              </div>
+              
+              <div class="network-node node-6">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <path d="M12 2L2 7l10 5 10-5-10-5z" stroke-width="2"/>
+                  <path d="M2 17l10 5 10-5M2 12l10 5 10-5" stroke-width="2"/>
+                </svg>
+              </div>
+            </div>
+            
+            <!-- Connection Lines SVG -->
+            <svg class="connection-svg" viewBox="0 0 500 500">
+              <defs>
+                <linearGradient id="lineGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" style="stop-color:rgba(255,255,255,0.1);stop-opacity:1" />
+                  <stop offset="50%" style="stop-color:rgba(255,255,255,0.5);stop-opacity:1" />
+                  <stop offset="100%" style="stop-color:rgba(255,255,255,0.1);stop-opacity:1" />
+                </linearGradient>
+                
+                <filter id="glow">
+                  <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+                  <feMerge>
+                    <feMergeNode in="coloredBlur"/>
+                    <feMergeNode in="SourceGraphic"/>
+                  </feMerge>
+                </filter>
+              </defs>
+              
+              <!-- Connecting lines from hub to nodes -->
+              <line class="connect-line line-1" x1="250" y1="250" x2="120" y2="120" stroke="url(#lineGrad)" stroke-width="2" filter="url(#glow)"/>
+              <line class="connect-line line-2" x1="250" y1="250" x2="380" y2="120" stroke="url(#lineGrad)" stroke-width="2" filter="url(#glow)"/>
+              <line class="connect-line line-3" x1="250" y1="250" x2="420" y2="250" stroke="url(#lineGrad)" stroke-width="2" filter="url(#glow)"/>
+              <line class="connect-line line-4" x1="250" y1="250" x2="380" y2="380" stroke="url(#lineGrad)" stroke-width="2" filter="url(#glow)"/>
+              <line class="connect-line line-5" x1="250" y1="250" x2="120" y2="380" stroke="url(#lineGrad)" stroke-width="2" filter="url(#glow)"/>
+              <line class="connect-line line-6" x1="250" y1="250" x2="80" y2="250" stroke="url(#lineGrad)" stroke-width="2" filter="url(#glow)"/>
+            </svg>
+            
+            <!-- Floating Particles -->
+            <div class="floating-particles">
+              <div class="float-particle p-1"></div>
+              <div class="float-particle p-2"></div>
+              <div class="float-particle p-3"></div>
+              <div class="float-particle p-4"></div>
+              <div class="float-particle p-5"></div>
+              <div class="float-particle p-6"></div>
+              <div class="float-particle p-7"></div>
+              <div class="float-particle p-8"></div>
+            </div>
+          </div>
+          <div class="gradient-overlay"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- Rest of the sections remain the same -->
+
+<!-- Vision Section -->
+<section class="vision-section">
+  <div class="section-container">
+    <div class="content-grid">
+      <div class="content-image">
+        <div class="image-wrapper">
+          <div class="image-decoration">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" stroke-width="2"/>
+              <circle cx="12" cy="12" r="3" stroke-width="2"/>
+            </svg>
+          </div>
+          <div class="gradient-overlay"></div>
+        </div>
+      </div>
+      
+      <div class="content-text">
+        <span class="section-subtitle">{{ currentLang === 'ar' ? 'رؤيتنا' : 'Our Vision' }}</span>
+        <h2 class="section-title">
+          {{ currentLang === 'ar' ? 'نتطلع إلى مستقبل رقمي أفضل' : 'Looking Towards a Better Digital Future' }}
+        </h2>
+        <p class="section-description">
+          {{ currentLang === 'ar' 
+            ? 'رؤيتنا هي أن نصبح الشريك الأول للشركات التي تسعى للتحول الرقمي في منطقة الشرق الأوسط وشمال أفريقيا'
+            : 'Our vision is to become the premier partner for companies seeking digital transformation in the MENA region'
+          }}
+        </p>
+        <ul class="feature-list">
+          <li>
+            <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" stroke-width="2"/>
+              <polyline points="22 4 12 14.01 9 11.01" stroke-width="2"/>
+            </svg>
+            <span>{{ currentLang === 'ar' ? 'الريادة في التحول الرقمي' : 'Leadership in Digital Transformation' }}</span>
+          </li>
+          <li>
+            <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" stroke-width="2"/>
+              <polyline points="22 4 12 14.01 9 11.01" stroke-width="2"/>
+            </svg>
+            <span>{{ currentLang === 'ar' ? 'الابتكار المستمر' : 'Continuous Innovation' }}</span>
+          </li>
+          <li>
+            <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" stroke-width="2"/>
+              <polyline points="22 4 12 14.01 9 11.01" stroke-width="2"/>
+            </svg>
+            <span>{{ currentLang === 'ar' ? 'تأثير إيجابي على المجتمع' : 'Positive Impact on Society' }}</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Mission Section -->
+<section class="mission-section">
+  <div class="section-container">
+    <div class="content-grid reverse">
+      <div class="content-text">
+        <span class="section-subtitle">{{ currentLang === 'ar' ? 'مهمتنا' : 'Our Mission' }}</span>
+        <h2 class="section-title">
+          {{ currentLang === 'ar' ? 'نمكّن الأعمال من خلال التكنولوجيا' : 'Empowering Businesses Through Technology' }}
+        </h2>
+        <p class="section-description">
+          {{ currentLang === 'ar' 
+            ? 'مهمتنا هي تقديم حلول برمجية مبتكرة وعالية الجودة تساعد عملاءنا على تحقيق أهدافهم وتنمية أعمالهم'
+            : 'Our mission is to deliver innovative, high-quality software solutions that help our clients achieve their goals'
+          }}
+        </p>
+        <div class="mission-cards">
+          <div class="mini-card">
+            <div class="card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" stroke-width="2"/>
+              </svg>
+            </div>
+            <h4>{{ currentLang === 'ar' ? 'سرعة التسليم' : 'Fast Delivery' }}</h4>
+            <p>{{ currentLang === 'ar' ? 'نلتزم بالمواعيد النهائية' : 'We meet deadlines' }}</p>
+          </div>
+          <div class="mini-card">
+            <div class="card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" stroke-width="2"/>
+              </svg>
+            </div>
+            <h4>{{ currentLang === 'ar' ? 'جودة عالية' : 'High Quality' }}</h4>
+            <p>{{ currentLang === 'ar' ? 'معايير قياسية عالمية' : 'World-class standards' }}</p>
+          </div>
+          <div class="mini-card">
+            <div class="card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" stroke-width="2"/>
+                <circle cx="9" cy="7" r="4" stroke-width="2"/>
+              </svg>
+            </div>
+            <h4>{{ currentLang === 'ar' ? 'دعم مستمر' : 'Continuous Support' }}</h4>
+            <p>{{ currentLang === 'ar' ? 'نحن معك دائماً' : 'Always with you' }}</p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="content-image">
+        <div class="image-wrapper">
+          <div class="image-decoration">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path d="M12 2L2 7l10 5 10-5-10-5z" stroke-width="2"/>
+              <path d="M2 17l10 5 10-5M2 12l10 5 10-5" stroke-width="2"/>
+            </svg>
+          </div>
+          <div class="gradient-overlay"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Values Section -->
+<section class="values-section">
+  <div class="section-container">
+    <div class="section-header">
+      <span class="section-subtitle">{{ currentLang === 'ar' ? 'قيمنا' : 'Our Values' }}</span>
+      <h2 class="section-title">
+        {{ currentLang === 'ar' ? 'المبادئ التي نؤمن بها' : 'The Principles We Believe In' }}
+      </h2>
+      <p class="section-description">
+        {{ currentLang === 'ar' 
+          ? 'قيمنا الأساسية تقود كل قرار نتخذه'
+          : 'Our core values guide every decision we make'
+        }}
+      </p>
+    </div>
+    
+    <div class="values-grid">
+      <div class="value-card">
+        <div class="value-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <circle cx="12" cy="12" r="10" stroke-width="2"/>
+            <path d="M12 6v6l4 2" stroke-width="2"/>
+          </svg>
+        </div>
+        <h3>{{ currentLang === 'ar' ? 'الالتزام بالجودة' : 'Commitment to Quality' }}</h3>
+        <p>{{ currentLang === 'ar' ? 'نضع معايير عالية لجودة عملنا' : 'We set high standards for quality' }}</p>
+      </div>
+      
+      <div class="value-card">
+        <div class="value-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke-width="2"/>
+          </svg>
+        </div>
+        <h3>{{ currentLang === 'ar' ? 'النزاهة والشفافية' : 'Integrity & Transparency' }}</h3>
+        <p>{{ currentLang === 'ar' ? 'نؤمن بالصدق في جميع تعاملاتنا' : 'We believe in honesty in all dealings' }}</p>
+      </div>
+      
+      <div class="value-card">
+        <div class="value-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <circle cx="12" cy="12" r="3" stroke-width="2"/>
+            <path d="M12 1v6m0 6v6M5.636 5.636l4.243 4.243m4.243 4.243l4.242 4.242M1 12h6m6 0h6M5.636 18.364l4.243-4.243m4.243-4.243l4.242-4.242" stroke-width="2"/>
+          </svg>
+        </div>
+        <h3>{{ currentLang === 'ar' ? 'الابتكار والإبداع' : 'Innovation & Creativity' }}</h3>
+        <p>{{ currentLang === 'ar' ? 'نشجع التفكير الإبداعي' : 'We encourage creative thinking' }}</p>
+      </div>
+      
+      <div class="value-card">
+        <div class="value-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" stroke-width="2"/>
+            <circle cx="9" cy="7" r="4" stroke-width="2"/>
+            <path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" stroke-width="2"/>
+          </svg>
+        </div>
+        <h3>{{ currentLang === 'ar' ? 'التعاون والعمل الجماعي' : 'Collaboration & Teamwork' }}</h3>
+        <p>{{ currentLang === 'ar' ? 'نؤمن بقوة العمل الجماعي' : 'We believe in teamwork power' }}</p>
+      </div>
+      
+      <div class="value-card">
+        <div class="value-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" stroke-width="2"/>
+            <circle cx="12" cy="7" r="4" stroke-width="2"/>
+          </svg>
+        </div>
+        <h3>{{ currentLang === 'ar' ? 'التركيز على العميل' : 'Customer Focus' }}</h3>
+        <p>{{ currentLang === 'ar' ? 'رضا عملائنا أولويتنا القصوى' : 'Customer satisfaction is our priority' }}</p>
+      </div>
+      
+      <div class="value-card">
+        <div class="value-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" stroke-width="2"/>
+          </svg>
+        </div>
+        <h3>{{ currentLang === 'ar' ? 'التعلم المستمر' : 'Continuous Learning' }}</h3>
+        <p>{{ currentLang === 'ar' ? 'نشجع التطوير المهني المستمر' : 'We encourage professional development' }}</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Work Process Section - IMPROVED VERSION -->
+<section class="process-section">
+  <div class="section-container">
+    <div class="section-header">
+      <span class="section-subtitle">{{ currentLang === 'ar' ? 'مراحل العمل' : 'Work Process' }}</span>
+      <h2 class="section-title">
+        {{ currentLang === 'ar' ? 'كيف نحول فكرتك إلى واقع' : 'How We Turn Your Idea Into Reality' }}
+      </h2>
+      <p class="section-description">
+        {{ currentLang === 'ar' 
+          ? 'نتبع منهجية عمل منظمة لضمان نجاح مشروعك من البداية حتى التسليم'
+          : 'We follow an organized methodology to ensure your project succeeds from start to finish'
+        }}
+      </p>
+    </div>
+    
+    <div class="process-grid">
+      <!-- Step 1 -->
+      <div class="process-step" data-aos="fade-up" data-aos-delay="100">
+        <div class="step-header">
+          <div class="step-number-wrapper">
+            <div class="number-circle">
+              <span class="number">1</span>
+              <div class="circle-ring"></div>
+              <div class="circle-pulse"></div>
+            </div>
+            <div class="timeline-connector"></div>
+          </div>
+          <div class="step-icon-box">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" stroke-width="2"/>
+            </svg>
+          </div>
+        </div>
+        
+        <div class="step-content">
+          <h3>{{ currentLang === 'ar' ? 'التشاور والتخطيط' : 'Consultation & Planning' }}</h3>
+          <p>
+            {{ currentLang === 'ar' 
+              ? 'نبدأ بفهم احتياجاتك وأهدافك، ثم نضع خطة عمل واضحة'
+              : 'We start by understanding your needs and goals, then create a clear work plan'
+            }}
+          </p>
+          <ul class="step-features">
+            <li>{{ currentLang === 'ar' ? 'جلسة استشارية مجانية' : 'Free consultation session' }}</li>
+            <li>{{ currentLang === 'ar' ? 'تحليل المتطلبات' : 'Requirements analysis' }}</li>
+            <li>{{ currentLang === 'ar' ? 'تحديد الميزانية' : 'Budget definition' }}</li>
+          </ul>
+        </div>
+      </div>
+      
+      <!-- Step 2 -->
+      <div class="process-step" data-aos="fade-up" data-aos-delay="200">
+        <div class="step-header">
+          <div class="step-number-wrapper">
+            <div class="number-circle">
+              <span class="number">2</span>
+              <div class="circle-ring"></div>
+              <div class="circle-pulse"></div>
+            </div>
+            <div class="timeline-connector"></div>
+          </div>
+          <div class="step-icon-box">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <rect x="3" y="3" width="18" height="18" rx="2" stroke-width="2"/>
+              <path d="M3 9h18M9 21V9" stroke-width="2"/>
+            </svg>
+          </div>
+        </div>
+        
+        <div class="step-content">
+          <h3>{{ currentLang === 'ar' ? 'التصميم والنماذج' : 'Design & Prototyping' }}</h3>
+          <p>
+            {{ currentLang === 'ar' 
+              ? 'نصمم واجهات جذابة ونقدم نماذج تفاعلية'
+              : 'We design attractive interfaces and provide interactive prototypes'
+            }}
+          </p>
+          <ul class="step-features">
+            <li>{{ currentLang === 'ar' ? 'تصميم UI/UX احترافي' : 'Professional UI/UX design' }}</li>
+            <li>{{ currentLang === 'ar' ? 'نماذج تفاعلية' : 'Interactive prototypes' }}</li>
+            <li>{{ currentLang === 'ar' ? 'مراجعات غير محدودة' : 'Unlimited revisions' }}</li>
+          </ul>
+        </div>
+      </div>
+      
+      <!-- Step 3 -->
+      <div class="process-step" data-aos="fade-up" data-aos-delay="300">
+        <div class="step-header">
+          <div class="step-number-wrapper">
+            <div class="number-circle">
+              <span class="number">3</span>
+              <div class="circle-ring"></div>
+              <div class="circle-pulse"></div>
+            </div>
+            <div class="timeline-connector"></div>
+          </div>
+          <div class="step-icon-box">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <polyline points="16 18 22 12 16 6" stroke-width="2"/>
+              <polyline points="8 6 2 12 8 18" stroke-width="2"/>
+            </svg>
+          </div>
+        </div>
+        
+        <div class="step-content">
+          <h3>{{ currentLang === 'ar' ? 'التطوير' : 'Development' }}</h3>
+          <p>
+            {{ currentLang === 'ar' 
+              ? 'نقوم بالبرمجة باستخدام أحدث التقنيات'
+              : 'We code using the latest technologies'
+            }}
+          </p>
+          <ul class="step-features">
+            <li>{{ currentLang === 'ar' ? 'كود نظيف' : 'Clean code' }}</li>
+            <li>{{ currentLang === 'ar' ? 'تحديثات أسبوعية' : 'Weekly updates' }}</li>
+            <li>{{ currentLang === 'ar' ? 'مراجعة الكود' : 'Code reviews' }}</li>
+          </ul>
+        </div>
+      </div>
+      
+      <!-- Step 4 -->
+      <div class="process-step" data-aos="fade-up" data-aos-delay="400">
+        <div class="step-header">
+          <div class="step-number-wrapper">
+            <div class="number-circle">
+              <span class="number">4</span>
+              <div class="circle-ring"></div>
+              <div class="circle-pulse"></div>
+            </div>
+            <div class="timeline-connector"></div>
+          </div>
+          <div class="step-icon-box">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" stroke-width="2"/>
+              <polyline points="22 4 12 14.01 9 11.01" stroke-width="2"/>
+            </svg>
+          </div>
+        </div>
+        
+        <div class="step-content">
+          <h3>{{ currentLang === 'ar' ? 'الاختبار' : 'Testing' }}</h3>
+          <p>
+            {{ currentLang === 'ar' 
+              ? 'نختبر المشروع بشكل شامل'
+              : 'We test the project comprehensively'
+            }}
+          </p>
+          <ul class="step-features">
+            <li>{{ currentLang === 'ar' ? 'اختبارات شاملة' : 'Comprehensive testing' }}</li>
+            <li>{{ currentLang === 'ar' ? 'إصلاح الأخطاء' : 'Bug fixes' }}</li>
+            <li>{{ currentLang === 'ar' ? 'اختبار الأداء' : 'Performance testing' }}</li>
+          </ul>
+        </div>
+      </div>
+      
+      <!-- Step 5 -->
+      <div class="process-step" data-aos="fade-up" data-aos-delay="500">
+        <div class="step-header">
+          <div class="step-number-wrapper">
+            <div class="number-circle">
+              <span class="number">5</span>
+              <div class="circle-ring"></div>
+              <div class="circle-pulse"></div>
+            </div>
+          </div>
+          <div class="step-icon-box">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" stroke-width="2"/>
+            </svg>
+          </div>
+        </div>
+        
+        <div class="step-content">
+          <h3>{{ currentLang === 'ar' ? 'الإطلاق' : 'Launch' }}</h3>
+          <p>
+            {{ currentLang === 'ar' 
+              ? 'نطلق مشروعك ونقدم الدعم المستمر'
+              : 'We launch your project and provide ongoing support'
+            }}
+          </p>
+          <ul class="step-features">
+            <li>{{ currentLang === 'ar' ? 'نشر المشروع' : 'Project deployment' }}</li>
+            <li>{{ currentLang === 'ar' ? 'تدريب الفريق' : 'Team training' }}</li>
+            <li>{{ currentLang === 'ar' ? 'دعم فني' : 'Technical support' }}</li>
+          </ul>
+        </div>
+      </div>
+      
+      <!-- Placeholder for grid symmetry -->
+      <div class="process-step placeholder" data-aos="fade-up" data-aos-delay="600" style="visibility: hidden;">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Team Section -->
+<section class="team-section">
+  <div class="section-container">
+    <div class="section-header">
+      <span class="section-subtitle">{{ currentLang === 'ar' ? 'فريقنا' : 'Our Team' }}</span>
+      <h2 class="section-title">
+        {{ currentLang === 'ar' ? 'تعرف على الخبراء وراء النجاح' : 'Meet the Experts Behind Our Success' }}
+      </h2>
+      <p class="section-description">
+        {{ currentLang === 'ar' 
+          ? 'فريق متنوع من المحترفين المتخصصين في التطوير والتصميم والإدارة'
+          : 'A diverse team of professionals specialized in development, design, and management'
+        }}
+      </p>
+    </div>
+    
+    <div class="team-grid">
+      <!-- Team Member 1 -->
+      <div class="team-card" data-aos="zoom-in" data-aos-delay="100">
+        <div class="team-image">
+          <div class="image-placeholder">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" stroke-width="2"/>
+              <circle cx="12" cy="7" r="4" stroke-width="2"/>
+            </svg>
+          </div>
+          <div class="team-overlay">
+            <div class="social-links">
+              <a href="#" class="social-link">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6zM2 9h4v12H2z" stroke-width="2"/>
+                  <circle cx="4" cy="4" r="2" stroke-width="2"/>
+                </svg>
+              </a>
+              <a href="#" class="social-link">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z" stroke-width="2"/>
+                </svg>
+              </a>
+            </div>
+          </div>
+        </div>
+        <div class="team-info">
+          <h4>{{ currentLang === 'ar' ? 'أحمد محمد' : 'Ahmed Mohamed' }}</h4>
+          <p class="team-role">{{ currentLang === 'ar' ? 'المدير التنفيذي' : 'CEO & Founder' }}</p>
+          <p class="team-bio">
+            {{ currentLang === 'ar' 
+              ? 'خبرة 10+ سنوات في قيادة المشاريع التقنية'
+              : '10+ years experience in leading tech projects'
+            }}
+          </p>
+        </div>
+      </div>
+      
+      <!-- Team Member 2 -->
+      <div class="team-card" data-aos="zoom-in" data-aos-delay="200">
+        <div class="team-image">
+          <div class="image-placeholder">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" stroke-width="2"/>
+              <circle cx="12" cy="7" r="4" stroke-width="2"/>
+            </svg>
+          </div>
+          <div class="team-overlay">
+            <div class="social-links">
+              <a href="#" class="social-link">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6zM2 9h4v12H2z" stroke-width="2"/>
+                  <circle cx="4" cy="4" r="2" stroke-width="2"/>
+                </svg>
+              </a>
+              <a href="#" class="social-link">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z" stroke-width="2"/>
+                </svg>
+              </a>
+            </div>
+          </div>
+        </div>
+        <div class="team-info">
+          <h4>{{ currentLang === 'ar' ? 'سارة علي' : 'Sarah Ali' }}</h4>
+          <p class="team-role">{{ currentLang === 'ar' ? 'مديرة التطوير' : 'Development Lead' }}</p>
+          <p class="team-bio">
+            {{ currentLang === 'ar' 
+              ? 'متخصصة في تطوير تطبيقات الويب الحديثة'
+              : 'Specialized in modern web development'
+            }}
+          </p>
+        </div>
+      </div>
+      
+      <!-- Team Member 3 -->
+      <div class="team-card" data-aos="zoom-in" data-aos-delay="300">
+        <div class="team-image">
+          <div class="image-placeholder">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" stroke-width="2"/>
+              <circle cx="12" cy="7" r="4" stroke-width="2"/>
+            </svg>
+          </div>
+          <div class="team-overlay">
+            <div class="social-links">
+              <a href="#" class="social-link">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6zM2 9h4v12H2z" stroke-width="2"/>
+                  <circle cx="4" cy="4" r="2" stroke-width="2"/>
+                </svg>
+              </a>
+              <a href="#" class="social-link">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z" stroke-width="2"/>
+                </svg>
+              </a>
+            </div>
+          </div>
+        </div>
+        <div class="team-info">
+          <h4>{{ currentLang === 'ar' ? 'محمد حسن' : 'Mohamed Hassan' }}</h4>
+          <p class="team-role">{{ currentLang === 'ar' ? 'مدير التصميم' : 'Design Lead' }}</p>
+          <p class="team-bio">
+            {{ currentLang === 'ar' 
+              ? 'خبير في تصميم تجربة المستخدم والواجهات'
+              : 'Expert in UX/UI design and interfaces'
+            }}
+          </p>
+        </div>
+      </div>
+      
+      <!-- Team Member 4 -->
+      <div class="team-card" data-aos="zoom-in" data-aos-delay="400">
+        <div class="team-image">
+          <div class="image-placeholder">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" stroke-width="2"/>
+              <circle cx="12" cy="7" r="4" stroke-width="2"/>
+            </svg>
+          </div>
+          <div class="team-overlay">
+            <div class="social-links">
+              <a href="#" class="social-link">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6zM2 9h4v12H2z" stroke-width="2"/>
+                  <circle cx="4" cy="4" r="2" stroke-width="2"/>
+                </svg>
+              </a>
+              <a href="#" class="social-link">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z" stroke-width="2"/>
+                </svg>
+              </a>
+            </div>
+          </div>
+        </div>
+        <div class="team-info">
+          <h4>{{ currentLang === 'ar' ? 'فاطمة أحمد' : 'Fatima Ahmed' }}</h4>
+          <p class="team-role">{{ currentLang === 'ar' ? 'مديرة المشاريع' : 'Project Manager' }}</p>
+          <p class="team-bio">
+            {{ currentLang === 'ar' 
+              ? 'متخصصة في إدارة المشاريع التقنية المعقدة'
+              : 'Specialized in managing complex projects'
+            }}
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA Section -->
+<section class="cta-section">
+  <div class="cta-background">
+    <div class="cta-orb orb-1"></div>
+    <div class="cta-orb orb-2"></div>
+  </div>
+  
+  <div class="cta-container">
+    <div class="cta-content">
+      <h2 class="cta-title">
+        {{ currentLang === 'ar' ? 'هل أنت مستعد للعمل معنا؟' : 'Ready to Work With Us?' }}
+      </h2>
+      <p class="cta-text">
+        {{ currentLang === 'ar' 
+          ? 'دعنا نبدأ رحلة تحويل فكرتك إلى واقع رقمي'
+          : 'Let\'s start transforming your idea into digital reality'
+        }}
+      </p>
+      <div class="cta-actions">
+        <a routerLink="/contact" class="cta-primary-btn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" stroke-width="2"/>
+          </svg>
+          {{ currentLang === 'ar' ? 'تواصل معنا' : 'Contact Us' }}
+        </a>
+        <a routerLink="/projects" class="cta-secondary-btn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" stroke-width="2"/>
+          </svg>
+          {{ currentLang === 'ar' ? 'شاهد أعمالنا' : 'View Our Work' }}
+        </a>
+      </div>
+    </div>
+  </div>
+</section>

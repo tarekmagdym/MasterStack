@@ -35,7 +35,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
     { label: { ar: 'من نحن', en: 'About Us' }, route: '/about' },
     { label: { ar: 'خدماتنا', en: 'Our Services' }, route: '/services' },
     { label: { ar: 'التقنيات', en: 'Technologies' }, route: '/technologies' },
-    { label: { ar: 'منصات SaaS', en: 'SaaS Platforms' }, route: '/saas' },
     { label: { ar: 'أعمالنا', en: 'Our Work' }, route: '/projects' }
   ];
 

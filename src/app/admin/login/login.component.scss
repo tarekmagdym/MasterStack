@@ -1,0 +1,532 @@
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700;800;900&family=IBM+Plex+Sans:wght@400;500;600;700;800;900&display=swap');
+
+// ── Brand tokens ─────────────────────────────────────────────
+$primary-blue:  #0e3581;
+$primary-teal:  #26cabc;
+$teal-light:    #2de0cf;
+$white:         #ffffff;
+$danger:        #ef4444;
+$success:       #10b981;
+
+// Light
+$bg-light:      #f0f4f8;
+$surface-light: #ffffff;
+$border-light:  rgba(14, 53, 129, 0.1);
+$text-light:    #1a1a2e;
+$sub-light:     #6c757d;
+$input-bg-light:#f8f9fa;
+
+// Dark
+$bg-dark:       #16161f;
+$surface-dark:  #1f2132;
+$border-dark:   #3a3d50;
+$text-dark:     #e8e9f0;
+$sub-dark:      #a0a0b8;
+$input-bg-dark: rgba(255,255,255,0.04);
+
+$font-en: 'IBM Plex Sans', -apple-system, sans-serif;
+$font-ar: 'IBM Plex Sans Arabic', -apple-system, sans-serif;
+$gradient-mixed: linear-gradient(135deg, $primary-blue 0%, $primary-teal 100%);
+$gradient-teal:  linear-gradient(135deg, $primary-teal 0%, $teal-light 100%);
+
+@mixin gradient-text {
+  background: $gradient-mixed;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+// ── CSS vars ─────────────────────────────────────────────────
+:host {
+  --bg:         #{$bg-light};
+  --surface:    #{$surface-light};
+  --border:     #{$border-light};
+  --text:       #{$text-light};
+  --text-sub:   #{$sub-light};
+  --input-bg:   #{$input-bg-light};
+  --shadow:     rgba(14, 53, 129, 0.08);
+  --card-shadow: rgba(14, 53, 129, 0.12);
+  --orb1:       rgba(14, 53, 129, 0.07);
+  --orb2:       rgba(38, 202, 188, 0.05);
+  --orb3:       rgba(26, 74, 168, 0.04);
+  --deco-bg:    rgba(14, 53, 129, 0.08);
+  --deco-stroke:rgba(14, 53, 129, 0.3);
+}
+
+:host-context(.dark-mode),
+.dark-mode :host,
+:host(.dark-mode) {
+  --bg:         #{$bg-dark};
+  --surface:    #{$surface-dark};
+  --border:     #{$border-dark};
+  --text:       #{$text-dark};
+  --text-sub:   #{$sub-dark};
+  --input-bg:   #{$input-bg-dark};
+  --shadow:     rgba(0,0,0,0.4);
+  --card-shadow: rgba(0,0,0,0.5);
+  --orb1:       rgba(14, 53, 129, 0.2);
+  --orb2:       rgba(38, 202, 188, 0.14);
+  --orb3:       rgba(26, 74, 168, 0.12);
+  --deco-bg:    rgba(38, 202, 188, 0.07);
+  --deco-stroke:rgba(38, 202, 188, 0.35);
+}
+
+// ── Wrapper ──────────────────────────────────────────────────
+.login-wrapper {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg);
+  position: relative;
+  overflow: hidden;
+  font-family: $font-en;
+  padding: 1.5rem;
+  transition: background 0.3s ease;
+}
+
+// ── Background orbs ──────────────────────────────────────────
+.login-bg {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.gradient-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(120px);
+
+  &.orb-1 {
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, var(--orb1) 0%, transparent 70%);
+    top: -200px; left: -100px;
+    animation: orbFloat1 22s infinite ease-in-out;
+  }
+  &.orb-2 {
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, var(--orb2) 0%, transparent 70%);
+    bottom: -150px; right: -100px;
+    animation: orbFloat2 28s infinite ease-in-out;
+  }
+  &.orb-3 {
+    width: 350px; height: 350px;
+    background: radial-gradient(circle, var(--orb3) 0%, transparent 70%);
+    top: 50%; right: 10%;
+    animation: orbFloat1 18s infinite ease-in-out reverse;
+  }
+}
+
+.deco-shape {
+  position: absolute;
+  border-radius: 14px;
+  background: var(--deco-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: floatGentle 20s infinite ease-in-out;
+
+  svg { stroke: var(--deco-stroke); }
+
+  &.deco-tl { width: 70px; height: 70px; top: 8%; left: 4%; svg { width: 40px; height: 40px; } @media (max-width: 1100px) { display: none; } }
+  &.deco-tr { width: 80px; height: 80px; top: 12%; right: 5%; animation-delay: 3s; svg { width: 46px; height: 46px; } @media (max-width: 1100px) { display: none; } }
+  &.deco-bl { width: 75px; height: 75px; bottom: 15%; left: 6%; animation-delay: 6s; svg { width: 44px; height: 44px; } @media (max-width: 1100px) { display: none; } }
+}
+
+.deco-dots {
+  position: absolute;
+  bottom: 18%; right: 6%;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+  animation: floatGentle 20s infinite ease-in-out;
+  animation-delay: 4s;
+
+  @media (max-width: 1100px) { display: none; }
+
+  .dot {
+    width: 8px; height: 8px;
+    background: rgba(38, 202, 188, 0.35);
+    border-radius: 50%;
+    animation: pulseDot 2.2s infinite ease-in-out;
+    &:nth-child(1) { animation-delay: 0s; }
+    &:nth-child(2) { animation-delay: 0.3s; }
+    &:nth-child(3) { animation-delay: 0.6s; }
+    &:nth-child(4) { animation-delay: 0.9s; }
+  }
+}
+
+// ── Toast ────────────────────────────────────────────────────
+.toast-container {
+  position: fixed;
+  top: 1.5rem; right: 1.5rem;
+  z-index: 9999;
+  min-width: 320px; max-width: 400px;
+  opacity: 0;
+  transform: translateX(120%);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none;
+
+  &.visible { opacity: 1; transform: translateX(0); pointer-events: all; }
+
+  @media (max-width: 480px) { left: 1rem; right: 1rem; min-width: unset; }
+}
+
+.toast-inner {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.85rem;
+  padding: 1rem 1.2rem;
+  border-radius: 14px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  box-shadow: 0 16px 48px var(--shadow);
+  overflow: hidden;
+}
+
+.toast-success .toast-inner { border-color: rgba(16,185,129,0.3); }
+.toast-error   .toast-inner { border-color: rgba(239,68,68,0.3); }
+
+.toast-icon {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; margin-top: 0.1rem;
+
+  svg { width: 18px; height: 18px; }
+
+  .toast-success & { background: rgba(16,185,129,0.15); svg { stroke: $success; } }
+  .toast-error   & { background: rgba(239,68,68,0.08);  svg { stroke: $danger;  } }
+}
+
+.toast-body {
+  flex: 1;
+  .toast-title { font-size: 0.9rem; font-weight: 700; color: var(--text); margin: 0 0 0.2rem; }
+  .toast-msg   { font-size: 0.82rem; color: var(--text-sub); margin: 0; line-height: 1.5; }
+  .toast-success & .toast-title { color: $success; }
+  .toast-error   & .toast-title { color: $danger; }
+}
+
+.toast-close {
+  background: none; border: none; cursor: pointer;
+  padding: 0.2rem; opacity: 0.5; transition: opacity 0.2s;
+  svg { width: 16px; height: 16px; stroke: var(--text-sub); }
+  &:hover { opacity: 1; }
+}
+
+.toast-progress {
+  position: absolute; bottom: 0; left: 0;
+  height: 3px; border-radius: 0 0 14px 14px;
+  animation: toastProgress 3.5s linear forwards;
+  .toast-success & { background: $gradient-teal; }
+  .toast-error   & { background: linear-gradient(90deg, $danger, #ff6b6b); }
+}
+
+// ── Card ─────────────────────────────────────────────────────
+.login-card {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 440px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  padding: 2.5rem 2.5rem 2rem;
+  box-shadow: 0 24px 80px var(--card-shadow),
+              0 0 0 1px rgba(38,202,188,0.04);
+  transition: background 0.3s ease, border-color 0.3s ease;
+
+  @media (max-width: 480px) { padding: 2rem 1.5rem 1.75rem; border-radius: 20px; }
+}
+
+// ── Top block: logo + name + sub ─────────────────────────────
+.login-top {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 0.65rem;
+  margin-bottom: 2rem;
+}
+
+.logo-icon {
+  width: 90px; height: 90px;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--input-bg);
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  margin-bottom: 0.2rem;
+  overflow: hidden;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    padding: 10px;
+    box-sizing: border-box;
+  }
+}
+
+.brand-name {
+  font-size: 1.8rem;
+  font-weight: 900;
+  margin: 0;
+  letter-spacing: -0.02em;
+  @include gradient-text;
+  font-family: $font-en;
+
+  &[lang="ar"] {
+    font-family: $font-ar;
+    font-size: 2rem;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 1.55rem;
+    &[lang="ar"] { font-size: 1.75rem; }
+  }
+}
+
+.brand-sub {
+  font-size: 0.9rem;
+  color: var(--text-sub);
+  margin: 0;
+  line-height: 1.55;
+  font-family: $font-en;
+
+  &[lang="ar"] { font-family: $font-ar; }
+}
+
+// ── Form ─────────────────────────────────────────────────────
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+
+  label {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-sub);
+    font-family: $font-en;
+    cursor: default;
+
+    &[lang="ar"] { font-family: $font-ar; flex-direction: row-reverse; justify-content: flex-end; }
+
+    svg {
+      width: 16px; height: 16px;
+      stroke: $primary-teal;
+      stroke-width: 2;
+      flex-shrink: 0;
+    }
+  }
+
+  &.has-error {
+    .input-wrap input {
+      border-color: $danger;
+      box-shadow: 0 0 0 3px rgba(239,68,68,0.1);
+    }
+  }
+
+  &.is-valid {
+    .input-wrap input {
+      border-color: rgba(38,202,188,0.6);
+      box-shadow: 0 0 0 3px rgba(38,202,188,0.1);
+    }
+    .valid-icon { opacity: 1; }
+  }
+}
+
+.input-wrap {
+  position: relative;
+
+  input {
+    width: 100%;
+    padding: 0.85rem 2.8rem 0.85rem 1.1rem;
+    background: var(--input-bg);
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    color: var(--text);
+    font-size: 0.93rem;
+    font-family: $font-en;
+    transition: all 0.25s ease;
+    box-sizing: border-box;
+    outline: none;
+
+    &::placeholder { color: var(--text-sub); opacity: 0.55; }
+
+    &:focus {
+      border-color: $primary-teal;
+      box-shadow: 0 0 0 3px rgba(38,202,188,0.18);
+      background: var(--surface);
+    }
+  }
+
+  .valid-icon {
+    position: absolute;
+    right: 0.9rem; top: 50%;
+    transform: translateY(-50%);
+    width: 17px; height: 17px;
+    stroke: $success; stroke-width: 2.5;
+    opacity: 0; transition: opacity 0.2s;
+    pointer-events: none;
+  }
+
+  .toggle-pass {
+    position: absolute;
+    right: 0.9rem; top: 50%;
+    transform: translateY(-50%);
+    background: none; border: none;
+    cursor: pointer; padding: 0;
+    display: flex; align-items: center;
+
+    svg { width: 18px; height: 18px; stroke: var(--text-sub); transition: stroke 0.2s; }
+    &:hover svg { stroke: $primary-teal; }
+  }
+}
+
+.error-msg {
+  font-size: 0.78rem;
+  color: $danger;
+  font-family: $font-en;
+  animation: errorPop 0.2s ease;
+
+  &[lang="ar"] { font-family: $font-ar; }
+}
+
+.server-error {
+  display: flex; align-items: center; gap: 0.6rem;
+  padding: 0.85rem 1rem;
+  background: rgba(239,68,68,0.07);
+  border: 1px solid rgba(239,68,68,0.22);
+  border-radius: 11px;
+  color: $danger;
+  font-size: 0.85rem; font-weight: 500;
+
+  svg { width: 17px; height: 17px; flex-shrink: 0; }
+  span[lang="ar"] { font-family: $font-ar; }
+}
+
+// ── Submit button ─────────────────────────────────────────────
+.submit-btn {
+  display: flex; align-items: center; justify-content: center;
+  gap: 0.6rem;
+  width: 100%;
+  padding: 0.95rem 2rem;
+  background: $gradient-mixed;
+  color: $white;
+  border: none;
+  border-radius: 13px;
+  font-size: 1rem; font-weight: 700;
+  font-family: $font-en;
+  cursor: pointer;
+  margin-top: 0.3rem;
+  transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
+  box-shadow: 0 8px 24px rgba(38,202,188,0.3);
+  position: relative; overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute; top: 0; left: -100%;
+    width: 100%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: left 0.5s ease;
+  }
+
+  &:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 14px 36px rgba(38,202,188,0.4);
+    &::before { left: 100%; }
+    svg { transform: translateX(3px); }
+  }
+
+  &:disabled { opacity: 0.65; cursor: not-allowed; transform: none; }
+
+  svg { width: 20px; height: 20px; stroke-width: 2.5; transition: transform 0.3s ease; }
+}
+
+.btn-content {
+  display: flex; align-items: center; gap: 0.55rem;
+  span[lang="ar"] { font-family: $font-ar; }
+}
+
+.spinner-wrap {
+  display: flex; align-items: center; gap: 0.6rem;
+  span[lang="ar"] { font-family: $font-ar; }
+}
+
+.spinner {
+  width: 17px; height: 17px;
+  border: 2px solid rgba(255,255,255,0.3);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+// ── Footer ───────────────────────────────────────────────────
+.login-footer {
+  text-align: center;
+  margin: 1.6rem 0 0;
+  padding-top: 1.4rem;
+  border-top: 1px solid var(--border);
+  font-size: 0.78rem;
+  color: var(--text-sub);
+  font-family: $font-en;
+
+  &[lang="ar"] { font-family: $font-ar; }
+}
+
+// ── Animations ────────────────────────────────────────────────
+@keyframes orbFloat1 {
+  0%, 100% { transform: translate(0,0) scale(1); }
+  33%       { transform: translate(30px,-25px) scale(1.03); }
+  66%       { transform: translate(-20px,20px) scale(0.97); }
+}
+@keyframes orbFloat2 {
+  0%, 100% { transform: translate(0,0); }
+  50%       { transform: translate(-35px,-28px); }
+}
+@keyframes floatGentle {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50%       { transform: translateY(-16px) scale(1.03); }
+}
+@keyframes pulseDot {
+  0%, 100% { opacity: 0.35; transform: scale(1); }
+  50%       { opacity: 0.8; transform: scale(1.25); }
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes errorPop {
+  from { opacity: 0; transform: translateY(-4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes toastProgress {
+  from { width: 100%; }
+  to   { width: 0%; }
+}
+
+// ── RTL ───────────────────────────────────────────────────────
+[dir="rtl"] {
+  .input-wrap {
+    input { padding-left: 2.8rem; padding-right: 1.1rem; }
+    .toggle-pass { right: auto; left: 0.9rem; }
+    .valid-icon  { right: auto; left: 0.9rem; }
+  }
+
+  .toast-container {
+    left: 1.5rem; right: auto;
+    transform: translateX(-120%);
+    &.visible { transform: translateX(0); }
+  }
+
+  .submit-btn svg { transform: scaleX(-1); }
+  .submit-btn:hover:not(:disabled) svg { transform: scaleX(-1) translateX(-3px); }
+}

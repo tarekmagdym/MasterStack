@@ -1,0 +1,559 @@
+@use '../_admin-theme' as *;
+
+.dashboard-page {
+  @include page-enter;
+  font-family: $font;
+  padding: 2rem;
+  min-height: 100%;
+
+  @media (max-width: 768px) {
+    padding: 1.25rem;
+  }
+}
+
+// ── Page Header ─────────────────────────────────────────────
+.page-header {
+  @include flex-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.page-title {
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: $text;
+  margin: 0 0 0.25rem;
+  letter-spacing: -0.02em;
+}
+
+.page-sub {
+  font-size: 0.9rem;
+  color: $text-sub;
+  margin: 0;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.live-badge {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.4rem 0.9rem;
+  background: rgba(34, 197, 94, 0.1);
+  border: 1px solid rgba(34, 197, 94, 0.25);
+  border-radius: 50px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: $success;
+  letter-spacing: 0.04em;
+
+  .pulse {
+    width: 7px;
+    height: 7px;
+    background: $success;
+    border-radius: 50%;
+    animation: pulseDot 1.5s ease-in-out infinite;
+  }
+}
+
+.date-badge {
+  padding: 0.4rem 0.9rem;
+  background: $surface;
+  border: 1px solid $border;
+  border-radius: 50px;
+  font-size: 0.78rem;
+  color: $text-sub;
+  font-weight: 500;
+}
+
+// ── Stats Grid ──────────────────────────────────────────────
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+
+  @media (max-width: 1400px) { grid-template-columns: repeat(3, 1fr); }
+  @media (max-width: 768px)  { grid-template-columns: repeat(2, 1fr); }
+  @media (max-width: 480px)  { grid-template-columns: 1fr; }
+}
+
+.stat-card {
+  @include card;
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  animation: fadeUp 0.4s cubic-bezier(0.4, 0, 0.2, 1) var(--delay, 0s) both;
+
+  &.skeleton {
+    height: 110px;
+    background: $surface;
+    overflow: hidden;
+    position: relative;
+    &::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.03) 50%, transparent 100%);
+      animation: shimmer 1.5s infinite;
+    }
+  }
+}
+
+.stat-icon {
+  width: 38px;
+  height: 38px;
+  border-radius: $radius-sm;
+  @include flex-center;
+
+  svg {
+    width: 20px;
+    height: 20px;
+    stroke-width: 2;
+  }
+}
+
+.stat-card--teal   .stat-icon { background: $teal-dim;    svg { stroke: $teal; } }
+.stat-card--blue   .stat-icon { background: $blue-dim;    svg { stroke: #6b9fff; } }
+.stat-card--green  .stat-icon { background: $success-dim; svg { stroke: $success; } }
+.stat-card--yellow .stat-icon { background: $warning-dim; svg { stroke: $warning; } }
+.stat-card--red    .stat-icon { background: $danger-dim;  svg { stroke: $danger; } }
+.stat-card--purple .stat-icon { background: rgba(168,85,247,0.12); svg { stroke: #a855f7; } }
+
+.stat-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.stat-label {
+  font-size: 0.75rem;
+  color: $text-sub;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.stat-value {
+  font-size: 1.7rem;
+  font-weight: 800;
+  color: $text;
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+
+.stat-trend {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: $text-dim;
+
+  svg {
+    width: 14px;
+    height: 14px;
+    stroke-width: 2.5;
+  }
+
+  &.up  { color: $success; svg { stroke: $success; } }
+  &.down { color: $danger; svg { stroke: $danger; } }
+}
+
+// ── Dashboard Row ───────────────────────────────────────────
+.dashboard-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+  margin-bottom: 1.25rem;
+
+  &--bottom {
+    grid-template-columns: 1.5fr 1fr;
+  }
+
+  @media (max-width: 1100px) {
+    grid-template-columns: 1fr;
+    &--bottom { grid-template-columns: 1fr; }
+  }
+}
+
+// ── Dash Card ───────────────────────────────────────────────
+.dash-card {
+  @include card;
+  overflow: hidden;
+}
+
+.dash-card__header {
+  @include flex-between;
+  padding: 1.1rem 1.25rem;
+  border-bottom: 1px solid $border;
+}
+
+.dash-card__title {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: $text;
+  letter-spacing: 0.01em;
+
+  svg {
+    width: 16px;
+    height: 16px;
+    stroke: $teal;
+    stroke-width: 2;
+  }
+}
+
+.view-all-btn {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: $teal;
+  text-decoration: none;
+  padding: 0.3rem 0.7rem;
+  background: $teal-dim;
+  border-radius: 50px;
+  transition: all 0.2s;
+
+  &:hover {
+    background: $teal;
+    color: #fff;
+  }
+}
+
+// ── Messages ────────────────────────────────────────────────
+.messages-list {
+  @include custom-scrollbar;
+  max-height: 380px;
+  overflow-y: auto;
+}
+
+.msg-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.85rem;
+  padding: 0.9rem 1.25rem;
+  border-bottom: 1px solid $border;
+  position: relative;
+  cursor: pointer;
+  transition: background 0.15s;
+
+  &:hover { background: $surface2; }
+  &:last-child { border-bottom: none; }
+
+  &.unread {
+    background: rgba(38, 202, 188, 0.04);
+  }
+
+  &.skeleton {
+    height: 72px;
+    background: $surface;
+    margin: 0.5rem 1rem;
+    border-radius: $radius-sm;
+    border: none;
+    overflow: hidden;
+    position: relative;
+    &::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.03) 50%, transparent 100%);
+      animation: shimmer 1.5s infinite;
+    }
+  }
+}
+
+.msg-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: $grad-main;
+  @include flex-center;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #fff;
+  flex-shrink: 0;
+}
+
+.msg-body {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.msg-top {
+  @include flex-between;
+  gap: 0.5rem;
+}
+
+.msg-name {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: $text;
+}
+
+.msg-time {
+  font-size: 0.72rem;
+  color: $text-dim;
+  flex-shrink: 0;
+}
+
+.msg-subject {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: $text-sub;
+}
+
+.msg-preview {
+  font-size: 0.78rem;
+  color: $text-dim;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.msg-unread-dot {
+  width: 7px;
+  height: 7px;
+  background: $teal;
+  border-radius: 50%;
+  flex-shrink: 0;
+  margin-top: 6px;
+}
+
+// ── Projects ────────────────────────────────────────────────
+.projects-list {
+  @include custom-scrollbar;
+  max-height: 380px;
+  overflow-y: auto;
+}
+
+.proj-item {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  padding: 0.85rem 1.25rem;
+  border-bottom: 1px solid $border;
+  transition: background 0.15s;
+
+  &:hover { background: $surface2; }
+  &:last-child { border-bottom: none; }
+
+  &.skeleton {
+    height: 64px;
+    background: $surface;
+    margin: 0.5rem 1rem;
+    border-radius: $radius-sm;
+    border: none;
+    overflow: hidden;
+    position: relative;
+    &::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.03) 50%, transparent 100%);
+      animation: shimmer 1.5s infinite;
+    }
+  }
+}
+
+.proj-thumb {
+  width: 38px;
+  height: 38px;
+  border-radius: $radius-sm;
+  @include flex-center;
+  flex-shrink: 0;
+
+  svg {
+    width: 18px;
+    height: 18px;
+    stroke: rgba(255, 255, 255, 0.8);
+    stroke-width: 2;
+  }
+}
+
+.proj-body {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.proj-title {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: $text;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.proj-cat {
+  font-size: 0.75rem;
+  color: $text-dim;
+}
+
+// ── Badges ──────────────────────────────────────────────────
+.badge {
+  @include badge($text-sub, $surface2);
+  font-size: 0.7rem;
+
+  &--success { @include badge($success, $success-dim); }
+  &--warning { @include badge($warning, $warning-dim); }
+  &--danger  { @include badge($danger, $danger-dim); }
+  &--info    { @include badge($info, $info-dim); }
+}
+
+// ── Activity Log ────────────────────────────────────────────
+.activity-list {
+  @include custom-scrollbar;
+  max-height: 300px;
+  overflow-y: auto;
+  padding: 0.5rem 0;
+}
+
+.activity-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.9rem;
+  padding: 0.7rem 1.25rem;
+
+  &:hover { background: $surface2; }
+}
+
+.activity-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-top: 5px;
+  flex-shrink: 0;
+
+  &.dot--create  { background: $success; box-shadow: 0 0 6px rgba(34, 197, 94, 0.5); }
+  &.dot--update  { background: $info; box-shadow: 0 0 6px rgba(59, 130, 246, 0.5); }
+  &.dot--delete  { background: $danger; box-shadow: 0 0 6px rgba(239, 68, 68, 0.5); }
+  &.dot--login   { background: $teal; box-shadow: 0 0 6px rgba(38, 202, 188, 0.5); }
+  &.dot--default { background: $text-dim; }
+}
+
+.activity-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.activity-text {
+  font-size: 0.82rem;
+  color: $text-sub;
+  line-height: 1.4;
+
+  strong { color: $text; }
+  .activity-target { color: $teal; font-weight: 600; }
+}
+
+.activity-time {
+  font-size: 0.72rem;
+  color: $text-dim;
+}
+
+// ── Quick Actions ───────────────────────────────────────────
+.quick-actions {
+  padding: 1rem 1.25rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.65rem;
+}
+
+.qa-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.75rem 1rem;
+  background: $surface2;
+  border: 1px solid $border;
+  border-radius: $radius-sm;
+  color: $text-sub;
+  font-size: 0.82rem;
+  font-weight: 600;
+  font-family: $font;
+  text-decoration: none;
+  transition: all 0.2s;
+  cursor: pointer;
+
+  svg {
+    width: 16px;
+    height: 16px;
+    stroke: $text-dim;
+    stroke-width: 2;
+    transition: stroke 0.2s;
+    flex-shrink: 0;
+  }
+
+  &:hover {
+    background: $surface3;
+    border-color: $teal;
+    color: $text;
+    svg { stroke: $teal; }
+  }
+
+  &--primary {
+    background: $grad-main;
+    border-color: transparent;
+    color: #fff;
+    box-shadow: $shadow-teal;
+
+    svg { stroke: rgba(255, 255, 255, 0.9); }
+
+    &:hover {
+      opacity: 0.9;
+      transform: translateY(-1px);
+      color: #fff;
+      svg { stroke: #fff; }
+    }
+  }
+}
+
+// ── Empty State ─────────────────────────────────────────────
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 2.5rem;
+  color: $text-dim;
+  font-size: 0.85rem;
+
+  svg {
+    width: 36px;
+    height: 36px;
+    stroke: $text-dim;
+    opacity: 0.5;
+  }
+}
+
+// ── Animations ──────────────────────────────────────────────
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes shimmer {
+  from { transform: translateX(-100%); }
+  to   { transform: translateX(100%); }
+}
+
+@keyframes pulseDot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: 0.6; transform: scale(0.8); }
+}

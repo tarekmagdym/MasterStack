@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { ProjectDetailsComponent } from './features/project-details/project-details.component';
 
 export const routes: Routes = [
   // Public Routes - User Pages
@@ -19,12 +20,12 @@ export const routes: Routes = [
     loadComponent: () => import('./features/technologies/technologies.component').then(m => m.TechnologiesComponent),
   },
   {
-    path: 'saas',
-    loadComponent: () => import('./features/saas/saas.component').then(m => m.SaasComponent),
-  },
-  {
     path: 'projects',
     loadComponent: () => import('./features/projects-page/projects-page.component').then(m => m.ProjectsPageComponent),
+  },
+    {
+    path: 'projects/:id',
+    component: ProjectDetailsComponent
   },
   {
     path: 'contact',
@@ -93,7 +94,7 @@ export const routes: Routes = [
   // Wildcard Route - 404 Page
   {
     path: '**',
-    redirectTo: '',
+    redirectTo: 'admin/login',
     pathMatch: 'full'
   }
 ];

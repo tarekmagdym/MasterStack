@@ -1,1 +1,421 @@
-<p>technologies works!</p>
+<!-- Technologies Page - Optimized Version -->
+
+<!-- Hero Section -->
+<section class="tech-hero">
+  <div class="hero-background">
+    <div class="gradient-orb orb-1"></div>
+    <div class="gradient-orb orb-2"></div>
+    <div class="gradient-orb orb-3"></div>
+  </div>
+  
+  <!-- Decorative Shapes -->
+  <div class="hero-decorative-shapes">
+    <div class="decorative-shape-left-1">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+        <polyline points="16 18 22 12 16 6" stroke-width="2"/>
+        <polyline points="8 6 2 12 8 18" stroke-width="2"/>
+      </svg>
+    </div>
+    <div class="decorative-shape-left-2">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+        <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" stroke-width="2"/>
+      </svg>
+    </div>
+    <div class="decorative-shape-left-3">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+        <rect x="2" y="3" width="20" height="14" rx="2" stroke-width="2"/>
+        <line x1="8" y1="21" x2="16" y2="21" stroke-width="2"/>
+        <line x1="12" y1="17" x2="12" y2="21" stroke-width="2"/>
+      </svg>
+    </div>
+    <div class="decorative-shape-right-1">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+        <rect x="5" y="2" width="14" height="20" rx="2" stroke-width="2"/>
+        <line x1="12" y1="18" x2="12.01" y2="18" stroke-width="2.5" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <div class="decorative-shape-right-2">
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+    </div>
+    <div class="decorative-shape-right-3">
+      <div class="line"></div>
+      <div class="line"></div>
+      <div class="line"></div>
+    </div>
+  </div>
+  
+  <div class="hero-container">
+    <div class="hero-content" data-aos="fade-up">
+      <div class="hero-badge">
+        <svg class="badge-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <circle cx="12" cy="12" r="3" stroke-width="2"/>
+          <path d="M12 1v6m0 6v6M5.636 5.636l4.243 4.243m4.243 4.243l4.242 4.242M1 12h6m6 0h6M5.636 18.364l4.243-4.243m4.243-4.243l4.242-4.242" stroke-width="2"/>
+        </svg>
+        <span>{{ currentLang === 'ar' ? 'التقنيات' : 'Technologies' }}</span>
+      </div>
+      
+      <h1 class="hero-title" [attr.lang]="currentLang">
+        <span class="title-line">
+          {{ currentLang === 'ar' ? 'نعمل بأحدث' : 'Working With The' }}
+        </span>
+        <span class="title-gradient">
+          {{ currentLang === 'ar' ? 'التقنيات العالمية' : 'Latest Technologies' }}
+        </span>
+      </h1>
+      
+      <p class="hero-subtitle" [attr.lang]="currentLang">
+        {{ currentLang === 'ar' 
+          ? 'نستخدم أحدث التقنيات والأدوات في السوق لبناء حلول رقمية قوية وقابلة للتطوير. من الواجهات الأمامية إلى الخلفية، من تطبيقات الموبايل إلى الحلول السحابية.'
+          : 'We use the latest technologies and tools in the market to build powerful and scalable digital solutions. From frontend to backend, from mobile apps to cloud solutions.'
+        }}
+      </p>
+      
+      <div class="hero-stats" data-aos="fade-up" data-aos-delay="200">
+        <div class="stat-item">
+          <div class="stat-number">{{ currentLang === 'ar' ? '٤٢+' : '42+' }}</div>
+          <div class="stat-label">{{ currentLang === 'ar' ? 'تقنية' : 'Technologies' }}</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number">{{ currentLang === 'ar' ? '١٦+' : '16+' }}</div>
+          <div class="stat-label">{{ currentLang === 'ar' ? 'أطر عمل' : 'Frameworks' }}</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number">{{ currentLang === 'ar' ? '٦' : '6' }}</div>
+          <div class="stat-label">{{ currentLang === 'ar' ? 'فئات' : 'Categories' }}</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number">{{ currentLang === 'ar' ? '١٠٠%' : '100%' }}</div>
+          <div class="stat-label">{{ currentLang === 'ar' ? 'حديثة' : 'Modern' }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Dynamic Technology Categories Loop -->
+<ng-container *ngFor="let category of techCategories; let i = index">
+  <section class="tech-category-section" [class.alt-bg]="i % 2 !== 0">
+    <div class="section-container">
+      <div class="section-header" data-aos="fade-up">
+        <span class="section-subtitle">{{ currentLang === 'ar' ? category.subtitleAr : category.subtitle }}</span>
+        <h2 class="section-title" [attr.lang]="currentLang">
+          {{ currentLang === 'ar' ? category.titleAr : category.title }}
+        </h2>
+        <p class="section-description" [attr.lang]="currentLang">
+          {{ currentLang === 'ar' ? category.descriptionAr : category.description }}
+        </p>
+      </div>
+      
+      <div class="tech-grid" 
+           [class.mobile-grid]="category.id === 'mobile'"
+           [class.tools-grid]="category.id === 'devops'">
+        
+        <!-- Technology Cards Loop -->
+        <div *ngFor="let tech of category.technologies; let j = index" 
+             class="tech-card"
+             [class.featured]="category.id === 'mobile' && j < 2"
+             [class.compact]="category.id === 'devops'"
+             data-aos="fade-up" 
+             [attr.data-aos-delay]="100 + (j * 50)">
+          
+          <!-- Tech Icon with Dynamic SVG -->
+          <div class="tech-icon" [ngClass]="tech.icon + '-icon'">
+            <!-- Angular -->
+            <svg *ngIf="tech.icon === 'angular'" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path d="M12 2L3 6l1.5 14L12 22l7.5-2L21 6z" stroke-width="1.5"/>
+              <path d="M12 2v20" stroke-width="1"/>
+              <path d="M12 7L8 17h2l1-2.5h4L16 17h2z" fill="currentColor" stroke="none"/>
+            </svg>
+            
+            <!-- React -->
+            <svg *ngIf="tech.icon === 'react'" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <circle cx="12" cy="12" r="2" stroke-width="2" fill="currentColor"/>
+              <ellipse cx="12" cy="12" rx="9" ry="3.5" stroke-width="1.5"/>
+              <ellipse cx="12" cy="12" rx="9" ry="3.5" transform="rotate(60 12 12)" stroke-width="1.5"/>
+              <ellipse cx="12" cy="12" rx="9" ry="3.5" transform="rotate(120 12 12)" stroke-width="1.5"/>
+            </svg>
+            
+            <!-- Vue.js -->
+            <svg *ngIf="tech.icon === 'vue'" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path d="M2 3l10 18L22 3h-4.5L12 14 6.5 3z" stroke-width="2" stroke-linejoin="miter"/>
+            </svg>
+            
+            <!-- Next.js -->
+            <svg *ngIf="tech.icon === 'nextjs'" viewBox="0 0 24 24" fill="currentColor">
+              <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2"/>
+              <path d="M8 8l8 8M16 8v8h-3" stroke="currentColor" stroke-width="2" fill="none"/>
+            </svg>
+            
+            <!-- TypeScript -->
+            <svg *ngIf="tech.icon === 'typescript'" viewBox="0 0 24 24" fill="currentColor">
+              <rect x="2" y="2" width="20" height="20" rx="2" fill="none" stroke="currentColor" stroke-width="2"/>
+              <text x="12" y="17" text-anchor="middle" font-size="12" font-weight="bold" fill="currentColor">TS</text>
+            </svg>
+            
+            <!-- Tailwind CSS -->
+            <svg *ngIf="tech.icon === 'tailwind'" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path d="M6 9c1.5-4 4-5 6.5-5 3.75 0 4.5 2.5 6.5 3s3.5-0.5 4.5-2.5" stroke-width="2" stroke-linecap="round"/>
+              <path d="M6 15c1.5-4 4-5 6.5-5 3.75 0 4.5 2.5 6.5 3s3.5-0.5 4.5-2.5" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+            
+            <!-- Bootstrap -->
+            <svg *ngIf="tech.icon === 'bootstrap'" viewBox="0 0 24 24" fill="currentColor">
+              <rect x="2" y="2" width="20" height="20" rx="3" fill="none" stroke="currentColor" stroke-width="2"/>
+              <path d="M8 6h5a3 3 0 0 1 0 6H8V6z M8 12h6a3 3 0 0 1 0 6H8v-6z"/>
+            </svg>
+            
+            <!-- SASS/SCSS -->
+            <svg *ngIf="tech.icon === 'sass'" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path d="M8 4C6 6 5 9 8 12c3 3 3 6 0 8" stroke-width="2" stroke-linecap="round"/>
+              <path d="M16 4c2 2 3 5 0 8-3 3-3 6 0 8" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+            
+            <!-- Node.js -->
+            <svg *ngIf="tech.icon === 'nodejs'" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path d="M12 2L3 7v10l9 5 9-5V7z" stroke-width="2"/>
+            </svg>
+            
+            <!-- Python -->
+            <svg *ngIf="tech.icon === 'python'" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path d="M12 2C8 2 5 4 5 7v5c0 3 3 5 7 5" stroke-width="2"/>
+              <path d="M12 22c4 0 7-2 7-5v-5c0-3-3-5-7-5" stroke-width="2"/>
+              <circle cx="9" cy="7" r="1.5" fill="currentColor"/>
+              <circle cx="15" cy="17" r="1.5" fill="currentColor"/>
+            </svg>
+            
+            <!-- PHP -->
+            <svg *ngIf="tech.icon === 'php'" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <ellipse cx="12" cy="12" rx="10" ry="5" stroke-width="2"/>
+              <circle cx="7" cy="12" r="1.5" fill="currentColor"/>
+              <circle cx="12" cy="12" r="1.5" fill="currentColor"/>
+              <circle cx="17" cy="12" r="1.5" fill="currentColor"/>
+            </svg>
+            
+            <!-- Laravel -->
+            <svg *ngIf="tech.icon === 'laravel'" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path d="M3 3v12c0 3.31 2.69 6 6 6h12" stroke-width="2" stroke-linecap="round"/>
+              <path d="M21 9L12 3 3 9" stroke-width="2" stroke-linejoin="round"/>
+            </svg>
+            
+            <!-- .NET Core -->
+            <svg *ngIf="tech.icon === 'dotnet'" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <rect x="2" y="6" width="20" height="12" rx="2" stroke-width="2"/>
+              <text x="12" y="15" text-anchor="middle" font-size="8" font-weight="bold" fill="currentColor">.NET</text>
+            </svg>
+            
+            <!-- Express.js -->
+            <svg *ngIf="tech.icon === 'express'" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path d="M2 8h14M2 12h18M2 16h20" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+            
+            <!-- NestJS -->
+            <svg *ngIf="tech.icon === 'nestjs'" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path d="M12 2L3 7v10l9 5 9-5V7z" stroke-width="2"/>
+              <path d="M12 7l-4 2.5v5l4 2.5 4-2.5v-5z" stroke-width="1.5"/>
+            </svg>
+            
+            <!-- Django -->
+            <svg *ngIf="tech.icon === 'django'" viewBox="0 0 24 24" fill="currentColor">
+              <rect x="2" y="2" width="20" height="20" rx="2" fill="none" stroke="currentColor" stroke-width="2"/>
+              <text x="12" y="17" text-anchor="middle" font-size="14" font-weight="bold">D</text>
+            </svg>
+            
+            <!-- React Native -->
+            <svg *ngIf="tech.icon === 'react-native'" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <rect x="7" y="2" width="10" height="20" rx="2" stroke-width="2"/>
+              <circle cx="12" cy="12" r="2" stroke-width="1.5" fill="currentColor"/>
+              <ellipse cx="12" cy="12" rx="5" ry="2" stroke-width="1"/>
+              <ellipse cx="12" cy="12" rx="5" ry="2" transform="rotate(60 12 12)" stroke-width="1"/>
+            </svg>
+            
+            <!-- Flutter -->
+            <svg *ngIf="tech.icon === 'flutter'" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path d="M14 2L4 12l3 3 10-10z" stroke-width="2" stroke-linejoin="round"/>
+              <path d="M10 15l-3-3 7-7 3 3z" stroke-width="2" stroke-linejoin="round"/>
+            </svg>
+            
+            <!-- Swift -->
+            <svg *ngIf="tech.icon === 'swift'" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path d="M3 12c3-5 8-7 12-6 1 0 2 1 2 2-1 4-5 8-10 10-2 1-4 0-5-2 0-1 0-3 1-4z" stroke-width="2"/>
+            </svg>
+            
+            <!-- Kotlin -->
+            <svg *ngIf="tech.icon === 'kotlin'" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path d="M2 2v20h20L12 12 22 2z" stroke-width="2" stroke-linejoin="round"/>
+            </svg>
+            
+            <!-- MongoDB -->
+            <svg *ngIf="tech.icon === 'mongodb'" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path d="M12 2C8 6 6 10 6 14c0 3.31 2.69 6 6 6s6-2.69 6-6c0-4-2-8-6-12z" stroke-width="2"/>
+              <line x1="12" y1="14" x2="12" y2="22" stroke-width="2"/>
+            </svg>
+            
+            <!-- PostgreSQL -->
+            <svg *ngIf="tech.icon === 'postgresql'" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path d="M3 8c0-3.31 4.03-6 9-6s9 2.69 9 6" stroke-width="2"/>
+              <path d="M3 8v8c0 3.31 4.03 6 9 6" stroke-width="2"/>
+              <ellipse cx="12" cy="16" rx="3" ry="2" stroke-width="1.5"/>
+              <circle cx="8" cy="8" r="1.5" fill="currentColor"/>
+            </svg>
+            
+            <!-- MySQL -->
+            <svg *ngIf="tech.icon === 'mysql'" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <ellipse cx="12" cy="6" rx="8" ry="3" stroke-width="2"/>
+              <path d="M4 6v12c0 1.66 3.58 3 8 3s8-1.34 8-3V6" stroke-width="2"/>
+              <path d="M4 12c0 1.66 3.58 3 8 3s8-1.34 8-3" stroke-width="2"/>
+            </svg>
+            
+            <!-- Firebase -->
+            <svg *ngIf="tech.icon === 'firebase'" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path d="M12 2L8 12l4 10 4-10z" stroke-width="2" stroke-linejoin="round"/>
+              <path d="M8 12l4-8 4 8" stroke-width="1.5"/>
+            </svg>
+            
+            <!-- AWS -->
+            <svg *ngIf="tech.icon === 'aws'" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path d="M3 18c3 2 9 3 18 0" stroke-width="2" stroke-linecap="round"/>
+              <path d="M19 15l2 3 2-3" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+            
+            <!-- Microsoft Azure -->
+            <svg *ngIf="tech.icon === 'azure'" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path d="M3 14l6-12 6 8-3 6z" stroke-width="2" stroke-linejoin="round"/>
+              <path d="M9 16h12l-4-8" stroke-width="2" stroke-linejoin="round"/>
+            </svg>
+            
+            <!-- Git -->
+            <svg *ngIf="tech.icon === 'git'" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <circle cx="6" cy="6" r="3" stroke-width="2"/>
+              <circle cx="18" cy="18" r="3" stroke-width="2"/>
+              <circle cx="18" cy="6" r="3" stroke-width="2"/>
+              <path d="M6 9v6c0 3 3 6 12 6" stroke-width="2"/>
+              <line x1="18" y1="9" x2="18" y2="15" stroke-width="2"/>
+            </svg>
+            
+            <!-- Docker -->
+            <svg *ngIf="tech.icon === 'docker'" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <rect x="3" y="8" width="4" height="4" stroke-width="1.5"/>
+              <rect x="8" y="8" width="4" height="4" stroke-width="1.5"/>
+              <rect x="13" y="8" width="4" height="4" stroke-width="1.5"/>
+              <path d="M2 12h20v4a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4z" stroke-width="2"/>
+            </svg>
+            
+            <!-- Kubernetes -->
+            <svg *ngIf="tech.icon === 'kubernetes'" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <circle cx="12" cy="12" r="10" stroke-width="2"/>
+              <circle cx="12" cy="12" r="3" stroke-width="2"/>
+              <line x1="12" y1="2" x2="12" y2="9" stroke-width="2"/>
+              <line x1="12" y1="15" x2="12" y2="22" stroke-width="2"/>
+              <line x1="2" y1="12" x2="9" y2="12" stroke-width="2"/>
+              <line x1="15" y1="12" x2="22" y2="12" stroke-width="2"/>
+            </svg>
+            
+            <!-- GitHub Actions -->
+            <svg *ngIf="tech.icon === 'github'" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <circle cx="12" cy="12" r="10" stroke-width="2"/>
+              <polygon points="10,8 16,12 10,16" fill="currentColor"/>
+            </svg>
+            
+            <!-- Jenkins -->
+            <svg *ngIf="tech.icon === 'jenkins'" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <circle cx="12" cy="8" r="4" stroke-width="2"/>
+              <path d="M6 22c0-4.42 2.69-8 6-8s6 3.58 6 8" stroke-width="2"/>
+            </svg>
+            
+            <!-- Nginx -->
+            <svg *ngIf="tech.icon === 'nginx'" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <rect x="2" y="4" width="20" height="16" rx="2" stroke-width="2"/>
+              <path d="M8 8v8l8-8v8" stroke-width="2"/>
+            </svg>
+            
+            <!-- Figma -->
+            <svg *ngIf="tech.icon === 'figma'" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <circle cx="12" cy="6" r="4" stroke-width="2"/>
+              <circle cx="12" cy="18" r="4" stroke-width="2"/>
+              <circle cx="18" cy="12" r="4" stroke-width="2"/>
+              <rect x="6" y="2" width="8" height="8" rx="4" stroke-width="2"/>
+              <rect x="6" y="14" width="8" height="8" rx="4" stroke-width="2"/>
+            </svg>
+            
+            <!-- Adobe XD -->
+            <svg *ngIf="tech.icon === 'xd'" viewBox="0 0 24 24" fill="currentColor">
+              <rect x="2" y="2" width="20" height="20" rx="4" fill="none" stroke="currentColor" stroke-width="2"/>
+              <text x="12" y="17" text-anchor="middle" font-size="12" font-weight="bold">Xd</text>
+            </svg>
+            
+            <!-- Sketch -->
+            <svg *ngIf="tech.icon === 'sketch'" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path d="M6 9l6-7 6 7-6 13z" stroke-width="2" stroke-linejoin="round"/>
+              <line x1="2" y1="9" x2="22" y2="9" stroke-width="2"/>
+            </svg>
+            
+            <!-- Adobe Photoshop -->
+            <svg *ngIf="tech.icon === 'photoshop'" viewBox="0 0 24 24" fill="currentColor">
+              <rect x="2" y="2" width="20" height="20" rx="4" fill="none" stroke="currentColor" stroke-width="2"/>
+              <text x="12" y="17" text-anchor="middle" font-size="12" font-weight="bold">Ps</text>
+            </svg>
+            
+            <!-- Adobe Illustrator -->
+            <svg *ngIf="tech.icon === 'illustrator'" viewBox="0 0 24 24" fill="currentColor">
+              <rect x="2" y="2" width="20" height="20" rx="4" fill="none" stroke="currentColor" stroke-width="2"/>
+              <text x="12" y="17" text-anchor="middle" font-size="12" font-weight="bold">Ai</text>
+            </svg>
+            
+            <!-- Framer -->
+            <svg *ngIf="tech.icon === 'framer'" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path d="M5 5h14v7H5z" stroke-width="2"/>
+              <path d="M5 12h14l-7 7z" stroke-width="2" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          
+          <h3>{{ currentLang === 'ar' ? tech.nameAr : tech.name }}</h3>
+          <p *ngIf="category.id !== 'devops'">{{ currentLang === 'ar' ? tech.descriptionAr : tech.description }}</p>
+          
+          <!-- Badges for mobile technologies -->
+          <div class="tech-badges" *ngIf="tech.badges && tech.badges.length > 0">
+            <span class="badge" *ngFor="let badge of tech.badges">{{ badge }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</ng-container>
+
+<!-- CTA Section -->
+<section class="cta-section">
+  <div class="cta-background">
+    <div class="cta-orb orb-1"></div>
+    <div class="cta-orb orb-2"></div>
+  </div>
+  
+  <div class="cta-container" data-aos="zoom-in">
+    <div class="cta-content">
+      <h2 class="cta-title" [attr.lang]="currentLang">
+        {{ currentLang === 'ar' ? 'هل أنت مستعد لبدء مشروعك التقني؟' : 'Ready to Start Your Tech Project?' }}
+      </h2>
+      <p class="cta-text" [attr.lang]="currentLang">
+        {{ currentLang === 'ar' 
+          ? 'دعنا نساعدك في اختيار التقنيات المناسبة وبناء حل قوي لعملك'
+          : 'Let us help you choose the right technologies and build a powerful solution for your business'
+        }}
+      </p>
+      <div class="cta-actions">
+        <a routerLink="/contact" class="cta-primary-btn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" stroke-width="2"/>
+          </svg>
+          {{ currentLang === 'ar' ? 'تواصل معنا' : 'Get in Touch' }}
+        </a>
+        <a routerLink="/projects" class="cta-secondary-btn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" stroke-width="2"/>
+          </svg>
+          {{ currentLang === 'ar' ? 'شاهد مشاريعنا' : 'View Our Projects' }}
+        </a>
+      </div>
+    </div>
+  </div>
+</section>

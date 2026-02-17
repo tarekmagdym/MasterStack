@@ -17,5 +17,128 @@
     "contactUs": "Contact Us",
     "lightMode": "Light Mode",
     "darkMode": "Dark Mode"
+  },
+  "about": {
+    "hero": {
+      "badge": "About Us",
+      "title": {
+        "line1": "Building Digital Solutions",
+        "line2": "That Make a Difference"
+      },
+      "subtitle": "We are a team of passionate creators and developers committed to transforming ideas into exceptional digital products. We combine technical innovation with creative thinking to deliver solutions that exceed expectations.",
+      "stats": {
+        "experience": {
+          "number": "5+",
+          "label": "Years Experience"
+        },
+        "projects": {
+          "number": "50+",
+          "label": "Projects Completed"
+        },
+        "clients": {
+          "number": "30+",
+          "label": "Happy Clients"
+        },
+        "team": {
+          "number": "15+",
+          "label": "Team Members"
+        }
+      }
+    },
+    "vision": {
+      "subtitle": "Our Vision",
+      "title": "Looking Towards a Better Digital Future",
+      "description": "Our vision is to become the premier partner for companies seeking digital transformation in the Middle East and North Africa region. We aspire to build technological platforms that contribute to developing communities and improving quality of life through digital innovation.",
+      "features": {
+        "leadership": "Leadership in Digital Transformation",
+        "innovation": "Continuous Technological Innovation",
+        "impact": "Positive Impact on Society"
+      }
+    },
+    "mission": {
+      "subtitle": "Our Mission",
+      "title": "Empowering Businesses Through Technology",
+      "description": "Our mission is to deliver innovative, high-quality software solutions that help our clients achieve their goals and grow their businesses. We are committed to excellence in every project we undertake, from planning to execution and ongoing support.",
+      "cards": {
+        "speed": {
+          "title": "Fast Delivery",
+          "description": "We meet deadlines"
+        },
+        "quality": {
+          "title": "High Quality",
+          "description": "World-class standards"
+        },
+        "support": {
+          "title": "Continuous Support",
+          "description": "Always with you"
+        }
+      }
+    },
+    "values": {
+      "subtitle": "Our Values",
+      "title": "The Principles We Believe In",
+      "description": "Our core values guide every decision we make and every project we undertake",
+      "list": {
+        "quality": {
+          "title": "Commitment to Quality",
+          "description": "We set high standards for the quality of our work and always strive for continuous improvement"
+        },
+        "integrity": {
+          "title": "Integrity & Transparency",
+          "description": "We believe in honesty and transparency in all our dealings with clients and partners"
+        },
+        "innovation": {
+          "title": "Innovation & Creativity",
+          "description": "We encourage creative thinking and always seek innovative solutions to challenges"
+        },
+        "collaboration": {
+          "title": "Collaboration & Teamwork",
+          "description": "We believe in the power of teamwork and value each team member's contribution"
+        },
+        "customer": {
+          "title": "Customer Focus",
+          "description": "Customer satisfaction is our top priority and we always strive to exceed their expectations"
+        },
+        "learning": {
+          "title": "Continuous Learning",
+          "description": "We encourage continuous professional development and keep up with the latest technologies and tools"
+        }
+      }
+    },
+    "team": {
+      "subtitle": "Our Team",
+      "title": "Meet the Experts Behind Our Success",
+      "description": "A diverse team of professionals specialized in development, design, and management",
+      "members": {
+        "ceo": {
+          "name": "Ahmed Mohamed",
+          "role": "CEO & Founder",
+          "bio": "10+ years experience in leading tech projects"
+        },
+        "dev_lead": {
+          "name": "Sarah Ali",
+          "role": "Development Lead",
+          "bio": "Specialized in modern web application development"
+        },
+        "design_lead": {
+          "name": "Mohamed Hassan",
+          "role": "Design Lead",
+          "bio": "Expert in UX/UI design and interfaces"
+        },
+        "pm": {
+          "name": "Fatima Ahmed",
+          "role": "Project Manager",
+          "bio": "Specialized in managing complex tech projects"
+        }
+      }
+    },
+    "cta": {
+      "title": "Ready to Work With Us?",
+      "description": "Let's start the journey of transforming your ideas into digital reality. Contact us today",
+      "buttons": {
+        "contact": "Contact Us",
+        "portfolio": "View Our Work"
+      }
+    }
   }
 }
