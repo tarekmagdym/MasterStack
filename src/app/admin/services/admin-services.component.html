@@ -1,0 +1,369 @@
+<div class="services-page" [class.dark]="isDark" [class.rtl]="isRtl">
+
+  <!-- ═══ Toast Container ═════════════════════════════════════════════════ -->
+  <div class="toast-wrap" [class.rtl]="isRtl">
+    <div
+      class="toast"
+      *ngFor="let t of toasts; trackBy: trackToastId"
+      [class]="'toast toast--' + t.type"
+      (click)="dismissToast(t.id)"
+    >
+      <div class="toast__icon">
+        <svg *ngIf="t.type === 'success'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        <svg *ngIf="t.type === 'error'"   viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        <svg *ngIf="t.type === 'warning'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        <svg *ngIf="t.type === 'info'"    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      </div>
+      <div class="toast__body">
+        <p class="toast__title">{{ isRtl ? t.titleAr : t.titleEn }}</p>
+        <p class="toast__msg">{{ isRtl ? t.msgAr : t.msgEn }}</p>
+      </div>
+      <button class="toast__close" (click)="$event.stopPropagation(); dismissToast(t.id)">
+        <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18" stroke-width="2.5" stroke-linecap="round"/><line x1="6" y1="6" x2="18" y2="18" stroke-width="2.5" stroke-linecap="round"/></svg>
+      </button>
+      <div class="toast__bar" [class]="'toast__bar--' + t.type"></div>
+    </div>
+  </div>
+
+  <!-- ═══ Page Header ══════════════════════════════════════════════════════ -->
+  <div class="page-header">
+    <div>
+      <h2>{{ isRtl ? 'الخدمات' : 'Services' }}</h2>
+      <p>{{ isRtl ? 'إدارة خدمات الشركة' : 'Manage your company services' }}</p>
+    </div>
+    <button class="add-btn" (click)="openAdd()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+        <line x1="12" y1="5" x2="12" y2="19" stroke-width="2" stroke-linecap="round"/>
+        <line x1="5" y1="12" x2="19" y2="12" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+      {{ isRtl ? 'إضافة خدمة' : 'Add Service' }}
+    </button>
+  </div>
+
+  <!-- ═══ Loading ══════════════════════════════════════════════════════════ -->
+  <div class="loading-state" *ngIf="isLoading">
+    <div class="spinner"></div>
+    <p>{{ isRtl ? 'جاري التحميل...' : 'Loading services...' }}</p>
+  </div>
+
+  <!-- ═══ Empty ════════════════════════════════════════════════════════════ -->
+  <div class="empty-state" *ngIf="!isLoading && services.length === 0">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+      <rect x="2" y="3" width="20" height="14" rx="2" stroke-width="2"/>
+      <line x1="8" y1="21" x2="16" y2="21" stroke-width="2"/>
+      <line x1="12" y1="17" x2="12" y2="21" stroke-width="2"/>
+    </svg>
+    <p>{{ isRtl ? 'لا توجد خدمات بعد' : 'No services yet' }}</p>
+    <button class="add-btn" (click)="openAdd()">
+      {{ isRtl ? 'أضف أول خدمة' : 'Add your first service' }}
+    </button>
+  </div>
+
+  <!-- ═══ Services Grid ════════════════════════════════════════════════════ -->
+  <div class="services-grid" *ngIf="!isLoading && services.length > 0">
+    <div class="service-card" *ngFor="let s of services"
+         [class.is-featured]="s.isFeatured"
+         [class.is-inactive]="!s.isPublished">
+
+      <div class="home-ribbon" *ngIf="s.isFeatured">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+        </svg>
+        {{ isRtl ? 'رئيسية' : 'Home' }}
+      </div>
+
+      <div class="service-icon">
+        <span class="icon-emoji">{{ s.icon }}</span>
+      </div>
+
+      <h3>{{ t(s.title) }}</h3>
+      <p class="service-desc">{{ t(s.description) }}</p>
+      <p class="service-short" *ngIf="s.shortDescription">{{ t(s.shortDescription) }}</p>
+
+      <!--
+        Features: show Arabic list when RTL + featuresAr exists,
+        otherwise fall back to English features.
+        Admin API returns raw bilingual data so both arrays are available.
+      -->
+      <ul class="features-list"
+          *ngIf="(isRtl ? (s.featuresAr && s.featuresAr.length) : (s.features && s.features.length))">
+        <li *ngFor="let f of (isRtl && s.featuresAr && s.featuresAr.length ? s.featuresAr : s.features)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="20 6 9 17 4 12"/>
+          </svg>
+          {{ f }}
+        </li>
+      </ul>
+
+      <!-- Show both lists side by side as a hint when both exist (optional info badge) -->
+
+      <div class="features-lang-badge warn"
+           *ngIf="s.features && s.features.length && (!s.featuresAr || !s.featuresAr.length)">
+        <span>{{ isRtl ? '⚠ المميزات بالعربية مفقودة' : '⚠ Arabic features missing' }}</span>
+      </div>
+
+      <div class="service-footer">
+        <div class="toggle-row">
+          <label class="toggle-switch">
+            <input type="checkbox" [checked]="s.isPublished" (change)="togglePublished(s)">
+            <span class="slider"></span>
+          </label>
+          <span class="toggle-label" [class.on]="s.isPublished">
+            {{ isRtl ? 'منشور' : 'Published' }}
+          </span>
+        </div>
+
+        <div class="toggle-row">
+          <label class="toggle-switch">
+            <input type="checkbox" [checked]="s.isFeatured" (change)="toggleFeatured(s)">
+            <span class="slider"></span>
+          </label>
+          <span class="toggle-label" [class.on]="s.isFeatured">
+            {{ isRtl ? 'مميز' : 'Featured' }}
+          </span>
+        </div>
+
+        <div class="card-actions">
+          <button class="icon-btn" (click)="openEdit(s)" [title]="isRtl ? 'تعديل' : 'Edit'">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" stroke-width="2" stroke-linecap="round"/>
+              <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </button>
+          <button class="icon-btn danger" (click)="confirmDelete(s._id)" [title]="isRtl ? 'حذف' : 'Delete'">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <polyline points="3 6 5 6 21 6" stroke-width="2"/>
+              <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" stroke-width="2"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="meta" *ngIf="s.createdAt">
+        {{ isRtl ? 'أُنشئ:' : 'Created:' }} {{ s.createdAt | date:'mediumDate' }}
+        <span *ngIf="s.createdBy"> · {{ s.createdBy.name }}</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ Add / Edit Modal ══════════════════════════════════════════════════ -->
+  <div class="modal-overlay" *ngIf="showModal" (click)="closeModal()">
+    <div class="modal" (click)="$event.stopPropagation()">
+
+      <div class="modal-head">
+        <h3>{{ isEditing ? (isRtl ? 'تعديل الخدمة' : 'Edit Service') : (isRtl ? 'إضافة خدمة' : 'Add Service') }}</h3>
+        <button class="close-btn" (click)="closeModal()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <line x1="18" y1="6" x2="6" y2="18" stroke-width="2" stroke-linecap="round"/>
+            <line x1="6" y1="6" x2="18" y2="18" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <p class="section-label">{{ isRtl ? 'العنوان' : 'TITLE' }}</p>
+        <div class="form-row two-col">
+          <div>
+            <label>{{ isRtl ? 'العنوان (EN)' : 'Title (EN)' }} <span class="req">*</span></label>
+            <input type="text" [(ngModel)]="form.titleEn" placeholder="e.g. Web Development" />
+          </div>
+          <div>
+            <label>{{ isRtl ? 'العنوان (AR)' : 'Title (AR)' }} <span class="req">*</span></label>
+            <input type="text" [(ngModel)]="form.titleAr" placeholder="مثال: تطوير الويب" dir="rtl" />
+          </div>
+        </div>
+
+        <p class="section-label">{{ isRtl ? 'وصف قصير' : 'SHORT DESCRIPTION' }}</p>
+        <div class="form-row two-col">
+          <div>
+            <label>{{ isRtl ? 'وصف قصير (EN)' : 'Short desc (EN)' }}</label>
+            <input type="text" [(ngModel)]="form.shortDescriptionEn" placeholder="One-liner in English" />
+          </div>
+          <div>
+            <label>{{ isRtl ? 'وصف قصير (AR)' : 'Short desc (AR)' }}</label>
+            <input type="text" [(ngModel)]="form.shortDescriptionAr" placeholder="وصف قصير بالعربية" dir="rtl" />
+          </div>
+        </div>
+
+        <p class="section-label">{{ isRtl ? 'الوصف الكامل' : 'FULL DESCRIPTION' }}</p>
+        <div class="form-row two-col">
+          <div>
+            <label>{{ isRtl ? 'الوصف (EN)' : 'Description (EN)' }} <span class="req">*</span></label>
+            <textarea rows="3" [(ngModel)]="form.descriptionEn" placeholder="Describe the service in English..."></textarea>
+          </div>
+          <div>
+            <label>{{ isRtl ? 'الوصف (AR)' : 'Description (AR)' }} <span class="req">*</span></label>
+            <textarea rows="3" [(ngModel)]="form.descriptionAr" placeholder="اكتب وصف الخدمة بالعربية..." dir="rtl"></textarea>
+          </div>
+        </div>
+
+        <p class="section-label">{{ isRtl ? 'المميزات — مفصولة بفاصلة' : 'FEATURES — COMMA SEPARATED' }}</p>
+        <div class="form-row two-col">
+          <div>
+            <label>{{ isRtl ? 'المميزات (EN)' : 'Features (EN)' }}</label>
+            <textarea rows="3" [(ngModel)]="form.features"
+                      placeholder="Responsive design, SEO optimized, Fast performance"></textarea>
+          </div>
+          <div>
+            <label>{{ isRtl ? 'المميزات (AR)' : 'Features (AR)' }}</label>
+            <textarea rows="3" [(ngModel)]="form.featuresAr"
+                      placeholder="تصميم متجاوب، محسّن لمحركات البحث، أداء سريع"
+                      dir="rtl"></textarea>
+          </div>
+        </div>
+        <p class="field-hint">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"/>
+            <line x1="12" y1="8" x2="12" y2="12"/>
+            <line x1="12" y1="16" x2="12.01" y2="16"/>
+          </svg>
+          {{ isRtl
+            ? 'افصل بين كل ميزة بفاصلة. مثال: ميزة أولى، ميزة ثانية، ميزة ثالثة'
+            : 'Separate each feature with a comma. Example: Feature one, Feature two, Feature three'
+          }}
+        </p>
+
+        <p class="section-label">{{ isRtl ? 'تفاصيل' : 'DETAILS' }}</p>
+        <div class="form-row two-col">
+          <div>
+            <label>{{ isRtl ? 'الأيقونة (emoji)' : 'Icon (emoji)' }}</label>
+            <input type="text" [(ngModel)]="form.icon" placeholder="💻" />
+          </div>
+          <div>
+            <label>{{ isRtl ? 'الترتيب' : 'Display Order' }}</label>
+            <input type="number" [(ngModel)]="form.order" min="0" />
+          </div>
+        </div>
+
+        <p class="section-label">{{ isRtl ? 'الظهور' : 'VISIBILITY' }}</p>
+        <div class="toggles-row">
+          <div class="toggle-group">
+            <label class="toggle-switch">
+              <input type="checkbox" [(ngModel)]="form.isPublished">
+              <span class="slider"></span>
+            </label>
+            <span class="toggle-label" [class.on]="form.isPublished">
+              {{ isRtl ? 'منشور' : 'Published' }}
+            </span>
+          </div>
+          <div class="toggle-group">
+            <label class="toggle-switch">
+              <input type="checkbox" [(ngModel)]="form.isFeatured">
+              <span class="slider"></span>
+            </label>
+            <span class="toggle-label" [class.on]="form.isFeatured">
+              {{ isRtl ? 'مميز' : 'Featured' }}
+            </span>
+          </div>
+        </div>
+
+        <p class="toggle-hint">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"/>
+            <line x1="12" y1="8" x2="12" y2="12"/>
+            <line x1="12" y1="16" x2="12.01" y2="16"/>
+          </svg>
+          {{ isRtl
+            ? 'الخدمات المميزة تظهر في الصفحة الرئيسية للموقع'
+            : 'Featured services are shown on the public home page'
+          }}
+        </p>
+      </div>
+
+      <div class="modal-footer">
+        <button class="cancel-btn" (click)="closeModal()" [disabled]="isSaving">
+          {{ isRtl ? 'إلغاء' : 'Cancel' }}
+        </button>
+        <button class="save-btn" (click)="save()"
+                [disabled]="isSaving || !form.titleEn.trim() || !form.titleAr.trim()">
+          <span *ngIf="!isSaving">
+            {{ isEditing
+              ? (isRtl ? 'حفظ التغييرات' : 'Save Changes')
+              : (isRtl ? 'إضافة' : 'Add Service')
+            }}
+          </span>
+          <span *ngIf="isSaving">{{ isRtl ? 'جاري الحفظ...' : 'Saving...' }}</span>
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══ Delete Confirm Modal ══════════════════════════════════════════════ -->
+  <div class="modal-overlay" *ngIf="showDeleteConfirm" (click)="cancelDelete()">
+    <div class="modal confirm-modal" [class.dark]="isDark" (click)="$event.stopPropagation()">
+
+      <div class="modal-danger-strip"></div>
+
+      <div class="modal-head">
+        <h3 class="confirm-modal__title">
+          <span class="confirm-modal__dot"></span>
+          {{ isRtl ? 'إجراء خطير' : 'Destructive Action' }}
+        </h3>
+        <button class="close-btn" (click)="cancelDelete()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <line x1="18" y1="6"  x2="6"  y2="18" stroke-width="2" stroke-linecap="round"/>
+            <line x1="6"  y1="6"  x2="18" y2="18" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <div class="delete-icon-row">
+          <div class="delete-icon-ring">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <polyline points="3 6 5 6 21 6" stroke-width="2" stroke-linecap="round"/>
+              <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" stroke-width="2" stroke-linecap="round"/>
+              <path d="M10 11v6M14 11v6" stroke-width="2" stroke-linecap="round"/>
+              <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2" stroke-width="2"/>
+            </svg>
+          </div>
+          <div class="delete-icon-text">
+            <p class="delete-icon-text__title">
+              {{ isRtl ? 'حذف هذه الخدمة؟' : 'Delete this service?' }}
+            </p>
+            <p class="delete-icon-text__sub">
+              {{ isRtl ? 'هذا الإجراء لا يمكن التراجع عنه' : 'This action cannot be undone' }}
+            </p>
+          </div>
+        </div>
+
+        <p class="confirm-modal__desc">
+          {{ isRtl
+            ? 'سيتم حذف الخدمة وجميع بياناتها نهائياً.'
+            : 'This will permanently remove the service and all its associated data.'
+          }}
+          <strong>{{ isRtl ? 'لا توجد طريقة لاستعادتها.' : 'There\'s no way to recover it.' }}</strong>
+        </p>
+
+        <label class="delete-confirm-check">
+          <input type="checkbox" [(ngModel)]="deleteConfirmed" />
+          <span class="chk-box">
+            <svg viewBox="0 0 12 12" fill="none" stroke="currentColor">
+              <polyline points="2 6 5 9 10 3" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
+          <span class="chk-label">
+            {{ isRtl ? 'أفهم أن هذا الإجراء' : 'I understand this action is' }}
+            <strong>{{ isRtl ? 'لا رجعة فيه' : 'irreversible' }}</strong>
+          </span>
+        </label>
+      </div>
+
+      <div class="modal-footer">
+        <button class="cancel-btn" (click)="cancelDelete()">
+          {{ isRtl ? 'إلغاء' : 'Keep Service' }}
+        </button>
+        <button class="delete-confirm-btn" (click)="doDelete()" [disabled]="!deleteConfirmed">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <polyline points="3 6 5 6 21 6" stroke-width="2" stroke-linecap="round"/>
+            <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" stroke-width="2"/>
+          </svg>
+          {{ isRtl ? 'حذف نهائياً' : 'Delete Permanently' }}
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+</div>

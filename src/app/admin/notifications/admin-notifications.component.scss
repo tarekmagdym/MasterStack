@@ -1,0 +1,95 @@
+@import '../shared/admin-base';
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700;800&display=swap');
+
+.notifications-page { @extend %page-base; }
+.page-header { @extend %page-header; p { .dark & { color: $muted-dark; } } }
+
+.header-actions { display: flex; gap: 10px; }
+.mark-btn  { @extend %secondary-btn; font-size: 0.82rem; &:disabled { opacity: .4; cursor: not-allowed; } }
+.clear-btn { @extend %action-btn; background: rgba(239,68,68,.1); color: #ef4444; border: none; &:hover { background: rgba(239,68,68,.18); } }
+
+.filter-bar { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 20px; }
+.pill {
+  display: flex; align-items: center; gap: 6px;
+  padding: 7px 16px; border: 1.5px solid $border-light; border-radius: 20px;
+  background: transparent; font-size: 0.82rem; font-weight: 600; color: $muted-light; cursor: pointer; transition: all $t;
+  &.active { background: $grad; color: white; border-color: transparent; box-shadow: 0 3px 12px rgba($teal,.3); .pill-count { background: rgba(white,.25); color: white; } }
+  &:hover:not(.active) { border-color: $teal; color: $teal; }
+  .dark & { border-color: $border-dark; color: $muted-dark; }
+}
+.pill-count { padding: 1px 7px; background: rgba($teal,.15); color: $teal; border-radius: 20px; font-size: 0.68rem; font-weight: 800; }
+
+// ── Skeleton ──────────────────────────────────────────────────────────────────
+@keyframes shimmer {
+  from { background-position: -400px 0; }
+  to   { background-position:  400px 0; }
+}
+%shimmer-bg {
+  background: linear-gradient(90deg,#e2e8f0 25%,#f1f5f9 50%,#e2e8f0 75%);
+  background-size: 800px 100%; animation: shimmer 1.4s infinite linear; border-radius: 8px;
+  .dark & { background: linear-gradient(90deg,#1e293b 25%,#263347 50%,#1e293b 75%); background-size: 800px 100%; }
+}
+
+.loading-state { display: flex; flex-direction: column; gap: 10px; }
+.notif-skeleton {
+  @extend %card; display: flex; align-items: center; gap: 14px; padding: 14px 16px;
+  .skel-icon  { @extend %shimmer-bg; width: 42px; height: 42px; border-radius: 12px; flex-shrink: 0; }
+  .skel-body  { flex: 1; display: flex; flex-direction: column; gap: 8px; }
+  .skel-line  { @extend %shimmer-bg; height: 12px; &.wide { width: 65%; } &.short { width: 40%; } }
+}
+
+// ── Error ─────────────────────────────────────────────────────────────────────
+.error-banner {
+  display: flex; align-items: center; gap: 10px;
+  padding: 12px 16px; background: rgba(239,68,68,.08);
+  border: 1.5px solid rgba(239,68,68,.25); border-radius: 12px;
+  color: #ef4444; font-size: .875rem; font-weight: 600; margin-bottom: 16px;
+  svg { width: 18px; height: 18px; flex-shrink: 0; stroke: #ef4444; fill: none; }
+}
+
+// ── List ──────────────────────────────────────────────────────────────────────
+.notif-list { display: flex; flex-direction: column; gap: 20px; }
+.date-label { font-size: 0.72rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.8px; color: $muted-light; margin-bottom: 8px; .dark & { color: $muted-dark; } }
+.notif-date-group { display: flex; flex-direction: column; gap: 6px; }
+
+.notif-item {
+  @extend %card;
+  display: flex; align-items: flex-start; gap: 14px; padding: 14px 16px;
+  cursor: pointer; position: relative;
+  transition: transform $t, box-shadow $t, background $t;
+  &.unread { border-left: 3px solid $teal; .rtl & { border-left: none; border-right: 3px solid $teal; } }
+  &:hover { transform: translateX(3px); box-shadow: 0 4px 16px rgba(0,0,0,.08); .rtl & { transform: translateX(-3px); } }
+}
+
+.notif-icon {
+  width: 42px; height: 42px; border-radius: 12px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  svg { width: 20px; height: 20px; stroke-width: 2; fill: none; }
+  &.contact { background: rgba($blue,.1); svg { stroke: $blue; } }
+  &.alert   { background: rgba(239,68,68,.1); svg { stroke: #ef4444; } }
+  &.system  { background: rgba(22,163,74,.1); svg { stroke: #16a34a; } }
+}
+
+.notif-body { flex: 1; min-width: 0; }
+.notif-title { margin: 0 0 3px; font-size: 0.87rem; font-weight: 700; }
+.notif-desc  { margin: 0 0 5px; font-size: 0.78rem; color: $muted-light; .dark & { color: $muted-dark; } }
+.notif-time  { font-size: 0.72rem; color: $muted-light; font-weight: 600; .dark & { color: $muted-dark; } }
+
+.notif-dot { width: 8px; height: 8px; background: $teal; border-radius: 50%; margin-top: 6px; flex-shrink: 0; }
+
+.dismiss-btn {
+  width: 26px; height: 26px; border-radius: 6px; border: none; background: transparent;
+  cursor: pointer; color: $muted-light; display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; opacity: 0; transition: all $t;
+  svg { width: 14px; height: 14px; stroke: currentColor; fill: none; }
+  .notif-item:hover & { opacity: 1; }
+  &:hover { background: rgba(239,68,68,.1); color: #ef4444; }
+}
+
+.empty-state {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 12px; padding: 60px 20px; color: $muted-light;
+  svg { width: 52px; height: 52px; stroke: $muted-light; opacity: 0.4; }
+  p { margin: 0; font-size: 0.95rem; font-weight: 600; }
+  .dark & { color: $muted-dark; svg { stroke: $muted-dark; } }
+}

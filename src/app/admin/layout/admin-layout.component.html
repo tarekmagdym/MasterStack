@@ -1,0 +1,450 @@
+<!-- ============================================================
+     ADMIN LAYOUT SHELL  (FIXED)
+     ============================================================ -->
+<div class="admin-shell"
+     [class.dark]="isDarkMode"
+     [class.sidebar-collapsed]="sidebarCollapsed"
+     [class.rtl]="currentLang === 'ar'">
+
+  <!-- ══════════════════ SIDEBAR ══════════════════ -->
+  <aside class="sidebar" [class.open]="mobileSidebarOpen">
+
+    <!-- Brand -->
+    <div class="sidebar-brand">
+      <div class="brand-logo">
+        <img [src]="isDarkMode ? 'assets/images/logo-dark.png' : 'assets/images/logo-light.png'"
+             alt="MasterStack" />
+      </div>
+      <div class="brand-text" *ngIf="!sidebarCollapsed">
+        <span class="brand-name">MasterStack</span>
+        <span class="brand-role">{{ currentLang === 'ar' ? 'لوحة التحكم' : 'Admin Panel' }}</span>
+      </div>
+      <button class="collapse-btn"
+              (click)="toggleSidebar()"
+              [title]="sidebarCollapsed ? 'Expand sidebar' : 'Collapse sidebar'">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <polyline *ngIf="!sidebarCollapsed" points="15 18 9 12 15 6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <polyline *ngIf="sidebarCollapsed"  points="9 18 15 12 9 6"  stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+    </div>
+
+    <!-- User card -->
+    <div class="sidebar-user" *ngIf="currentUser">
+      <div class="user-avatar">
+        <img *ngIf="currentUser.avatar" [src]="currentUser.avatar" alt="avatar" class="user-avatar-img"/>
+        <span *ngIf="!currentUser.avatar">{{ getUserInitials() }}</span>
+        <div class="avatar-status"></div>
+      </div>
+      <div class="user-info" *ngIf="!sidebarCollapsed">
+        <p class="user-name">{{ currentUser.name }}</p>
+        <p class="user-role">{{ getRoleLabel() }}</p>
+      </div>
+    </div>
+
+    <!-- Nav links -->
+    <nav class="sidebar-nav">
+
+      <p class="nav-section-label" *ngIf="!sidebarCollapsed">
+        {{ currentLang === 'ar' ? 'رئيسي' : 'Main' }}
+      </p>
+
+      <!-- Dashboard -->
+      <a class="nav-item" routerLink="/admin/dashboard" routerLinkActive="active"
+         [routerLinkActiveOptions]="{ exact: true }" (click)="closeMobileSidebar()"
+         [title]="sidebarCollapsed ? (currentLang === 'ar' ? 'لوحة التحكم' : 'Dashboard') : ''">
+        <div class="nav-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <rect x="3" y="3" width="7" height="7" rx="1" stroke-width="2"/>
+            <rect x="14" y="3" width="7" height="7" rx="1" stroke-width="2"/>
+            <rect x="3" y="14" width="7" height="7" rx="1" stroke-width="2"/>
+            <rect x="14" y="14" width="7" height="7" rx="1" stroke-width="2"/>
+          </svg>
+        </div>
+        <span class="nav-label" *ngIf="!sidebarCollapsed">{{ currentLang === 'ar' ? 'لوحة التحكم' : 'Dashboard' }}</span>
+      </a>
+
+      <!-- Statistics (replaced Analytics) -->
+      <a class="nav-item" routerLink="/admin/statistics" routerLinkActive="active"
+         (click)="closeMobileSidebar()"
+         [title]="sidebarCollapsed ? (currentLang === 'ar' ? 'الإحصائيات' : 'Statistics') : ''">
+        <div class="nav-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <line x1="18" y1="20" x2="18" y2="10" stroke-width="2" stroke-linecap="round"/>
+            <line x1="12" y1="20" x2="12" y2="4"  stroke-width="2" stroke-linecap="round"/>
+            <line x1="6"  y1="20" x2="6"  y2="14" stroke-width="2" stroke-linecap="round"/>
+            <line x1="2"  y1="20" x2="22" y2="20" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <span class="nav-label" *ngIf="!sidebarCollapsed">{{ currentLang === 'ar' ? 'الإحصائيات' : 'Statistics' }}</span>
+      </a>
+
+      <div class="nav-divider"></div>
+      <p class="nav-section-label" *ngIf="!sidebarCollapsed">
+        {{ currentLang === 'ar' ? 'الإدارة' : 'Management' }}
+      </p>
+
+      <a class="nav-item" routerLink="/admin/projects" routerLinkActive="active"
+         (click)="closeMobileSidebar()"
+         [title]="sidebarCollapsed ? (currentLang === 'ar' ? 'المشاريع' : 'Projects') : ''">
+        <div class="nav-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" stroke-width="2"/>
+          </svg>
+        </div>
+        <span class="nav-label" *ngIf="!sidebarCollapsed">{{ currentLang === 'ar' ? 'المشاريع' : 'Projects' }}</span>
+      </a>
+
+      <a class="nav-item" routerLink="/admin/services" routerLinkActive="active"
+         (click)="closeMobileSidebar()"
+         [title]="sidebarCollapsed ? (currentLang === 'ar' ? 'الخدمات' : 'Services') : ''">
+        <div class="nav-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <span class="nav-label" *ngIf="!sidebarCollapsed">{{ currentLang === 'ar' ? 'الخدمات' : 'Services' }}</span>
+      </a>
+
+      <a class="nav-item" routerLink="/admin/contacts" routerLinkActive="active"
+         (click)="closeMobileSidebar()"
+         [title]="sidebarCollapsed ? (currentLang === 'ar' ? 'رسائل التواصل' : 'Contacts') : ''">
+        <div class="nav-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <span class="nav-label" *ngIf="!sidebarCollapsed">{{ currentLang === 'ar' ? 'رسائل التواصل' : 'Contacts' }}</span>
+      </a>
+
+      <!-- Technologies -->
+      <a class="nav-item" routerLink="/admin/technologies" routerLinkActive="active"
+         (click)="closeMobileSidebar()"
+         [title]="sidebarCollapsed ? (currentLang === 'ar' ? 'التقنيات' : 'Technologies') : ''">
+        <div class="nav-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <polyline points="16 18 22 12 16 6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <polyline points="8 6 2 12 8 18"    stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <span class="nav-label" *ngIf="!sidebarCollapsed">{{ currentLang === 'ar' ? 'التقنيات' : 'Technologies' }}</span>
+      </a>
+
+      <!-- Testimonials -->
+      <a class="nav-item" routerLink="/admin/testimonials" routerLinkActive="active"
+         (click)="closeMobileSidebar()"
+         [title]="sidebarCollapsed ? (currentLang === 'ar' ? 'آراء العملاء' : 'Testimonials') : ''">
+        <div class="nav-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <line x1="9" y1="10" x2="15" y2="10" stroke-width="2" stroke-linecap="round"/>
+            <line x1="9" y1="14" x2="13" y2="14" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <span class="nav-label" *ngIf="!sidebarCollapsed">{{ currentLang === 'ar' ? 'آراء العملاء' : 'Testimonials' }}</span>
+      </a>
+
+      <a class="nav-item" routerLink="/admin/users" routerLinkActive="active"
+         *ngIf="currentUser?.role === 'super_admin'"
+         (click)="closeMobileSidebar()"
+         [title]="sidebarCollapsed ? (currentLang === 'ar' ? 'المشرفون' : 'Admins') : ''">
+        <div class="nav-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" stroke-width="2" stroke-linecap="round"/>
+            <circle cx="9" cy="7" r="4" stroke-width="2"/>
+            <path d="M23 21v-2a4 4 0 0 0-3-3.87" stroke-width="2" stroke-linecap="round"/>
+            <path d="M16 3.13a4 4 0 0 1 0 7.75" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <span class="nav-label" *ngIf="!sidebarCollapsed">{{ currentLang === 'ar' ? 'المشرفون' : 'Admins' }}</span>
+      </a>
+
+      <div class="nav-divider"></div>
+      <p class="nav-section-label" *ngIf="!sidebarCollapsed">
+        {{ currentLang === 'ar' ? 'النظام' : 'System' }}
+      </p>
+
+      <a class="nav-item" routerLink="/admin/notifications" routerLinkActive="active"
+         (click)="closeMobileSidebar()"
+         [title]="sidebarCollapsed ? (currentLang === 'ar' ? 'الإشعارات' : 'Notifications') : ''">
+        <div class="nav-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" stroke-width="2"/>
+            <path d="M13.73 21a2 2 0 0 1-3.46 0" stroke-width="2"/>
+          </svg>
+        </div>
+        <span class="nav-label" *ngIf="!sidebarCollapsed">{{ currentLang === 'ar' ? 'الإشعارات' : 'Notifications' }}</span>
+      </a>
+
+      <a class="nav-item" routerLink="/admin/activity-logs" routerLinkActive="active"
+         *ngIf="currentUser?.role === 'super_admin'"
+         (click)="closeMobileSidebar()"
+         [title]="sidebarCollapsed ? (currentLang === 'ar' ? 'سجل النشاط' : 'Activity Logs') : ''">
+        <div class="nav-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <span class="nav-label" *ngIf="!sidebarCollapsed">{{ currentLang === 'ar' ? 'سجل النشاط' : 'Activity Logs' }}</span>
+      </a>
+
+      <a class="nav-item" routerLink="/admin/settings" routerLinkActive="active"
+         (click)="closeMobileSidebar()"
+         [title]="sidebarCollapsed ? (currentLang === 'ar' ? 'الإعدادات' : 'Settings') : ''">
+        <div class="nav-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <circle cx="12" cy="12" r="3" stroke-width="2"/>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" stroke-width="2"/>
+          </svg>
+        </div>
+        <span class="nav-label" *ngIf="!sidebarCollapsed">{{ currentLang === 'ar' ? 'الإعدادات' : 'Settings' }}</span>
+      </a>
+
+    </nav>
+
+    <!-- Footer -->
+    <div class="sidebar-footer">
+      <button class="nav-logout"
+              (click)="logout()"
+              [title]="sidebarCollapsed ? (currentLang === 'ar' ? 'تسجيل الخروج' : 'Logout') : ''">
+        <div class="nav-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" stroke-width="2" stroke-linecap="round"/>
+            <polyline points="16 17 21 12 16 7" stroke-width="2" stroke-linecap="round"/>
+            <line x1="21" y1="12" x2="9" y2="12" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <span class="nav-label" *ngIf="!sidebarCollapsed">
+          {{ currentLang === 'ar' ? 'تسجيل الخروج' : 'Logout' }}
+        </span>
+      </button>
+      <p class="footer-copy" *ngIf="!sidebarCollapsed">© {{ year }} MasterStack</p>
+    </div>
+
+  </aside>
+
+  <!-- Mobile overlay -->
+  <div class="mobile-overlay"
+       [class.visible]="mobileSidebarOpen"
+       (click)="closeMobileSidebar()">
+  </div>
+
+  <!-- ══════════════════ MAIN AREA ══════════════════ -->
+  <div class="admin-main">
+
+    <header class="admin-topbar">
+
+      <div class="topbar-left">
+        <button class="mobile-menu-btn" (click)="toggleMobileSidebar()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <line x1="3" y1="6"  x2="21" y2="6"  stroke-width="2" stroke-linecap="round"/>
+            <line x1="3" y1="12" x2="21" y2="12" stroke-width="2" stroke-linecap="round"/>
+            <line x1="3" y1="18" x2="21" y2="18" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </button>
+        <div class="page-title">
+          <h1>{{ getPageTitle() }}</h1>
+          <nav class="breadcrumb" aria-label="breadcrumb">
+            <span>{{ currentLang === 'ar' ? 'الرئيسية' : 'Home' }}</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <polyline points="9 18 15 12 9 6" stroke-width="2"/>
+            </svg>
+            <span class="current">{{ getPageTitle() }}</span>
+          </nav>
+        </div>
+      </div>
+
+      <div class="topbar-right">
+
+        <button class="topbar-icon-btn"
+                (click)="toggleDarkMode()"
+                [title]="isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'">
+          <svg *ngIf="!isDarkMode" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" stroke-width="2"/>
+          </svg>
+          <svg *ngIf="isDarkMode" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <circle cx="12" cy="12" r="5" stroke-width="2"/>
+            <line x1="12" y1="1"  x2="12" y2="3"  stroke-width="2" stroke-linecap="round"/>
+            <line x1="12" y1="21" x2="12" y2="23" stroke-width="2" stroke-linecap="round"/>
+            <line x1="4.22" y1="4.22"   x2="5.64" y2="5.64"   stroke-width="2" stroke-linecap="round"/>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" stroke-width="2" stroke-linecap="round"/>
+            <line x1="1"  y1="12" x2="3"  y2="12" stroke-width="2" stroke-linecap="round"/>
+            <line x1="21" y1="12" x2="23" y2="12" stroke-width="2" stroke-linecap="round"/>
+            <line x1="4.22" y1="19.78"  x2="5.64" y2="18.36"  stroke-width="2" stroke-linecap="round"/>
+            <line x1="18.36" y1="5.64"  x2="19.78" y2="4.22"  stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </button>
+
+        <button class="topbar-lang-btn" (click)="switchLanguage()">
+          {{ currentLang === 'ar' ? 'EN' : 'ع' }}
+        </button>
+
+        <!-- Notifications -->
+        <div class="notif-wrap">
+          <button class="topbar-icon-btn"
+                  (click)="toggleNotifDropdown(); $event.stopPropagation()"
+                  [title]="currentLang === 'ar' ? 'الإشعارات' : 'Notifications'">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" stroke-width="2"/>
+              <path d="M13.73 21a2 2 0 0 1-3.46 0" stroke-width="2"/>
+            </svg>
+            <span class="notif-dot" *ngIf="unreadCount > 0"></span>
+          </button>
+
+          <div class="notif-dropdown" *ngIf="notifOpen" (click)="$event.stopPropagation()">
+
+            <div class="nd-header">
+              <span class="nd-title">
+                {{ currentLang === 'ar' ? 'الإشعارات' : 'Notifications' }}
+                <span class="nd-count" *ngIf="unreadCount > 0">{{ unreadCount }}</span>
+              </span>
+              <button class="nd-mark-all" (click)="markAllRead()" *ngIf="unreadCount > 0">
+                {{ currentLang === 'ar' ? 'تعليم الكل كمقروء' : 'Mark all read' }}
+              </button>
+            </div>
+
+            <div class="nd-loading" *ngIf="notifLoading">
+              <div class="nd-sk" *ngFor="let i of [1,2,3]"></div>
+            </div>
+
+            <div class="nd-empty" *ngIf="!notifLoading && notifications.length === 0">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" stroke-width="2"/>
+                <path d="M13.73 21a2 2 0 0 1-3.46 0" stroke-width="2"/>
+              </svg>
+              <p>{{ currentLang === 'ar' ? 'لا توجد إشعارات' : 'No notifications' }}</p>
+            </div>
+
+            <div class="nd-list" *ngIf="!notifLoading && notifications.length > 0">
+              <div
+                class="nd-item"
+                *ngFor="let n of notifications"
+                [class.unread]="!n.isRead"
+                (click)="markOneRead(n, $event)"
+              >
+                <div class="nd-type-dot" [class]="n.type"></div>
+                <div class="nd-body">
+                  <p class="nd-item-title">{{ notifTitle(n) }}</p>
+                  <p class="nd-item-msg">{{ notifMessage(n) }}</p>
+                  <span class="nd-time">{{ notifTime(n.createdAt) }}</span>
+                </div>
+                <div class="nd-unread-dot" *ngIf="!n.isRead"></div>
+                <button class="nd-delete-btn"
+                        (click)="deleteNotif(n, $event)"
+                        [title]="currentLang === 'ar' ? 'إخفاء' : 'Dismiss'">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <line x1="18" y1="6" x2="6" y2="18" stroke-width="2.5" stroke-linecap="round"/>
+                    <line x1="6" y1="6" x2="18" y2="18" stroke-width="2.5" stroke-linecap="round"/>
+                  </svg>
+                </button>
+              </div>
+            </div>
+
+            <div class="nd-footer" *ngIf="!notifLoading">
+              <button class="nd-see-all" (click)="goToNotifications()">
+                {{ currentLang === 'ar' ? 'عرض كل الإشعارات' : 'See all notifications' }}
+              </button>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- User -->
+        <div class="topbar-user" *ngIf="currentUser">
+          <div class="topbar-avatar">
+            <img *ngIf="currentUser.avatar" [src]="currentUser.avatar" alt="avatar" class="topbar-avatar-img"/>
+            <span *ngIf="!currentUser.avatar">{{ getUserInitials() }}</span>
+          </div>
+          <span class="topbar-name">{{ currentUser.name }}</span>
+        </div>
+      </div>
+
+    </header>
+
+    <main class="admin-content">
+      <router-outlet></router-outlet>
+    </main>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     LOGOUT CONFIRM MODAL
+════════════════════════════════════════════════════════════ -->
+<div class="modal-overlay" *ngIf="showLogoutConfirm" (click)="cancelLogout()">
+  <div class="modal confirm-modal" [class.dark]="isDarkMode" (click)="$event.stopPropagation()">
+
+    <div class="modal-danger-strip"></div>
+
+    <div class="modal-head">
+      <h3 class="confirm-modal__title">
+        <span class="confirm-modal__dot"></span>
+        {{ currentLang === 'ar' ? 'تسجيل الخروج' : 'Sign Out' }}
+      </h3>
+      <button class="close-btn" (click)="cancelLogout()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <line x1="18" y1="6"  x2="6"  y2="18" stroke-width="2" stroke-linecap="round"/>
+          <line x1="6"  y1="6"  x2="18" y2="18" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </button>
+    </div>
+
+    <div class="modal-body">
+
+      <div class="delete-icon-row">
+        <div class="delete-icon-ring">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"  stroke-width="2" stroke-linecap="round"/>
+            <polyline points="16 17 21 12 16 7"                  stroke-width="2" stroke-linecap="round"/>
+            <line x1="21" y1="12" x2="9" y2="12"                stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="delete-icon-text">
+          <p class="delete-icon-text__title">
+            {{ currentLang === 'ar' ? 'هل تريد تسجيل الخروج؟' : 'Sign out of your account?' }}
+          </p>
+          <p class="delete-icon-text__sub">
+            {{ currentLang === 'ar'
+              ? 'ستحتاج إلى تسجيل الدخول مجدداً للوصول للوحة التحكم'
+              : 'You will need to log in again to access the dashboard' }}
+          </p>
+        </div>
+      </div>
+
+      <p class="confirm-modal__desc">
+        {{ currentLang === 'ar'
+          ? 'سيتم إنهاء جلستك الحالية وإعادة توجيهك لصفحة تسجيل الدخول.'
+          : 'Your current session will be terminated and you will be redirected to the login page.' }}
+      </p>
+
+      <label class="delete-confirm-check">
+        <input type="checkbox" [(ngModel)]="logoutConfirmed" />
+        <span class="chk-box">
+          <svg viewBox="0 0 12 12" fill="none" stroke="currentColor">
+            <polyline points="2 6 5 9 10 3" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </span>
+        <span class="chk-label">
+          {{ currentLang === 'ar' ? 'نعم، أريد' : 'Yes, I want to' }}
+          <strong>{{ currentLang === 'ar' ? 'تسجيل الخروج' : 'sign out' }}</strong>
+        </span>
+      </label>
+
+    </div>
+
+    <div class="modal-footer">
+      <button class="cancel-btn" (click)="cancelLogout()">
+        {{ currentLang === 'ar' ? 'إلغاء' : 'Stay' }}
+      </button>
+      <button class="logout-confirm-btn" (click)="confirmLogout()" [disabled]="!logoutConfirmed">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"  stroke-width="2" stroke-linecap="round"/>
+          <polyline points="16 17 21 12 16 7"                  stroke-width="2" stroke-linecap="round"/>
+          <line x1="21" y1="12" x2="9" y2="12"                stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        {{ currentLang === 'ar' ? 'تسجيل الخروج' : 'Sign Out' }}
+      </button>
+    </div>
+
+  </div>
+</div>

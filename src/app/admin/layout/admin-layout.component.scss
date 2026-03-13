@@ -1,0 +1,611 @@
+// ============================================================
+// ADMIN LAYOUT — MasterStack Design System
+// ============================================================
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700;800&display=swap');
+
+$blue:  #0e3581;
+$teal:  #26cabc;
+$white: #ffffff;
+$grad:  linear-gradient(135deg, $blue 0%, $teal 100%);
+
+$bg-light:      #f4f6fb;
+$surface-light: #ffffff;
+$border-light:  #e8edf5;
+$text-light:    #1a1a2e;
+$muted-light:   #6c757d;
+
+$bg-dark:      #12131f;
+$surface-dark: #1c1e30;
+$border-dark:  #2a2d45;
+$text-dark:    #e8e9f0;
+$muted-dark:   #8b8fa8;
+
+$sidebar-w:           260px;
+$sidebar-w-collapsed: 72px;
+$topbar-h:            68px;
+$font-en:             'IBM Plex Sans', sans-serif;
+$font-ar:             'IBM Plex Sans Arabic', sans-serif;
+$radius:              12px;
+$t:                   0.28s cubic-bezier(0.4, 0, 0.2, 1);
+
+// =============================================================
+// SHELL
+// =============================================================
+.admin-shell {
+  display: flex; height: 100vh; overflow: hidden;
+  background: $bg-light; color: $text-light; font-family: $font-en;
+  transition: background $t, color $t;
+  &.rtl  { direction: rtl; font-family: $font-ar; }
+  &.dark { background: $bg-dark; color: $text-dark; }
+}
+
+// =============================================================
+// SIDEBAR
+// =============================================================
+.sidebar {
+  position: fixed; top: 0; left: 0; height: 100vh; width: $sidebar-w;
+  background: $surface-light; border-right: 1px solid $border-light;
+  display: flex; flex-direction: column; z-index: 200;
+  transition: width $t, transform $t; overflow: hidden;
+  .admin-shell.rtl & { left: auto; right: 0; border-right: none; border-left: 1px solid $border-light; }
+  .admin-shell.dark & { background: $surface-dark; border-color: $border-dark; }
+  .admin-shell.sidebar-collapsed & { width: $sidebar-w-collapsed; }
+  @media (max-width: 1024px) {
+    transform: translateX(-100%); width: $sidebar-w !important;
+    .admin-shell.rtl & { transform: translateX(100%); }
+    &.open { transform: translateX(0) !important; box-shadow: 6px 0 36px rgba(0,0,0,0.18); }
+  }
+}
+
+.sidebar-brand {
+  display: flex; align-items: center; gap: 12px;
+  padding: 0 16px; height: $topbar-h;
+  border-bottom: 1px solid $border-light; flex-shrink: 0;
+  .admin-shell.dark & { border-color: $border-dark; }
+}
+
+.brand-logo {
+  width: 38px; height: 38px; border-radius: 10px; overflow: hidden; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  img { width: 100%; height: 100%; object-fit: contain; }
+}
+
+.brand-text {
+  flex: 1; min-width: 0; overflow: hidden;
+  .brand-name {
+    display: block; font-size: 1rem; font-weight: 800;
+    background: $grad; -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent; background-clip: text; white-space: nowrap;
+  }
+  .brand-role {
+    display: block; font-size: 0.67rem; font-weight: 700; color: $muted-light;
+    text-transform: uppercase; letter-spacing: 0.6px; white-space: nowrap;
+    .admin-shell.dark & { color: $muted-dark; }
+  }
+}
+
+.collapse-btn {
+  width: 32px; height: 32px; border: none; border-radius: 10px;
+  background: $grad; cursor: pointer; display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; transition: all $t; box-shadow: 0 3px 12px rgba($teal, 0.35);
+  svg { width: 15px; height: 15px; stroke-width: 2.5; stroke: $white; fill: none; }
+  &:hover { box-shadow: 0 5px 18px rgba($teal, 0.5); transform: scale(1.08); }
+  @media (max-width: 1024px) { display: none; }
+}
+
+.sidebar-user {
+  display: flex; align-items: center; gap: 12px; padding: 14px 16px;
+  border-bottom: 1px solid $border-light; flex-shrink: 0;
+  .admin-shell.dark & { border-color: $border-dark; }
+}
+
+.user-avatar {
+  position: relative; width: 38px; height: 38px; border-radius: 50%;
+  background: $grad; display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; font-weight: 700; font-size: 0.82rem; color: $white;
+  overflow: hidden;
+}
+
+.user-avatar-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.user-info {
+  flex: 1; min-width: 0; overflow: hidden;
+  .user-name { margin: 0; font-size: 0.87rem; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .user-role { margin: 2px 0 0; font-size: 0.7rem; font-weight: 700; color: $teal; }
+}
+
+.sidebar-nav {
+  flex: 1; overflow-y: auto; padding: 14px 10px 8px;
+  display: flex; flex-direction: column; gap: 6px;
+  &::-webkit-scrollbar { width: 3px; }
+  &::-webkit-scrollbar-thumb { background: $border-light; border-radius: 4px; }
+  .admin-shell.dark &::-webkit-scrollbar-thumb { background: $border-dark; }
+}
+
+.nav-section-label {
+  padding: 0 10px; margin: 4px 0 4px;
+  font-size: 0.63rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;
+  color: $muted-light;
+  .admin-shell.dark & { color: $muted-dark; }
+}
+
+%nav-row {
+  display: flex; align-items: center; gap: 12px; padding: 12px 12px;
+  border-radius: $radius; font-weight: 600; font-size: 0.87rem;
+  transition: all $t; border: none; background: transparent; cursor: pointer;
+  width: 100%; text-decoration: none; color: $muted-light;
+  .admin-shell.dark & { color: $muted-dark; }
+  &:hover { background: rgba($teal, .08); color: $teal; .nav-icon svg { stroke: $teal; } }
+  &.active {
+    background: $grad; color: $white; box-shadow: 0 5px 16px rgba($teal, .28);
+    .nav-icon svg { stroke: $white; }
+  }
+}
+
+.nav-item    { @extend %nav-row; }
+.nav-divider { height: 1px; background: $border-light; margin: 4px 10px; .admin-shell.dark & { background: $border-dark; } }
+
+.nav-icon {
+  width: 20px; height: 20px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  svg { width: 20px; height: 20px; stroke: currentColor; stroke-width: 2; fill: none; transition: stroke $t; }
+}
+
+.nav-label { flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+.sidebar-footer {
+  flex-shrink: 0; border-top: 1px solid $border-light; padding: 10px 10px 12px;
+  .admin-shell.dark & { border-color: $border-dark; }
+}
+
+.nav-logout {
+  @extend %nav-row;
+  color: #ef4444 !important;
+  .nav-icon svg { stroke: #ef4444 !important; }
+  &:hover { background: rgba(239,68,68,.09) !important; color: #ef4444 !important; }
+}
+
+.footer-copy {
+  margin: 8px 0 0; font-size: 0.67rem; color: $muted-light;
+  text-align: center; white-space: nowrap; overflow: hidden;
+  .admin-shell.dark & { color: $muted-dark; }
+}
+
+// =============================================================
+// MOBILE OVERLAY
+// =============================================================
+.mobile-overlay {
+  display: none; position: fixed; inset: 0;
+  background: rgba(0,0,0,.48); backdrop-filter: blur(3px);
+  z-index: 199; opacity: 0; transition: opacity $t; pointer-events: none;
+  &.visible { opacity: 1; pointer-events: all; }
+  @media (max-width: 1024px) { display: block; }
+}
+
+// =============================================================
+// MAIN AREA
+// =============================================================
+.admin-main {
+  flex: 1; margin-left: $sidebar-w; min-width: 0;
+  height: 100vh; display: flex; flex-direction: column; overflow: hidden; transition: margin $t;
+  .admin-shell.rtl & { margin-left: 0; margin-right: $sidebar-w; }
+  .admin-shell.sidebar-collapsed & { margin-left: $sidebar-w-collapsed; }
+  .admin-shell.sidebar-collapsed.rtl & { margin-left: 0; margin-right: $sidebar-w-collapsed; }
+  @media (max-width: 1024px) { margin-left: 0 !important; margin-right: 0 !important; }
+}
+
+// =============================================================
+// TOPBAR
+// =============================================================
+.admin-topbar {
+  flex-shrink: 0; height: $topbar-h;
+  background: $surface-light; border-bottom: 1px solid $border-light;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 24px; gap: 16px; box-shadow: 0 1px 3px rgba(0,0,0,.04);
+  .admin-shell.dark & { background: $surface-dark; border-color: $border-dark; }
+}
+
+.topbar-left { display: flex; align-items: center; gap: 14px; }
+
+.mobile-menu-btn {
+  display: none; width: 38px; height: 38px; border: 1.5px solid $border-light;
+  border-radius: 10px; background: transparent; cursor: pointer;
+  align-items: center; justify-content: center; color: $text-light; transition: all $t;
+  svg { width: 19px; height: 19px; stroke-width: 2; stroke: currentColor; fill: none; }
+  &:hover { background: rgba($teal,.08); border-color: $teal; color: $teal; }
+  .admin-shell.dark & { border-color: $border-dark; color: $text-dark; }
+  @media (max-width: 1024px) { display: flex; }
+}
+
+.page-title { h1 { margin: 0; font-size: 1.05rem; font-weight: 800; line-height: 1.2; } }
+
+.breadcrumb {
+  display: flex; align-items: center; gap: 4px;
+  font-size: 0.72rem; color: $muted-light; margin-top: 2px;
+  svg { width: 11px; height: 11px; stroke-width: 2; stroke: currentColor; fill: none; }
+  .current { color: $teal; font-weight: 600; }
+  .admin-shell.dark & { color: $muted-dark; }
+}
+
+.topbar-right {
+  display: flex; align-items: center; gap: 8px; margin-left: auto;
+  .admin-shell.rtl & { margin-left: 0; margin-right: auto; }
+}
+
+.topbar-icon-btn {
+  width: 38px; height: 38px; border: 1.5px solid $border-light; border-radius: 10px;
+  background: transparent; cursor: pointer; display: flex; align-items: center; justify-content: center;
+  color: $text-light; transition: all $t; position: relative;
+  svg { width: 17px; height: 17px; stroke-width: 2; stroke: currentColor; fill: none; }
+  &:hover { background: rgba($teal,.08); border-color: $teal; color: $teal; }
+  .admin-shell.dark & { border-color: $border-dark; color: $text-dark; }
+}
+
+.topbar-lang-btn {
+  height: 38px; padding: 0 13px; border: 1.5px solid $border-light; border-radius: 10px;
+  background: transparent; cursor: pointer; font-weight: 700; font-size: 0.8rem;
+  color: $text-light; transition: all $t;
+  &:hover { background: rgba($teal,.08); border-color: $teal; color: $teal; }
+  .admin-shell.dark & { border-color: $border-dark; color: $text-dark; }
+}
+
+.notif-dot {
+  position: absolute; top: 7px; right: 7px; width: 7px; height: 7px;
+  background: #ef4444; border-radius: 50%; border: 2px solid $surface-light;
+  .admin-shell.dark & { border-color: $surface-dark; }
+}
+
+.topbar-user {
+  display: flex; align-items: center; gap: 9px; padding: 5px 11px;
+  border: 1.5px solid $border-light; border-radius: 10px; cursor: pointer; transition: all $t;
+  &:hover { border-color: $teal; background: rgba($teal,.05); }
+  .admin-shell.dark & { border-color: $border-dark; }
+  @media (max-width: 640px) { .topbar-name { display: none; } }
+}
+
+.topbar-avatar {
+  width: 28px; height: 28px; border-radius: 50%; background: $grad;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 800; font-size: 0.72rem; color: $white;
+  overflow: hidden; // ✅ عشان الصورة تتقطع بشكل دائري
+  flex-shrink: 0;
+}
+
+// ✅ صورة الـ topbar avatar
+.topbar-avatar-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  display: block;
+}
+
+.topbar-name { font-size: 0.84rem; font-weight: 700; }
+
+// =============================================================
+// CONTENT
+// =============================================================
+.admin-content {
+  flex: 1; overflow-y: auto; padding: 24px 28px;
+  &::-webkit-scrollbar { width: 5px; }
+  &::-webkit-scrollbar-thumb { background: $border-light; border-radius: 4px; }
+  .admin-shell.dark &::-webkit-scrollbar-thumb { background: $border-dark; }
+  @media (max-width: 768px) { padding: 16px; }
+}
+
+:host { display: block; }
+.admin-shell { position: fixed !important; inset: 0; height: 100vh !important; }
+
+// =============================================================
+// NOTIFICATION DROPDOWN
+// =============================================================
+.notif-wrap { position: relative; }
+
+.notif-dropdown {
+  position: absolute; top: calc(100% + 10px); right: 0; width: 360px;
+  background: $surface-light; border: 1px solid $border-light; border-radius: 16px;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.12); z-index: 500; overflow: hidden;
+  animation: ndSlideIn 0.18s ease;
+  .admin-shell.rtl & { right: auto; left: 0; }
+  .admin-shell.dark & { background: $surface-dark; border-color: $border-dark; box-shadow: 0 12px 40px rgba(0,0,0,0.4); }
+  @media (max-width: 420px) { width: calc(100vw - 24px); right: -60px; }
+}
+
+@keyframes ndSlideIn {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.nd-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 16px 18px 12px; border-bottom: 1px solid $border-light;
+  .admin-shell.dark & { border-color: $border-dark; }
+}
+
+.nd-title {
+  font-size: 0.9rem; font-weight: 800; color: $text-light;
+  display: flex; align-items: center; gap: 8px;
+  .admin-shell.dark & { color: $text-dark; }
+}
+
+.nd-count {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: 20px; height: 20px; padding: 0 6px;
+  background: #ef4444; color: white; border-radius: 20px; font-size: 0.68rem; font-weight: 800;
+}
+
+.nd-mark-all {
+  font-size: 0.75rem; font-weight: 700; color: $teal;
+  background: transparent; border: none; cursor: pointer; padding: 0;
+  &:hover { text-decoration: underline; }
+}
+
+.nd-loading { padding: 8px 0; }
+
+.nd-sk {
+  height: 56px; margin: 4px 16px; border-radius: 10px;
+  background: linear-gradient(90deg, #e2e8f0 25%, #f1f5f9 50%, #e2e8f0 75%);
+  background-size: 400px 100%; animation: ndShimmer 1.3s infinite;
+  .admin-shell.dark & {
+    background: linear-gradient(90deg, #1e293b 25%, #2d3748 50%, #1e293b 75%);
+    background-size: 400px 100%;
+  }
+}
+
+@keyframes ndShimmer {
+  0%   { background-position: -400px 0; }
+  100% { background-position:  400px 0; }
+}
+
+.nd-empty {
+  display: flex; flex-direction: column; align-items: center; padding: 32px 20px; gap: 10px;
+  svg { width: 32px; height: 32px; stroke: $muted-light; fill: none; }
+  p { margin: 0; font-size: 0.84rem; color: $muted-light; .admin-shell.dark & { color: $muted-dark; } }
+}
+
+.nd-list {
+  max-height: 320px; overflow-y: auto;
+  &::-webkit-scrollbar { width: 3px; }
+  &::-webkit-scrollbar-thumb { background: $border-light; border-radius: 4px; }
+  .admin-shell.dark &::-webkit-scrollbar-thumb { background: $border-dark; }
+}
+
+.nd-item {
+  display: flex; align-items: flex-start; gap: 12px; padding: 13px 18px; cursor: pointer;
+  border-bottom: 1px solid $border-light; transition: background $t; position: relative;
+  &:last-child { border-bottom: none; }
+  &:hover { background: rgba($teal, .05); }
+  &.unread { background: rgba($teal, .04); }
+  &:hover .nd-delete-btn { opacity: 1; pointer-events: all; }
+  .admin-shell.dark & { border-color: $border-dark; }
+  .admin-shell.dark &:hover  { background: rgba($teal, .08); }
+  .admin-shell.dark &.unread { background: rgba($teal, .07); }
+}
+
+.nd-type-dot {
+  width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; margin-top: 5px;
+  &.info    { background: $teal; }
+  &.success { background: #22c55e; }
+  &.warning { background: #f59e0b; }
+  &.error   { background: #ef4444; }
+}
+
+.nd-body { flex: 1; min-width: 0; }
+
+.nd-item-title {
+  margin: 0 0 2px; font-size: 0.83rem; font-weight: 700; color: $text-light;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  .admin-shell.dark & { color: $text-dark; }
+}
+
+.nd-item-msg {
+  margin: 0 0 4px; font-size: 0.76rem; color: $muted-light; line-height: 1.4;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+  .admin-shell.dark & { color: $muted-dark; }
+}
+
+.nd-time { font-size: 0.7rem; color: $muted-light; .admin-shell.dark & { color: $muted-dark; } }
+
+.nd-unread-dot {
+  width: 7px; height: 7px; border-radius: 50%; background: $teal; flex-shrink: 0; margin-top: 6px;
+}
+
+.nd-delete-btn {
+  width: 22px; height: 22px; border: none; border-radius: 6px;
+  background: transparent; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; margin-top: 2px;
+  opacity: 0; pointer-events: none;
+  transition: opacity $t, background $t, color $t;
+  color: $muted-light;
+  svg { width: 13px; height: 13px; stroke: currentColor; fill: none; }
+  &:hover { background: rgba(#ef4444, .1); color: #ef4444; }
+  .admin-shell.dark & { color: $muted-dark; }
+}
+
+.nd-footer {
+  padding: 10px 18px; border-top: 1px solid $border-light;
+  .admin-shell.dark & { border-color: $border-dark; }
+}
+
+.nd-see-all {
+  width: 100%; padding: 9px; border-radius: 10px; border: none;
+  background: rgba($teal, .1); color: $teal;
+  font-size: 0.82rem; font-weight: 700; cursor: pointer; transition: background $t;
+  &:hover { background: rgba($teal, .18); }
+}
+
+// =============================================================
+// MODAL — SHARED (logout confirm)
+// =============================================================
+.modal-overlay {
+  position: fixed; inset: 0; z-index: 1000;
+  background: rgba(0,0,0,.55); backdrop-filter: blur(4px);
+  display: flex; align-items: center; justify-content: center; padding: 20px;
+}
+
+.modal {
+  background: $surface-light; border-radius: 20px;
+  width: 100%; max-width: 620px;
+  box-shadow: 0 20px 60px rgba(0,0,0,.25);
+  animation: modalIn .25s ease;
+  display: flex; flex-direction: column;
+  max-height: calc(100vh - 40px); overflow: hidden;
+  &.dark { background: $surface-dark; }
+}
+
+@keyframes modalIn {
+  from { opacity: 0; transform: scale(.96) translateY(10px); }
+  to   { opacity: 1; transform: scale(1)   translateY(0); }
+}
+
+.confirm-modal { max-width: 420px !important; }
+
+.modal-danger-strip {
+  height: 3px; flex-shrink: 0;
+  background: linear-gradient(90deg, #ef4444 0%, #f97316 50%, #ef4444 100%);
+  background-size: 200% 100%;
+  animation: dangerStripPulse 2.5s ease-in-out infinite;
+}
+
+@keyframes dangerStripPulse {
+  0%, 100% { background-position: 0% 0%; }
+  50%       { background-position: 100% 0%; }
+}
+
+.modal-head {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 20px 24px 0; flex-shrink: 0;
+}
+
+.confirm-modal__title {
+  display: flex !important; align-items: center; gap: 8px;
+  font-size: 11px !important; font-weight: 700 !important;
+  letter-spacing: .08em !important; text-transform: uppercase !important;
+  color: #ef4444 !important; margin: 0;
+}
+
+.confirm-modal__dot {
+  display: inline-block; width: 7px; height: 7px; border-radius: 50%;
+  background: #ef4444; box-shadow: 0 0 0 3px rgba(239,68,68,.2); flex-shrink: 0;
+  animation: confirmDotPulse 2s ease-in-out infinite;
+}
+
+@keyframes confirmDotPulse {
+  0%, 100% { box-shadow: 0 0 0 3px rgba(239,68,68,.2); }
+  50%       { box-shadow: 0 0 0 6px rgba(239,68,68,.06); }
+}
+
+.close-btn {
+  width: 32px; height: 32px; border-radius: 8px; border: none;
+  background: $bg-light; cursor: pointer; color: $muted-light;
+  display: flex; align-items: center; justify-content: center;
+  svg { width: 16px; height: 16px; stroke: currentColor; fill: none; }
+  &:hover { color: #ef4444; background: rgba(239,68,68,.1); }
+  .dark & { background: $bg-dark; }
+}
+
+.modal-body {
+  padding: 20px 24px; display: flex; flex-direction: column; gap: 12px;
+  overflow-y: auto; flex: 1;
+}
+
+.modal-footer {
+  display: flex; gap: 10px; justify-content: flex-end;
+  padding: 16px 24px; flex-shrink: 0;
+  border-top: 1px solid $border-light;
+  .dark & { border-color: $border-dark; }
+}
+
+.delete-icon-row { display: flex; align-items: center; gap: 16px; margin-bottom: 4px; }
+
+.delete-icon-ring {
+  position: relative; width: 58px; height: 58px; flex-shrink: 0;
+  &::before {
+    content: ''; position: absolute; inset: 0; border-radius: 16px;
+    border: 1.5px solid rgba(239,68,68,.2); background: rgba(239,68,68,.06);
+    animation: iconRingPulse 3s ease-in-out infinite;
+  }
+  &::after {
+    content: ''; position: absolute; inset: 10px; border-radius: 9px; background: rgba(239,68,68,.1);
+  }
+  svg {
+    position: absolute; inset: 0; margin: auto;
+    width: 22px; height: 22px; stroke: #ef4444; fill: none;
+    stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; z-index: 1;
+  }
+}
+
+@keyframes iconRingPulse {
+  0%, 100% { transform: scale(1);    opacity: 1; }
+  50%       { transform: scale(1.06); opacity: .7; }
+}
+
+.delete-icon-text {
+  flex: 1;
+  &__title {
+    font-size: 1.1rem; font-weight: 800; line-height: 1.25; color: $text-light; margin: 0 0 4px;
+    .dark & { color: $text-dark; }
+  }
+  &__sub {
+    font-size: .78rem; color: $muted-light; line-height: 1.5; margin: 0;
+    .dark & { color: $muted-dark; }
+  }
+}
+
+.confirm-modal__desc {
+  font-size: .85rem; color: $muted-light; line-height: 1.65; margin: 0;
+  .dark & { color: $muted-dark; }
+}
+
+.delete-confirm-check {
+  display: flex; align-items: center; gap: 10px; padding: 11px 14px; border-radius: 10px;
+  background: rgba(239,68,68,.05); border: 1px solid rgba(239,68,68,.14);
+  cursor: pointer; user-select: none; transition: background .2s; margin-top: 4px;
+  &:hover { background: rgba(239,68,68,.09); }
+  input[type="checkbox"] { display: none; }
+  .chk-box {
+    width: 18px; height: 18px; border-radius: 5px;
+    border: 1.5px solid rgba(239,68,68,.35); background: rgba(239,68,68,.06);
+    flex-shrink: 0; display: flex; align-items: center; justify-content: center; transition: all .2s;
+    svg { width: 10px; height: 10px; stroke: #fff; fill: none; opacity: 0; transform: scale(.5); transition: all .2s; }
+  }
+  input:checked + .chk-box { background: #ef4444; border-color: #ef4444; svg { opacity: 1; transform: scale(1); } }
+  .chk-label {
+    font-size: .8rem; color: $muted-light; line-height: 1.4;
+    .dark & { color: $muted-dark; }
+    strong { font-weight: 700; color: $text-light; .dark & { color: $text-dark; } }
+  }
+  .dark & { background: rgba(239,68,68,.07); border-color: rgba(239,68,68,.18); &:hover { background: rgba(239,68,68,.12); } }
+}
+
+.cancel-btn {
+  padding: 10px 20px; border-radius: 10px;
+  border: 1.5px solid $border-light; background: transparent;
+  color: $text-light; font-size: .87rem; font-weight: 600; cursor: pointer; transition: all .2s;
+  &:hover { border-color: $teal; color: $teal; }
+  .dark & { border-color: $border-dark; color: $text-dark; }
+}
+
+.logout-confirm-btn {
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 10px 20px; background: #ef4444; color: #fff;
+  border: none; border-radius: 10px;
+  font-size: .87rem; font-weight: 700; cursor: pointer;
+  transition: background .2s, box-shadow .2s, transform .15s, opacity .2s;
+  box-shadow: 0 4px 16px rgba(239,68,68,.3);
+  svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; }
+  &:hover:not(:disabled) {
+    background: #dc2626; transform: translateY(-1px);
+    box-shadow: 0 6px 24px rgba(239,68,68,.42), 0 0 0 4px rgba(239,68,68,.12);
+  }
+  &:active:not(:disabled) { transform: translateY(0); box-shadow: 0 2px 10px rgba(239,68,68,.3); }
+  &:disabled { opacity: .4; cursor: not-allowed; box-shadow: none; transform: none; }
+}

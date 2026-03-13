@@ -1,14 +1,15 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { Observable, tap, catchError,throwError, BehaviorSubject } from 'rxjs';
-import { API_ENDPOINTS, LoginPayload,ChangePasswordPayload } from '../constants/api-endpoints';
+import { Observable, tap, catchError, throwError, BehaviorSubject } from 'rxjs';
+import { API_ENDPOINTS, LoginPayload, ChangePasswordPayload } from '../constants/api-endpoints';
 
 export interface AuthUser {
   _id:       string;
   name:      string;
   email:     string;
   role:      'super_admin' | 'admin' | 'employee';
+  avatar?:   string | null; // ✅ صورة البروفايل
   lastLogin?: string;
 }
 
@@ -33,7 +34,6 @@ const USER_KEY  = 'ms_user';
 @Injectable({ providedIn: 'root' })
 export class AuthService {
 
-  // Reactive current user — sidebar / navbar can subscribe to this
   private currentUser$ = new BehaviorSubject<AuthUser | null>(this.getUserFromStorage());
 
   constructor(
@@ -86,6 +86,23 @@ export class AuthService {
       );
   }
 
+  // ✅ رفع صورة البروفايل
+  uploadAvatar(file: File): Observable<ApiResponse> {
+    const formData = new FormData();
+    formData.append('avatar', file);
+    return this.http
+      .post<ApiResponse>(API_ENDPOINTS.AUTH.AVATAR, formData)
+      .pipe(
+        tap((res) => {
+          if (res.success && res.data?.avatar) {
+            const user = this.getCurrentUser();
+            if (user) this.updateStoredUser({ ...user, avatar: res.data.avatar });
+          }
+        }),
+        catchError((err) => throwError(() => err))
+      );
+  }
+
   // ── Session helpers ────────────────────────────────────────
   isAuthenticated(): boolean {
     return !!this.getToken();
@@ -99,7 +116,6 @@ export class AuthService {
     return this.currentUser$.getValue();
   }
 
-  /** Observable stream — subscribe in components for reactivity */
   getUser$(): Observable<AuthUser | null> {
     return this.currentUser$.asObservable();
   }

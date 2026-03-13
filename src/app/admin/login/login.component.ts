@@ -119,7 +119,7 @@ export class LoginComponent implements OnInit, OnDestroy {
         // Delay navigation so user sees the toast
         setTimeout(() => {
           this.router.navigate(['/admin/dashboard']);
-        }, 1800);
+        }, 600);
       },
       error: (err) => {
         this.isLoading = false;
@@ -142,7 +142,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   // ── Toast helpers ────────────────────────────────────────────
-  showToast(type: ToastType, title: string, message: string, duration = 3500): void {
+  showToast(type: ToastType, title: string, message: string, duration = 600): void {
     // Clear any running timer
     if (this.toastTimer) clearTimeout(this.toastTimer);
 

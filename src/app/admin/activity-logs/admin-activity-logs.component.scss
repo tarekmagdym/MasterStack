@@ -1,0 +1,232 @@
+@import '../shared/admin-base';
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700;800&display=swap');
+
+.logs-page    { @extend %page-base; }
+.page-header  { @extend %page-header; p { .dark & { color: $muted-dark; } } }
+
+// ─── Header actions ───────────────────────────────────────────────────────────
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.export-btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 10px 20px; border-radius: 10px; border: none; cursor: pointer;
+  background: linear-gradient(135deg, #26cabc 0%, #0e3581 100%);
+  color: white; font-size: 0.875rem; font-weight: 700; transition: opacity 0.2s;
+  svg { width: 16px; height: 16px; stroke: white; flex-shrink: 0; }
+  &:hover:not(:disabled) { opacity: 0.88; }
+  &:disabled { opacity: 0.4; cursor: not-allowed; }
+}
+
+.clear-btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 10px 20px; border-radius: 10px; cursor: pointer;
+  background: transparent;
+  border: 1.5px solid rgba(239, 68, 68, 0.4);
+  color: #ef4444; font-size: 0.875rem; font-weight: 700;
+  transition: all 0.2s;
+  svg { width: 16px; height: 16px; stroke: #ef4444; flex-shrink: 0; }
+  &:hover:not(:disabled) {
+    background: rgba(239, 68, 68, 0.08);
+    border-color: #ef4444;
+  }
+  &:disabled { opacity: 0.4; cursor: not-allowed; }
+}
+
+// ─── Confirm dialog ───────────────────────────────────────────────────────────
+.confirm-overlay {
+  position: fixed; inset: 0; z-index: 1000;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex; align-items: center; justify-content: center;
+  backdrop-filter: blur(4px);
+  animation: fadeIn 0.15s ease;
+}
+
+.confirm-dialog {
+  background: white; border-radius: 20px;
+  padding: 36px 32px; max-width: 420px; width: 90%;
+  display: flex; flex-direction: column; align-items: center;
+  gap: 12px; text-align: center;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+  animation: slideUp 0.2s ease;
+
+  .dark & { background: #1e293b; }
+
+  h3 {
+    font-size: 1.1rem; font-weight: 800; margin: 0;
+    color: #1a1a2e;
+    .dark & { color: #f1f5f9; }
+  }
+
+  p {
+    font-size: 0.875rem; color: #64748b; margin: 0; line-height: 1.6;
+    .dark & { color: #94a3b8; }
+  }
+}
+
+.confirm-icon {
+  width: 56px; height: 56px; border-radius: 16px;
+  background: rgba(239, 68, 68, 0.1);
+  display: flex; align-items: center; justify-content: center;
+  svg { width: 28px; height: 28px; stroke: #ef4444; stroke-width: 1.8; fill: none; }
+}
+
+.confirm-actions {
+  display: flex; gap: 10px; margin-top: 8px; width: 100%;
+}
+
+.cancel-btn {
+  flex: 1; padding: 11px; border-radius: 10px; cursor: pointer;
+  border: 1.5px solid #e2e8f0; background: transparent;
+  color: #64748b; font-size: 0.875rem; font-weight: 700;
+  transition: all 0.2s;
+  &:hover { border-color: #94a3b8; color: #1a1a2e; }
+  .dark & { border-color: #334155; color: #94a3b8; &:hover { color: #f1f5f9; } }
+}
+
+.confirm-delete-btn {
+  flex: 1; padding: 11px; border-radius: 10px; cursor: pointer;
+  border: none; background: #ef4444;
+  color: white; font-size: 0.875rem; font-weight: 700;
+  transition: opacity 0.2s;
+  &:hover { opacity: 0.88; }
+}
+
+@keyframes fadeIn  { from { opacity: 0; } to { opacity: 1; } }
+@keyframes slideUp { from { transform: translateY(16px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+// ─── Filters ──────────────────────────────────────────────────────────────────
+.filters-bar { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 20px; }
+
+.search-wrap {
+  display: flex; align-items: center; gap: 8px; padding: 8px 14px;
+  background: $surface-light; border: 1.5px solid $border-light; border-radius: 10px; flex: 1; min-width: 200px;
+  svg { width: 15px; height: 15px; stroke: $muted-light; stroke-width: 2; fill: none; flex-shrink: 0; }
+  input { border: none; background: transparent; outline: none; font-size: 0.85rem; color: $text-light; width: 100%;
+    &::placeholder { color: $muted-light; } }
+  &:focus-within { border-color: $teal; }
+  .dark & { background: $surface-dark; border-color: $border-dark;
+    input { color: $text-dark; &::placeholder { color: $muted-dark; } } }
+}
+
+.filter-select {
+  padding: 8px 12px; border: 1.5px solid $border-light; border-radius: 10px;
+  background: $surface-light; color: $text-light; font-size: 0.84rem; font-weight: 600; outline: none; cursor: pointer;
+  .dark & { background: $surface-dark; border-color: $border-dark; color: $text-dark; }
+}
+
+// ─── Table card ───────────────────────────────────────────────────────────────
+.log-table-card { @extend %card; padding: 0; overflow: hidden; }
+.data-table     { @extend %data-table; }
+
+// ─── Loading skeleton ─────────────────────────────────────────────────────────
+@keyframes shimmer {
+  0%   { background-position: -600px 0; }
+  100% { background-position:  600px 0; }
+}
+
+.skeleton-row {
+  display: flex; align-items: center; gap: 14px;
+  padding: 16px 20px; border-bottom: 1px solid $border-light;
+  .dark & { border-color: $border-dark; }
+  &:last-child { border-bottom: none; }
+}
+
+.sk-lines { flex: 1; display: flex; flex-direction: column; gap: 8px; }
+
+.sk {
+  border-radius: 6px;
+  background: linear-gradient(90deg, #e2e8f0 25%, #f1f5f9 50%, #e2e8f0 75%);
+  background-size: 600px 100%;
+  animation: shimmer 1.4s infinite;
+  .dark & {
+    background: linear-gradient(90deg, #1e293b 25%, #334155 50%, #1e293b 75%);
+    background-size: 600px 100%;
+  }
+  &-icon  { width: 36px; height: 36px; border-radius: 10px; flex-shrink: 0; }
+  &-title { height: 13px; width: 55%; }
+  &-sub   { height: 11px; width: 35%; }
+  &-pill  { height: 28px; width: 80px; border-radius: 8px; }
+}
+
+// ─── Empty / Error states ─────────────────────────────────────────────────────
+.state-container {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  padding: 60px 20px; gap: 12px;
+}
+
+.empty-state {
+  h3 { font-size: 1rem; font-weight: 700; margin: 0; color: $text-light; .dark & { color: $text-dark; } }
+  p  { font-size: 0.84rem; color: $muted-light; margin: 0; text-align: center; .dark & { color: $muted-dark; } }
+}
+
+.state-icon {
+  width: 56px; height: 56px; border-radius: 16px;
+  background: rgba($teal, .1); display: flex; align-items: center; justify-content: center;
+  svg { width: 26px; height: 26px; stroke: $teal; stroke-width: 1.8; fill: none; }
+  &.error-icon { background: rgba(239,68,68,.1); svg { stroke: #ef4444; } }
+}
+
+.retry-btn {
+  margin-top: 4px; padding: 8px 20px; border-radius: 10px;
+  background: $grad; color: white; font-size: 0.85rem; font-weight: 700;
+  border: none; cursor: pointer; transition: opacity $t;
+  &:hover { opacity: .85; }
+}
+
+// ─── Row cells ────────────────────────────────────────────────────────────────
+.log-action { display: flex; align-items: flex-start; gap: 12px; }
+
+.log-type-icon {
+  width: 36px; height: 36px; border-radius: 10px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  svg { width: 17px; height: 17px; stroke-width: 2; fill: none; }
+  &.auth   { background: rgba($blue, .1);      svg { stroke: $blue; } }
+  &.create { background: rgba(22,163,74, .1);  svg { stroke: #16a34a; } }
+  &.update { background: rgba($teal, .1);      svg { stroke: $teal; } }
+  &.delete { background: rgba(239,68,68, .1);  svg { stroke: #ef4444; } }
+  &.view   { background: rgba($muted-light,.1); svg { stroke: $muted-light; } }
+}
+
+.log-title  { display: block; font-size: 0.85rem; font-weight: 700; }
+.log-detail { display: block; font-size: 0.75rem; color: $muted-light; margin-top: 2px;
+  .dark & { color: $muted-dark; } }
+
+.user-cell { display: flex; align-items: center; gap: 8px; }
+.user-av   { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center;
+  justify-content: center; font-size: 0.65rem; font-weight: 800; color: white; flex-shrink: 0; }
+
+.type-badge {
+  padding: 2px 9px; border-radius: 6px; font-size: 0.7rem; font-weight: 800;
+  text-transform: uppercase; letter-spacing: 0.4px;
+  &.auth   { background: rgba($blue, .1);      color: $blue; }
+  &.create { background: rgba(22,163,74, .1);  color: #16a34a; }
+  &.update { background: rgba($teal, .1);      color: $teal; }
+  &.delete { background: rgba(239,68,68, .1);  color: #ef4444; }
+  &.view   { background: rgba($muted-light,.1); color: $muted-light; }
+}
+
+.time-cell { font-size: 0.78rem; color: $muted-light; white-space: nowrap;
+  .dark & { color: $muted-dark; } }
+
+// ─── Pagination ───────────────────────────────────────────────────────────────
+.pagination {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 20px; border-top: 1px solid $border-light;
+  .dark & { border-color: $border-dark; }
+}
+.pag-info { font-size: 0.8rem; color: $muted-light; .dark & { color: $muted-dark; } }
+.pag-btns { display: flex; gap: 4px; }
+.pag-btn {
+  min-width: 34px; height: 34px; padding: 0 10px;
+  border: 1.5px solid $border-light; border-radius: 8px;
+  background: transparent; color: $text-light; font-size: 0.82rem; font-weight: 700;
+  cursor: pointer; transition: all $t;
+  &:hover:not(:disabled):not(.active) { border-color: $teal; color: $teal; }
+  &.active { background: $grad; color: white; border-color: transparent; box-shadow: 0 3px 10px rgba($teal,.3); }
+  &:disabled { opacity: 0.4; cursor: not-allowed; }
+  .dark & { border-color: $border-dark; color: $text-dark; }
+}

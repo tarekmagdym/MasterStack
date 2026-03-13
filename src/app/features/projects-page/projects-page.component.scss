@@ -607,19 +607,20 @@ $font-en: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-s
   }
 }
 
+// ── FIX: project card image — show full, no crop ──────────────────────────
 .project-image {
   position: relative;
-  height: 260px;
   background: $gradient-hero;
   overflow: hidden;
-  
+
   img {
     width: 100%;
-    height: 100%;
-    object-fit: cover;
+    height: auto;
+    display: block;
+    object-fit: contain;
     transition: transform 0.4s ease;
   }
-  
+
   &::before {
     content: '';
     position: absolute;
@@ -630,13 +631,15 @@ $font-en: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-s
     background: $gradient-mixed;
     opacity: 0.15;
     transition: opacity 0.3s ease;
+    pointer-events: none;
+    z-index: 1;
   }
-  
+
   .project-card:hover & {
     img {
-      transform: scale(1.05);
+      transform: scale(1.03);
     }
-    
+
     &::before {
       opacity: 0.25;
     }
@@ -1134,12 +1137,8 @@ $font-en: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-s
 }
 
 @keyframes fade-in {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 .modal-content {
@@ -1163,14 +1162,8 @@ $font-en: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-s
 }
 
 @keyframes slide-up {
-  from {
-    transform: translateY(50px);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
+  from { transform: translateY(50px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
 }
 
 .modal-close {
@@ -1204,18 +1197,18 @@ $font-en: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-s
 
 .modal-image {
   width: 100%;
-  height: 400px;
   overflow: hidden;
   border-radius: 25px 25px 0 0;
   
   img {
     width: 100%;
-    height: 100%;
-    object-fit: cover;
+    height: auto;
+    display: block;
+    object-fit: contain;
   }
   
   @media (max-width: 768px) {
-    height: 250px;
+    border-radius: 20px 20px 0 0;
   }
 }
 
@@ -1260,17 +1253,11 @@ $font-en: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-s
   margin: 0 0 0.75rem;
   font-family: $font-en;
   
-  &[lang="ar"] {
-    font-family: $font-ar;
-  }
+  &[lang="ar"] { font-family: $font-ar; }
   
-  @media (max-width: 768px) {
-    font-size: 1.8rem;
-  }
+  @media (max-width: 768px) { font-size: 1.8rem; }
   
-  :host-context(.dark-mode) & {
-    color: $dark-text;
-  }
+  :host-context(.dark-mode) & { color: $dark-text; }
 }
 
 .modal-date {
@@ -1279,9 +1266,7 @@ $font-en: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-s
   font-weight: 600;
   font-family: $font-en;
   
-  :host-context(.dark-mode) & {
-    color: #a0a0b8;
-  }
+  :host-context(.dark-mode) & { color: #a0a0b8; }
 }
 
 .modal-description {
@@ -1293,14 +1278,8 @@ $font-en: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-s
     color: $dark;
     margin: 0 0 1rem;
     font-family: $font-en;
-    
-    &[lang="ar"] {
-      font-family: $font-ar;
-    }
-    
-    :host-context(.dark-mode) & {
-      color: $dark-text;
-    }
+    &[lang="ar"] { font-family: $font-ar; }
+    :host-context(.dark-mode) & { color: $dark-text; }
   }
   
   p {
@@ -1309,14 +1288,8 @@ $font-en: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-s
     line-height: 1.7;
     margin: 0;
     font-family: $font-en;
-    
-    &[lang="ar"] {
-      font-family: $font-ar;
-    }
-    
-    :host-context(.dark-mode) & {
-      color: #a0a0b8;
-    }
+    &[lang="ar"] { font-family: $font-ar; }
+    :host-context(.dark-mode) & { color: #a0a0b8; }
   }
 }
 
@@ -1329,14 +1302,8 @@ $font-en: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-s
     color: $dark;
     margin: 0 0 1rem;
     font-family: $font-en;
-    
-    &[lang="ar"] {
-      font-family: $font-ar;
-    }
-    
-    :host-context(.dark-mode) & {
-      color: $dark-text;
-    }
+    &[lang="ar"] { font-family: $font-ar; }
+    :host-context(.dark-mode) & { color: $dark-text; }
   }
 }
 
@@ -1355,9 +1322,7 @@ $font-en: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-s
   font-weight: 600;
   font-family: $font-en;
   
-  :host-context(.dark-mode) & {
-    background: rgba(38, 202, 188, 0.15);
-  }
+  :host-context(.dark-mode) & { background: rgba(38, 202, 188, 0.15); }
 }
 
 .modal-features {
@@ -1369,14 +1334,8 @@ $font-en: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-s
     color: $dark;
     margin: 0 0 1rem;
     font-family: $font-en;
-    
-    &[lang="ar"] {
-      font-family: $font-ar;
-    }
-    
-    :host-context(.dark-mode) & {
-      color: $dark-text;
-    }
+    &[lang="ar"] { font-family: $font-ar; }
+    :host-context(.dark-mode) & { color: $dark-text; }
   }
   
   ul {
@@ -1395,9 +1354,7 @@ $font-en: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-s
     border-bottom: 1px solid $medium-gray;
     font-family: $font-en;
     
-    &:last-child {
-      border-bottom: none;
-    }
+    &:last-child { border-bottom: none; }
     
     svg {
       width: 20px;
@@ -1421,9 +1378,7 @@ $font-en: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-s
   justify-content: center;
   flex-wrap: wrap;
   
-  @media (max-width: 480px) {
-    flex-direction: column;
-  }
+  @media (max-width: 480px) { flex-direction: column; }
 }
 
 .modal-btn {
@@ -1440,48 +1395,28 @@ $font-en: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-s
   border: none;
   cursor: pointer;
   
-  svg {
-    width: 20px;
-    height: 20px;
-    stroke-width: 2.5;
-  }
+  svg { width: 20px; height: 20px; stroke-width: 2.5; }
   
   &.primary {
     background: $gradient-mixed;
     color: $white;
     box-shadow: 0 8px 25px rgba(38, 202, 188, 0.3);
-    
-    &:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 12px 35px rgba(38, 202, 188, 0.4);
-    }
+    &:hover { transform: translateY(-3px); box-shadow: 0 12px 35px rgba(38, 202, 188, 0.4); }
   }
   
   &.secondary {
     background: transparent;
     color: $text-gray;
     border: 2px solid $medium-gray;
-    
-    &:hover {
-      border-color: $primary-teal;
-      color: $primary-teal;
-    }
-    
+    &:hover { border-color: $primary-teal; color: $primary-teal; }
     :host-context(.dark-mode) & {
       color: $dark-text;
       border-color: $dark-border;
-      
-      &:hover {
-        border-color: $primary-teal;
-        color: $primary-teal;
-      }
+      &:hover { border-color: $primary-teal; color: $primary-teal; }
     }
   }
   
-  @media (max-width: 480px) {
-    width: 100%;
-    justify-content: center;
-  }
+  @media (max-width: 480px) { width: 100%; justify-content: center; }
 }
 
 // ============================================
@@ -1494,19 +1429,15 @@ $font-en: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-s
   .load-more-btn,
   .modal-btn,
   .project-quick-view {
-    svg {
-      transform: scaleX(-1);
-    }
-    
-    &:hover svg {
-      transform: scaleX(-1) translateX(-5px);
-    }
+    svg { transform: scaleX(-1); }
+    &:hover svg { transform: scaleX(-1) translateX(-5px); }
   }
-  
-  .load-more-btn:hover svg {
-    transform: scaleX(-1) translateY(3px);
-  }
+  .load-more-btn:hover svg { transform: scaleX(-1) translateY(3px); }
 }
+
+// ============================================
+// TESTIMONIALS SECTION
+// ============================================
 .testimonials-section {
   padding: 5rem 0 4rem;
   background: $light-gray;
@@ -1551,28 +1482,13 @@ $font-en: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-s
   }
 }
 
-// ============================================
-// CONTAINER — always centered
-// ============================================
-.section-container {
-  position: relative;
-  z-index: 1;
-  max-width: 1300px;
-  margin: 0 auto;
-  padding: 0 2rem;
-
-  @media (max-width: 768px) { padding: 0 1.25rem; }
-}
-
-// Section header — FORCE CENTER regardless of dir
 .section-header {
   text-align: center !important;
   max-width: 720px;
   margin: 0 auto 2.5rem;
-  direction: ltr; // neutralize RTL for header alignment
+  direction: ltr;
   unicode-bidi: plaintext;
 
-  // Then re-apply correct text direction for content
   [dir="rtl"] & {
     direction: rtl;
     text-align: center !important;
@@ -1623,7 +1539,7 @@ $font-en: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-s
 }
 
 // ============================================
-// OVERVIEW BAR — row, centered, flex-wrap safe
+// OVERVIEW BAR
 // ============================================
 .testimonials-overview {
   display: flex;
@@ -1638,9 +1554,8 @@ $font-en: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-s
   box-shadow: 0 6px 24px rgba(0,0,0,0.06);
   border: 1px solid rgba(38,202,188,0.12);
   flex-wrap: wrap;
-
-  // RTL: keep visual order correct by using ltr layout direction
   direction: ltr;
+
   [dir="rtl"] & { direction: rtl; }
 
   :host-context(.dark-mode) & {
@@ -1682,13 +1597,9 @@ $font-en: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-s
 .overview-stars {
   display: flex;
   gap: 3px;
-  direction: ltr; // stars always LTR
+  direction: ltr;
 
-  svg {
-    width: 18px;
-    height: 18px;
-    fill: #f59e0b;
-  }
+  svg { width: 18px; height: 18px; fill: #f59e0b; }
 }
 
 .overview-count {
@@ -1740,17 +1651,9 @@ $font-en: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-s
 
   [dir="rtl"] & { font-family: $font-ar; }
 
-  &:hover {
-    background: rgba(38,202,188,0.14);
-    transform: translateY(-2px);
-  }
+  &:hover { background: rgba(38,202,188,0.14); transform: translateY(-2px); }
 
-  svg {
-    width: 15px;
-    height: 15px;
-    stroke: $primary-teal;
-    flex-shrink: 0;
-  }
+  svg { width: 15px; height: 15px; stroke: $primary-teal; flex-shrink: 0; }
 
   :host-context(.dark-mode) & {
     background: rgba(38,202,188,0.11);
@@ -1760,7 +1663,7 @@ $font-en: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-s
 }
 
 // ============================================
-// SLIDER OUTER — arrows sit beside viewport
+// SLIDER
 // ============================================
 .slider-outer {
   display: flex;
@@ -1769,14 +1672,10 @@ $font-en: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-s
   width: 100%;
 }
 
-// ============================================
-// SLIDER VIEWPORT
-// ============================================
 .slider-viewport {
   flex: 1;
-  min-width: 0; // critical: prevents flex child from overflowing
+  min-width: 0;
   overflow: hidden;
-  // Soft edge fade — works in both LTR/RTL
   mask-image: linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%);
   -webkit-mask-image: linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%);
 
@@ -1786,12 +1685,11 @@ $font-en: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-s
   }
 }
 
-// Track — ALWAYS ltr direction so transform works correctly in RTL pages
 .slider-track {
   display: flex;
-  flex-direction: row; // always row
-  direction: ltr;      // CRITICAL: fix RTL transform direction
-  gap: 24px; // set by JS via element style
+  flex-direction: row;
+  direction: ltr;
+  gap: 24px;
   transition: none;
   will-change: transform;
 
@@ -1804,11 +1702,8 @@ $font-en: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-s
 // TESTIMONIAL CARD
 // ============================================
 .t-card {
-  // Width is set via [style.flex-basis] binding in the component
-  // JS calculates: (viewportWidth - gaps) / cardsVisible
   flex-shrink: 0;
   flex-grow: 0;
-  // Force internal text back to correct reading direction
   direction: rtl;
   [dir="ltr"] & { direction: ltr; }
 
@@ -1834,14 +1729,9 @@ $font-en: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-s
   :host-context(.dark-mode) & {
     background: $dark-card;
     box-shadow: 0 5px 22px rgba(0,0,0,0.28);
-
-    &:hover {
-      box-shadow: 0 16px 40px rgba(0,0,0,0.4);
-      border-color: rgba(38,202,188,0.3);
-    }
+    &:hover { box-shadow: 0 16px 40px rgba(0,0,0,0.4); border-color: rgba(38,202,188,0.3); }
   }
 
-  // ── Featured (blue) ──
   &--featured {
     background: linear-gradient(145deg, darken($primary-blue, 2%) 0%, #1a4ba8 55%, $primary-blue 100%);
     border-color: transparent !important;
@@ -1876,11 +1766,9 @@ $font-en: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-s
   }
 }
 
-// Quote icon (decorative top corner)
 .t-card__quote {
   position: absolute;
   top: 1.1rem;
-  // LTR: top-right; RTL: top-left
   right: 1.2rem;
   [dir="rtl"] & { right: auto; left: 1.2rem; }
   pointer-events: none;
@@ -1897,21 +1785,13 @@ $font-en: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-s
   :host-context(.dark-mode) & svg { fill: rgba(38,202,188,0.12); }
 }
 
-// Stars row
 .t-card__stars {
   display: flex;
   gap: 2px;
-  direction: ltr; // stars always left-to-right visually
-
-  svg {
-    width: 17px;
-    height: 17px;
-    fill: #f59e0b;
-    filter: drop-shadow(0 1px 2px rgba(245,158,11,0.18));
-  }
+  direction: ltr;
+  svg { width: 17px; height: 17px; fill: #f59e0b; filter: drop-shadow(0 1px 2px rgba(245,158,11,0.18)); }
 }
 
-// Review text
 .t-card__text {
   font-size: 0.95rem;
   line-height: 1.75;
@@ -1920,16 +1800,11 @@ $font-en: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-s
   flex: 1;
   font-family: $font-en;
 
-  &[lang="ar"] {
-    font-family: $font-ar;
-    font-size: 0.97rem;
-    line-height: 1.9;
-  }
+  &[lang="ar"] { font-family: $font-ar; font-size: 0.97rem; line-height: 1.9; }
 
   :host-context(.dark-mode) & { color: #c5c6d5; }
 }
 
-// Author row
 .t-card__author {
   display: flex;
   align-items: center;
@@ -1941,7 +1816,6 @@ $font-en: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-s
   :host-context(.dark-mode) & { border-top-color: rgba(38,202,188,0.14); }
 }
 
-// Avatar circle
 .t-avatar {
   width: 44px;
   height: 44px;
@@ -1976,9 +1850,7 @@ $font-en: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-s
     overflow: hidden;
     text-overflow: ellipsis;
     font-family: $font-en;
-
     &[lang="ar"] { font-family: $font-ar; }
-
     :host-context(.dark-mode) & { color: $dark-text; }
   }
 
@@ -1990,9 +1862,7 @@ $font-en: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-s
     overflow: hidden;
     text-overflow: ellipsis;
     font-family: $font-en;
-
     &[lang="ar"] { font-family: $font-ar; }
-
     :host-context(.dark-mode) & { color: #a0a0b8; }
   }
 }
@@ -2013,15 +1883,8 @@ $font-en: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-s
   cursor: pointer;
   transition: all 0.28s ease;
   box-shadow: 0 3px 12px rgba(0,0,0,0.07);
-  flex-shrink: 0;
 
-  svg {
-    width: 19px;
-    height: 19px;
-    stroke: $primary-teal;
-    stroke-width: 2.5;
-    transition: transform 0.22s ease;
-  }
+  svg { width: 19px; height: 19px; stroke: $primary-teal; stroke-width: 2.5; transition: transform 0.22s ease; }
 
   &:hover {
     background: $gradient-mixed;
@@ -2036,7 +1899,6 @@ $font-en: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-s
   :host-context(.dark-mode) & {
     background: $dark-card;
     border-color: rgba(38,202,188,0.32);
-
     &:hover { background: $gradient-mixed; border-color: transparent; }
   }
 
@@ -2047,7 +1909,6 @@ $font-en: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-s
   }
 }
 
-// In RTL, flip arrow icons so prev = right, next = left
 [dir="rtl"] {
   .slider-arrow-prev svg { transform: scaleX(-1); }
   .slider-arrow-next svg { transform: scaleX(-1); }
@@ -2064,7 +1925,7 @@ $font-en: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-s
   justify-content: center;
   gap: 1.8rem;
   margin-top: 1.8rem;
-  direction: ltr; // keep dots order predictable
+  direction: ltr;
 }
 
 .slider-dots {
@@ -2090,10 +1951,7 @@ $font-en: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-s
     box-shadow: 0 2px 8px rgba(38,202,188,0.38);
   }
 
-  &:hover:not(.active) {
-    background: rgba(38,202,188,0.45);
-    transform: scale(1.2);
-  }
+  &:hover:not(.active) { background: rgba(38,202,188,0.45); transform: scale(1.2); }
 
   :host-context(.dark-mode) & {
     background: rgba(38,202,188,0.18);
@@ -2129,26 +1987,179 @@ $font-en: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-s
   color: $text-gray;
   :host-context(.dark-mode) & { color: #a0a0b8; }
 }
-// ============================================
-// SMOOTH SCROLLING FOR MODAL
-// ============================================
-.modal-content::-webkit-scrollbar {
-  width: 8px;
-}
 
+// ============================================
+// MODAL SCROLLBAR
+// ============================================
+.modal-content::-webkit-scrollbar { width: 8px; }
 .modal-content::-webkit-scrollbar-track {
   background: $light-gray;
-  
-  :host-context(.dark-mode) & {
-    background: $dark-surface;
-  }
+  :host-context(.dark-mode) & { background: $dark-surface; }
 }
-
 .modal-content::-webkit-scrollbar-thumb {
   background: $primary-teal;
   border-radius: 4px;
-  
-  &:hover {
-    background: darken($primary-teal, 10%);
+  &:hover { background: darken($primary-teal, 10%); }
+}
+
+// ============================================
+// ERROR STATE
+// ============================================
+.error-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: 80px 24px;
+  text-align: center;
+
+  .error-icon {
+    width: 56px;
+    height: 56px;
+    stroke: #ef4444;
+    fill: none;
+    opacity: 0.7;
   }
+
+  p {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #ef4444;
+  }
+}
+
+.retry-btn {
+  padding: 10px 24px;
+  border: 1.5px solid #ef4444;
+  border-radius: 10px;
+  background: transparent;
+  color: #ef4444;
+  font-size: 0.87rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &:hover { background: #ef4444; color: #fff; }
+}
+
+// ============================================
+// LOADING SKELETONS
+// ============================================
+@keyframes shimmer {
+  from { background-position: -600px 0; }
+  to   { background-position:  600px 0; }
+}
+
+%skeleton-shimmer {
+  background: linear-gradient(90deg, #e2e8f0 25%, #f1f5f9 50%, #e2e8f0 75%);
+  background-size: 1200px 100%;
+  animation: shimmer 1.5s infinite linear;
+  border-radius: 8px;
+}
+
+.project-card.skeleton {
+  pointer-events: none;
+  overflow: hidden;
+
+  .skel-image {
+    @extend %skeleton-shimmer;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    border-radius: 12px 12px 0 0;
+  }
+
+  .skel-body {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .skel-line {
+    @extend %skeleton-shimmer;
+    height: 14px;
+    width: 90%;
+
+    &.wide  { width: 100%; height: 20px; }
+    &.short { width: 55%; }
+  }
+}
+// ============================================
+// TESTIMONIAL SLIDER SKELETON
+// ============================================
+.slider-skeleton {
+  display: flex;
+  gap: 24px;
+  overflow: hidden;
+
+  @media (max-width: 768px) { flex-direction: column; }
+}
+
+.t-card-skeleton {
+  flex: 1;
+  min-width: 0;
+  background: $white;
+  border-radius: 20px;
+  padding: 1.8rem;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  box-shadow: 0 5px 22px rgba(0,0,0,0.06);
+
+  :host-context(.dark-mode) & {
+    background: $dark-card;
+  }
+
+  .skel-author {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 0.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(38,202,188,0.1);
+  }
+
+  .skel-avatar {
+    @extend %skeleton-shimmer;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .skel-author-text {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  @media (max-width: 768px) {
+    &:not(:first-child) { display: none; }
+  }
+}
+
+// ============================================
+// AVATAR IMAGE VARIANT
+// ============================================
+.t-avatar--img {
+  padding: 0;
+  overflow: hidden;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+  }
+}
+
+// ============================================
+// EMPTY STAR (for partial ratings)
+// ============================================
+.t-card__stars .star-empty {
+  opacity: 0.25;
+  fill: none;
+  stroke: #f59e0b;
 }

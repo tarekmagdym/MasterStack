@@ -12,16 +12,15 @@ export const API_ENDPOINTS = {
     LOGIN:           `${environment.apiUrl}/auth/login`,
     ME:              `${environment.apiUrl}/auth/me`,
     CHANGE_PASSWORD: `${environment.apiUrl}/auth/change-password`,
+    AVATAR:          `${environment.apiUrl}/auth/avatar`,
   },
 
   // ============================================
   // PROJECTS
   // ============================================
   PROJECTS: {
-    // Public
     GET_ALL:     `${environment.apiUrl}/projects`,
     GET_BY_SLUG: (slug: string) => `${environment.apiUrl}/projects/${slug}`,
-    // Admin
     ADMIN_GET_ALL: `${environment.apiUrl}/admin/projects`,
     ADMIN_CREATE:  `${environment.apiUrl}/admin/projects`,
     ADMIN_UPDATE:  (id: string) => `${environment.apiUrl}/admin/projects/${id}`,
@@ -32,9 +31,8 @@ export const API_ENDPOINTS = {
   // SERVICES
   // ============================================
   SERVICES: {
-    // Public
-    GET_ALL: `${environment.apiUrl}/services`,
-    // Admin
+    GET_ALL:     `${environment.apiUrl}/services`,
+    GET_FEATURED: `${environment.apiUrl}/services/featured`,
     ADMIN_GET_ALL: `${environment.apiUrl}/admin/services`,
     ADMIN_CREATE:  `${environment.apiUrl}/admin/services`,
     ADMIN_UPDATE:  (id: string) => `${environment.apiUrl}/admin/services/${id}`,
@@ -45,9 +43,7 @@ export const API_ENDPOINTS = {
   // TECHNOLOGIES
   // ============================================
   TECHNOLOGIES: {
-    // Public
-    GET_ALL: `${environment.apiUrl}/technologies`,   // ?category=frontend
-    // Admin
+    GET_ALL:       `${environment.apiUrl}/technologies`,
     ADMIN_GET_ALL: `${environment.apiUrl}/admin/technologies`,
     ADMIN_CREATE:  `${environment.apiUrl}/admin/technologies`,
     ADMIN_UPDATE:  (id: string) => `${environment.apiUrl}/admin/technologies/${id}`,
@@ -58,9 +54,7 @@ export const API_ENDPOINTS = {
   // TEAM MEMBERS
   // ============================================
   TEAM: {
-    // Public
-    GET_ALL: `${environment.apiUrl}/team`,
-    // Admin
+    GET_ALL:       `${environment.apiUrl}/team`,
     ADMIN_GET_ALL: `${environment.apiUrl}/admin/team`,
     ADMIN_CREATE:  `${environment.apiUrl}/admin/team`,
     ADMIN_UPDATE:  (id: string) => `${environment.apiUrl}/admin/team/${id}`,
@@ -71,10 +65,8 @@ export const API_ENDPOINTS = {
   // TESTIMONIALS
   // ============================================
   TESTIMONIALS: {
-    // Public
-    GET_ALL: `${environment.apiUrl}/testimonials`,
-    // Admin
-    ADMIN_GET_ALL: `${environment.apiUrl}/testimonials/all`,
+    GET_ALL:         `${environment.apiUrl}/testimonials`,
+    ADMIN_GET_ALL:   `${environment.apiUrl}/testimonials/all`,
     ADMIN_GET_BY_ID: (id: string) => `${environment.apiUrl}/testimonials/${id}`,
     ADMIN_CREATE:    `${environment.apiUrl}/testimonials`,
     ADMIN_UPDATE:    (id: string) => `${environment.apiUrl}/testimonials/${id}`,
@@ -85,13 +77,12 @@ export const API_ENDPOINTS = {
   // CONTACT MESSAGES
   // ============================================
   CONTACT: {
-    // Public
-    SUBMIT: `${environment.apiUrl}/contact`,
-    // Admin
+    SUBMIT:            `${environment.apiUrl}/contact`,
     ADMIN_GET_ALL:     `${environment.apiUrl}/admin/messages`,
     ADMIN_GET_BY_ID:   (id: string) => `${environment.apiUrl}/admin/messages/${id}`,
     ADMIN_TOGGLE_READ: (id: string) => `${environment.apiUrl}/admin/messages/${id}/read`,
     ADMIN_DELETE:      (id: string) => `${environment.apiUrl}/admin/messages/${id}`,
+    ADMIN_REPLY:       (id: string) => `${environment.apiUrl}/admin/messages/${id}/reply`,
   },
 
   // ============================================
@@ -105,11 +96,25 @@ export const API_ENDPOINTS = {
   },
 
   // ============================================
-  // DASHBOARD & ACTIVITY LOGS
+  // DASHBOARD & STATISTICS
   // ============================================
   DASHBOARD: {
-    STATS:         `${environment.apiUrl}/admin/stats`,
-    ACTIVITY_LOGS: `${environment.apiUrl}/admin/activity-logs`,  // ?page=1&limit=20
+    STATS:               `${environment.apiUrl}/admin/stats`,
+    STATISTICS:          `${environment.apiUrl}/admin/statistics`,   // ← NEW
+    ACTIVITY_LOGS:       `${environment.apiUrl}/admin/activity-logs`,
+    CLEAR_ACTIVITY_LOGS: `${environment.apiUrl}/admin/activity-logs`,
+  },
+
+  // ============================================
+  // NOTIFICATIONS
+  // ============================================
+  NOTIFICATIONS: {
+    GET_ALL:       `${environment.apiUrl}/admin/notifications`,
+    GET_BY_ID:     (id: string) => `${environment.apiUrl}/admin/notifications/${id}`,
+    MARK_READ:     (id: string) => `${environment.apiUrl}/admin/notifications/${id}/read`,
+    MARK_ALL_READ: `${environment.apiUrl}/admin/notifications/read-all`,
+    CREATE:        `${environment.apiUrl}/admin/notifications`,
+    DELETE:        (id: string) => `${environment.apiUrl}/admin/notifications/${id}`,
   },
 
 };
@@ -143,6 +148,14 @@ export class ApiUrlBuilder {
 }
 
 // ============================================
+// Shared i18n field type
+// ============================================
+export interface I18nString {
+  en: string;
+  ar: string;
+}
+
+// ============================================
 // Types
 // ============================================
 export interface LoginPayload {
@@ -155,89 +168,135 @@ export interface ChangePasswordPayload {
   newPassword: string;
 }
 
-
 export interface TestimonialPayload {
-  name: string;
-  position: string;
-  company: string;
-  content: string;
-  rating: 1 | 2 | 3 | 4 | 5;
-  avatar?: string;
+  name:         I18nString;
+  position:     I18nString;
+  company:      I18nString;
+  content:      I18nString;
+  rating:       1 | 2 | 3 | 4 | 5;
+  avatar?:      string;
   avatarColor?: string;
-  isActive?: boolean;
-  order?: number;
+  isActive?:    boolean;
+  order?:       number;
 }
+
 export interface ProjectPayload {
-  title: string;
-  description: string;
-  shortDescription?: string;
-  thumbnail: string;
-  images?: string[];
-  technologies?: string[];
-  category: string;
-  clientName?: string;
-  projectUrl?: string;
-  githubUrl?: string;
-  completionDate?: string;
-  isFeatured?: boolean;
-  isPublished?: boolean;
-  order?: number;
+  title:            I18nString;
+  description:      I18nString;
+  shortDescription?: I18nString;
+  thumbnail:        string;
+  images?:          string[];
+  technologies?:    string[];
+  category:         string;
+  clientName?:      string;
+  projectUrl?:      string;
+  githubUrl?:       string;
+  completionDate?:  string;
+  isFeatured?:      boolean;
+  isPublished?:     boolean;
+  order?:           number;
 }
 
 export interface ServicePayload {
-  title: string;
-  description: string;
-  shortDescription?: string;
-  icon: string;
-  features?: string[];
-  isPublished?: boolean;
-  order?: number;
+  title:             I18nString;
+  description:       I18nString;
+  shortDescription?: I18nString;
+  icon:              string;
+  features?:         string[];
+  isPublished?:      boolean;
+  order?:            number;
 }
 
 export interface TechnologyPayload {
-  name: string;
-  logo: string;
-  category: 'frontend' | 'backend' | 'database' | 'devops' | 'other';
-  proficiencyLevel?: 'beginner' | 'intermediate' | 'advanced' | 'expert';
-  isPublished?: boolean;
-  order?: number;
+  name:               I18nString;
+  logo:               string;
+  category:           'frontend' | 'backend' | 'database' | 'devops' | 'mobile' | 'tools' | 'other';
+  proficiencyLevel?:  'beginner' | 'intermediate' | 'advanced' | 'expert';
+  isPublished?:       boolean;
+  order?:             number;
 }
 
 export interface TeamMemberPayload {
-  name: string;
-  position: string;
-  bio?: string;
-  photo?: string;
+  name:         I18nString;
+  position:     I18nString;
+  bio?:         I18nString;
+  photo?:       string;
   socialLinks?: {
     linkedin?: string;
-    github?: string;
-    twitter?: string;
+    github?:   string;
+    twitter?:  string;
+    website?:  string;
   };
-  skills?: string[];
+  skills?:      string[];
   isPublished?: boolean;
-  order?: number;
+  order?:       number;
 }
 
 export interface ContactPayload {
-  name: string;
-  email: string;
-  phone?: string;
-  subject: string;
-  message: string;
+  name:     string;
+  email:    string;
+  phone?:   string;
+  subject:  string;
+  message:  string;
 }
 
 export interface CreateUserPayload {
-  name: string;
-  email: string;
+  name:     string;
+  email:    string;
   password: string;
-  role: 'super_admin' | 'admin' | 'employee';
+  role:     'super_admin' | 'admin' | 'employee';
 }
 
 export interface UpdateUserPayload {
-  name?: string;
-  email?: string;
-  role?: 'super_admin' | 'admin' | 'employee';
+  name?:     string;
+  email?:    string;
+  role?:     'super_admin' | 'admin' | 'employee';
   isActive?: boolean;
+}
+
+export interface CreateNotificationPayload {
+  title:        string;
+  message:      string;
+  type?:        'info' | 'success' | 'warning' | 'error';
+  resourceType?: 'Project' | 'Service' | 'Technology' | 'TeamMember' | 'ContactMessage' | 'User' | 'Auth';
+  resourceId?:  string;
+  recipient?:   string;
+}
+
+// ============================================
+// Statistics Response Types
+// ============================================
+export interface StatisticsResponse {
+  summary: {
+    totalProjects: number;
+    totalMessages: number;
+    totalUnread: number;
+    totalUsers: number;
+    totalServices: number;
+    totalTech: number;
+  };
+  projects: {
+    overTime: Array<{ _id: { year: number; month: number }; count: number }>;
+    byCategory: Array<{ _id: string; count: number }>;
+    byStatus: { published: number; draft: number; featured: number };
+  };
+  messages: {
+    overTime: Array<{ _id: { year: number; month: number }; total: number; unread: number }>;
+    totalRead: number;
+    totalUnread: number;
+  };
+  services: {
+    total: number;
+    published: number;
+    featured: number;
+    draft: number;
+  };
+  activity: {
+    byAction: Array<{ _id: string; count: number }>;
+    byResource: Array<{ _id: string; count: number }>;
+    overTime: Array<{ _id: { year: number; month: number }; count: number }>;
+    topUsers: Array<{ name: string; email: string; role: string; count: number }>;
+  };
 }
 
 export default API_ENDPOINTS;

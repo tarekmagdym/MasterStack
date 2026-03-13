@@ -1,559 +1,777 @@
-@use '../_admin-theme' as *;
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700;800&family=IBM+Plex+Sans:wght@400;500;600;700;800&display=swap');
 
-.dashboard-page {
-  @include page-enter;
-  font-family: $font;
-  padding: 2rem;
-  min-height: 100%;
+// ── Tokens ────────────────────────────────────────────────────────────────────
+$blue:    #0e3581;
+$teal:    #26cabc;
+$white:   #ffffff;
+$muted:   #6c757d;
+$dark:    #1a1a2e;
 
-  @media (max-width: 768px) {
-    padding: 1.25rem;
+$dm-bg:     #13141e;
+$dm-card:   #1e2135;
+$dm-border: #2e3150;
+$dm-text:   #e2e4f0;
+$dm-muted:  #7880a4;
+
+$c-teal:   #26cabc;
+$c-blue:   #0e3581;
+$c-orange: #f59e0b;
+$c-purple: #7c3aed;
+$c-green:  #16a34a;
+$c-pink:   #e11d8a;
+$c-red:    #ef4444;
+$c-gold:   #d97706;
+
+$grad: linear-gradient(135deg, $blue 0%, $teal 100%);
+$font-en: 'IBM Plex Sans', sans-serif;
+$font-ar: 'IBM Plex Sans Arabic', sans-serif;
+
+@mixin dark { :host-context(.dark-mode) & { @content; } }
+
+@mixin card {
+  background: $white;
+  border-radius: 16px;
+  border: 1px solid rgba($blue, 0.07);
+  box-shadow: 0 2px 16px rgba(14,53,129,0.08);
+  @include dark {
+    background: $dm-card;
+    border-color: $dm-border;
+    box-shadow: 0 2px 20px rgba(0,0,0,0.3);
   }
-}
-
-// ── Page Header ─────────────────────────────────────────────
-.page-header {
-  @include flex-between;
-  flex-wrap: wrap;
-  gap: 1rem;
-  margin-bottom: 2rem;
-}
-
-.page-title {
-  font-size: 1.75rem;
-  font-weight: 800;
-  color: $text;
-  margin: 0 0 0.25rem;
-  letter-spacing: -0.02em;
-}
-
-.page-sub {
-  font-size: 0.9rem;
-  color: $text-sub;
-  margin: 0;
-}
-
-.header-right {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-}
-
-.live-badge {
-  display: flex;
-  align-items: center;
-  gap: 0.45rem;
-  padding: 0.4rem 0.9rem;
-  background: rgba(34, 197, 94, 0.1);
-  border: 1px solid rgba(34, 197, 94, 0.25);
-  border-radius: 50px;
-  font-size: 0.78rem;
-  font-weight: 700;
-  color: $success;
-  letter-spacing: 0.04em;
-
-  .pulse {
-    width: 7px;
-    height: 7px;
-    background: $success;
-    border-radius: 50%;
-    animation: pulseDot 1.5s ease-in-out infinite;
-  }
-}
-
-.date-badge {
-  padding: 0.4rem 0.9rem;
-  background: $surface;
-  border: 1px solid $border;
-  border-radius: 50px;
-  font-size: 0.78rem;
-  color: $text-sub;
-  font-weight: 500;
-}
-
-// ── Stats Grid ──────────────────────────────────────────────
-.stats-grid {
-  display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  gap: 1rem;
-  margin-bottom: 1.5rem;
-
-  @media (max-width: 1400px) { grid-template-columns: repeat(3, 1fr); }
-  @media (max-width: 768px)  { grid-template-columns: repeat(2, 1fr); }
-  @media (max-width: 480px)  { grid-template-columns: 1fr; }
-}
-
-.stat-card {
-  @include card;
-  padding: 1.25rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-  animation: fadeUp 0.4s cubic-bezier(0.4, 0, 0.2, 1) var(--delay, 0s) both;
-
-  &.skeleton {
-    height: 110px;
-    background: $surface;
-    overflow: hidden;
-    position: relative;
-    &::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.03) 50%, transparent 100%);
-      animation: shimmer 1.5s infinite;
-    }
-  }
-}
-
-.stat-icon {
-  width: 38px;
-  height: 38px;
-  border-radius: $radius-sm;
-  @include flex-center;
-
-  svg {
-    width: 20px;
-    height: 20px;
-    stroke-width: 2;
-  }
-}
-
-.stat-card--teal   .stat-icon { background: $teal-dim;    svg { stroke: $teal; } }
-.stat-card--blue   .stat-icon { background: $blue-dim;    svg { stroke: #6b9fff; } }
-.stat-card--green  .stat-icon { background: $success-dim; svg { stroke: $success; } }
-.stat-card--yellow .stat-icon { background: $warning-dim; svg { stroke: $warning; } }
-.stat-card--red    .stat-icon { background: $danger-dim;  svg { stroke: $danger; } }
-.stat-card--purple .stat-icon { background: rgba(168,85,247,0.12); svg { stroke: #a855f7; } }
-
-.stat-body {
-  display: flex;
-  flex-direction: column;
-  gap: 0.2rem;
-}
-
-.stat-label {
-  font-size: 0.75rem;
-  color: $text-sub;
-  font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-
-.stat-value {
-  font-size: 1.7rem;
-  font-weight: 800;
-  color: $text;
-  letter-spacing: -0.02em;
-  line-height: 1;
-}
-
-.stat-trend {
-  display: flex;
-  align-items: center;
-  gap: 0.25rem;
-  font-size: 0.78rem;
-  font-weight: 600;
-  color: $text-dim;
-
-  svg {
-    width: 14px;
-    height: 14px;
-    stroke-width: 2.5;
-  }
-
-  &.up  { color: $success; svg { stroke: $success; } }
-  &.down { color: $danger; svg { stroke: $danger; } }
-}
-
-// ── Dashboard Row ───────────────────────────────────────────
-.dashboard-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1.25rem;
-  margin-bottom: 1.25rem;
-
-  &--bottom {
-    grid-template-columns: 1.5fr 1fr;
-  }
-
-  @media (max-width: 1100px) {
-    grid-template-columns: 1fr;
-    &--bottom { grid-template-columns: 1fr; }
-  }
-}
-
-// ── Dash Card ───────────────────────────────────────────────
-.dash-card {
-  @include card;
-  overflow: hidden;
-}
-
-.dash-card__header {
-  @include flex-between;
-  padding: 1.1rem 1.25rem;
-  border-bottom: 1px solid $border;
-}
-
-.dash-card__title {
-  display: flex;
-  align-items: center;
-  gap: 0.55rem;
-  font-size: 0.88rem;
-  font-weight: 700;
-  color: $text;
-  letter-spacing: 0.01em;
-
-  svg {
-    width: 16px;
-    height: 16px;
-    stroke: $teal;
-    stroke-width: 2;
-  }
-}
-
-.view-all-btn {
-  font-size: 0.78rem;
-  font-weight: 600;
-  color: $teal;
-  text-decoration: none;
-  padding: 0.3rem 0.7rem;
-  background: $teal-dim;
-  border-radius: 50px;
-  transition: all 0.2s;
-
-  &:hover {
-    background: $teal;
-    color: #fff;
-  }
-}
-
-// ── Messages ────────────────────────────────────────────────
-.messages-list {
-  @include custom-scrollbar;
-  max-height: 380px;
-  overflow-y: auto;
-}
-
-.msg-item {
-  display: flex;
-  align-items: flex-start;
-  gap: 0.85rem;
-  padding: 0.9rem 1.25rem;
-  border-bottom: 1px solid $border;
-  position: relative;
-  cursor: pointer;
-  transition: background 0.15s;
-
-  &:hover { background: $surface2; }
-  &:last-child { border-bottom: none; }
-
-  &.unread {
-    background: rgba(38, 202, 188, 0.04);
-  }
-
-  &.skeleton {
-    height: 72px;
-    background: $surface;
-    margin: 0.5rem 1rem;
-    border-radius: $radius-sm;
-    border: none;
-    overflow: hidden;
-    position: relative;
-    &::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.03) 50%, transparent 100%);
-      animation: shimmer 1.5s infinite;
-    }
-  }
-}
-
-.msg-avatar {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  background: $grad-main;
-  @include flex-center;
-  font-size: 0.85rem;
-  font-weight: 700;
-  color: #fff;
-  flex-shrink: 0;
-}
-
-.msg-body {
-  flex: 1;
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 0.2rem;
-}
-
-.msg-top {
-  @include flex-between;
-  gap: 0.5rem;
-}
-
-.msg-name {
-  font-size: 0.85rem;
-  font-weight: 700;
-  color: $text;
-}
-
-.msg-time {
-  font-size: 0.72rem;
-  color: $text-dim;
-  flex-shrink: 0;
-}
-
-.msg-subject {
-  font-size: 0.8rem;
-  font-weight: 600;
-  color: $text-sub;
-}
-
-.msg-preview {
-  font-size: 0.78rem;
-  color: $text-dim;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.msg-unread-dot {
-  width: 7px;
-  height: 7px;
-  background: $teal;
-  border-radius: 50%;
-  flex-shrink: 0;
-  margin-top: 6px;
-}
-
-// ── Projects ────────────────────────────────────────────────
-.projects-list {
-  @include custom-scrollbar;
-  max-height: 380px;
-  overflow-y: auto;
-}
-
-.proj-item {
-  display: flex;
-  align-items: center;
-  gap: 0.85rem;
-  padding: 0.85rem 1.25rem;
-  border-bottom: 1px solid $border;
-  transition: background 0.15s;
-
-  &:hover { background: $surface2; }
-  &:last-child { border-bottom: none; }
-
-  &.skeleton {
-    height: 64px;
-    background: $surface;
-    margin: 0.5rem 1rem;
-    border-radius: $radius-sm;
-    border: none;
-    overflow: hidden;
-    position: relative;
-    &::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.03) 50%, transparent 100%);
-      animation: shimmer 1.5s infinite;
-    }
-  }
-}
-
-.proj-thumb {
-  width: 38px;
-  height: 38px;
-  border-radius: $radius-sm;
-  @include flex-center;
-  flex-shrink: 0;
-
-  svg {
-    width: 18px;
-    height: 18px;
-    stroke: rgba(255, 255, 255, 0.8);
-    stroke-width: 2;
-  }
-}
-
-.proj-body {
-  flex: 1;
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 0.2rem;
-}
-
-.proj-title {
-  font-size: 0.85rem;
-  font-weight: 700;
-  color: $text;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.proj-cat {
-  font-size: 0.75rem;
-  color: $text-dim;
-}
-
-// ── Badges ──────────────────────────────────────────────────
-.badge {
-  @include badge($text-sub, $surface2);
-  font-size: 0.7rem;
-
-  &--success { @include badge($success, $success-dim); }
-  &--warning { @include badge($warning, $warning-dim); }
-  &--danger  { @include badge($danger, $danger-dim); }
-  &--info    { @include badge($info, $info-dim); }
-}
-
-// ── Activity Log ────────────────────────────────────────────
-.activity-list {
-  @include custom-scrollbar;
-  max-height: 300px;
-  overflow-y: auto;
-  padding: 0.5rem 0;
-}
-
-.activity-item {
-  display: flex;
-  align-items: flex-start;
-  gap: 0.9rem;
-  padding: 0.7rem 1.25rem;
-
-  &:hover { background: $surface2; }
-}
-
-.activity-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  margin-top: 5px;
-  flex-shrink: 0;
-
-  &.dot--create  { background: $success; box-shadow: 0 0 6px rgba(34, 197, 94, 0.5); }
-  &.dot--update  { background: $info; box-shadow: 0 0 6px rgba(59, 130, 246, 0.5); }
-  &.dot--delete  { background: $danger; box-shadow: 0 0 6px rgba(239, 68, 68, 0.5); }
-  &.dot--login   { background: $teal; box-shadow: 0 0 6px rgba(38, 202, 188, 0.5); }
-  &.dot--default { background: $text-dim; }
-}
-
-.activity-body {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 0.2rem;
-}
-
-.activity-text {
-  font-size: 0.82rem;
-  color: $text-sub;
-  line-height: 1.4;
-
-  strong { color: $text; }
-  .activity-target { color: $teal; font-weight: 600; }
-}
-
-.activity-time {
-  font-size: 0.72rem;
-  color: $text-dim;
-}
-
-// ── Quick Actions ───────────────────────────────────────────
-.quick-actions {
-  padding: 1rem 1.25rem;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0.65rem;
-}
-
-.qa-btn {
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-  padding: 0.75rem 1rem;
-  background: $surface2;
-  border: 1px solid $border;
-  border-radius: $radius-sm;
-  color: $text-sub;
-  font-size: 0.82rem;
-  font-weight: 600;
-  font-family: $font;
-  text-decoration: none;
-  transition: all 0.2s;
-  cursor: pointer;
-
-  svg {
-    width: 16px;
-    height: 16px;
-    stroke: $text-dim;
-    stroke-width: 2;
-    transition: stroke 0.2s;
-    flex-shrink: 0;
-  }
-
-  &:hover {
-    background: $surface3;
-    border-color: $teal;
-    color: $text;
-    svg { stroke: $teal; }
-  }
-
-  &--primary {
-    background: $grad-main;
-    border-color: transparent;
-    color: #fff;
-    box-shadow: $shadow-teal;
-
-    svg { stroke: rgba(255, 255, 255, 0.9); }
-
-    &:hover {
-      opacity: 0.9;
-      transform: translateY(-1px);
-      color: #fff;
-      svg { stroke: #fff; }
-    }
-  }
-}
-
-// ── Empty State ─────────────────────────────────────────────
-.empty-state {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 0.75rem;
-  padding: 2.5rem;
-  color: $text-dim;
-  font-size: 0.85rem;
-
-  svg {
-    width: 36px;
-    height: 36px;
-    stroke: $text-dim;
-    opacity: 0.5;
-  }
-}
-
-// ── Animations ──────────────────────────────────────────────
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(10px); }
-  to   { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes shimmer {
-  from { transform: translateX(-100%); }
-  to   { transform: translateX(100%); }
+  0%   { background-position: -700px 0; }
+  100% { background-position:  700px 0; }
+}
+@mixin skel {
+  background: linear-gradient(90deg, #eaecf4 25%, #f5f6fb 50%, #eaecf4 75%);
+  background-size: 700px 100%;
+  animation: shimmer 1.5s infinite linear;
+  @include dark {
+    background: linear-gradient(90deg, #252840 25%, #2e3150 50%, #252840 75%);
+    background-size: 700px 100%;
+  }
 }
 
-@keyframes pulseDot {
+@keyframes spin { to { transform: rotate(360deg); } }
+.spinning { animation: spin 0.8s linear infinite; }
+
+@keyframes pulse-ring {
   0%, 100% { opacity: 1; transform: scale(1); }
-  50%       { opacity: 0.6; transform: scale(0.8); }
+  50%       { opacity: 0.5; transform: scale(1.5); }
+}
+
+// ══════════════════════════════════════════════════════════════════════════════
+// PAGE
+// ══════════════════════════════════════════════════════════════════════════════
+.dash-page {
+  padding: 1.25rem 1.75rem 2rem;
+  max-width: 1600px;
+  font-family: $font-en;
+  color: $dark;
+  @include dark { color: $dm-text; }
+  &.rtl { font-family: $font-ar; direction: rtl; text-align: right; }
+  @media (max-width: 768px) { padding: 1rem 1rem 1.5rem; }
+}
+
+// ══════════════════════════════════════════════════════════════════════════════
+// WELCOME BANNER  — gradient rectangle like the screenshot sidebar active item
+// ══════════════════════════════════════════════════════════════════════════════
+.welcome-banner {
+  position: relative;
+  overflow: hidden;
+  background: $grad;
+  border-radius: 18px;
+  padding: 1.5rem 1.75rem;
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  box-shadow: 0 8px 32px rgba($blue, 0.28);
+}
+
+// Decorative translucent circles
+.wb-deco {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba($white, 0.08);
+  pointer-events: none;
+}
+.wb-deco-1 { width: 220px; height: 220px; top: -70px;  right: 180px; }
+.wb-deco-2 { width: 140px; height: 140px; bottom: -50px; right: 60px;  background: rgba($white,0.06); }
+.wb-deco-3 { width: 80px;  height: 80px;  top: 10px;   right: 80px;  background: rgba($white,0.05); }
+
+.wb-left {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  position: relative;
+  z-index: 1;
+}
+
+.wb-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  background: rgba($white, 0.18);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  svg {
+    width: 26px;
+    height: 26px;
+    stroke: $white;
+    stroke-width: 1.8;
+  }
+}
+
+.wb-title {
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: $white;
+  margin: 0 0 0.2rem;
+  font-family: $font-en;
+  &[lang="ar"] { font-family: $font-ar; }
+}
+
+.wb-sub {
+  font-size: 0.88rem;
+  color: rgba($white, 0.82);
+  margin: 0;
+  font-family: $font-en;
+  &[lang="ar"] { font-family: $font-ar; }
+}
+
+.wb-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.65rem;
+  position: relative;
+  z-index: 1;
+  .rtl & { align-items: flex-start; }
+}
+
+.wb-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.78rem;
+  color: rgba($white, 0.65);
+  font-family: $font-en;
+  svg { width: 12px; height: 12px; stroke: rgba($white, 0.5); stroke-width: 2.5; }
+}
+
+.wb-bc-active {
+  color: $white;
+  font-weight: 600;
+}
+
+.wb-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.last-upd {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.78rem;
+  color: rgba($white, 0.75);
+  font-family: $font-en;
+  svg { width: 13px; height: 13px; stroke: rgba($white, 0.75); }
+}
+
+// Refresh button — solid white with gradient text, matches screenshot teal outline style
+.btn-refresh {
+  display: flex;
+  align-items: center;
+  gap: 0.42rem;
+  padding: 0.48rem 1.1rem;
+  background: rgba($white, 0.18);
+  border: 1.5px solid rgba($white, 0.45);
+  border-radius: 10px;
+  color: $white;
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.22s ease;
+  font-family: $font-en;
+  backdrop-filter: blur(6px);
+  svg { width: 14px; height: 14px; stroke-width: 2.3; }
+
+  &:hover:not(:disabled) {
+    background: $white;
+    color: $blue;
+    border-color: $white;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+    svg { stroke: $blue; }
+  }
+  &:disabled { opacity: 0.5; cursor: not-allowed; }
+}
+
+// ══════════════════════════════════════════════════════════════════════════════
+// KPI ROW  — style matching screenshot cards (large icon left, label+value right)
+// ══════════════════════════════════════════════════════════════════════════════
+.kpi-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.kpi-card {
+  @include card;
+  padding: 1.1rem 1.2rem 0.9rem;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba($blue, 0.13);
+    @include dark { box-shadow: 0 10px 30px rgba(0,0,0,0.35); }
+  }
+}
+
+// thin colored top border matching screenshot's red underline per card
+.kpi-top-bar {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 3px;
+  &.teal   { background: $c-teal; }
+  &.blue   { background: $c-blue; }
+  &.orange { background: $c-orange; }
+  &.purple { background: $c-purple; }
+  &.green  { background: $c-green; }
+}
+
+.kpi-inner {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 0.65rem;
+}
+
+// Large square icon exactly like the screenshot
+.kpi-icon-wrap {
+  width: 54px;
+  height: 54px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  svg { width: 24px; height: 24px; stroke-width: 1.8; }
+
+  &.teal   { background: rgba($c-teal,   0.12); svg { stroke: $c-teal; }   @include dark { background: rgba($c-teal,   0.18); } }
+  &.blue   { background: rgba($c-blue,   0.10); svg { stroke: $c-blue; }   @include dark { background: rgba($c-blue,   0.20); svg { stroke: lighten($c-blue, 35%); } } }
+  &.orange { background: rgba($c-orange, 0.12); svg { stroke: $c-orange; } @include dark { background: rgba($c-orange, 0.18); } }
+  &.purple { background: rgba($c-purple, 0.12); svg { stroke: $c-purple; } @include dark { background: rgba($c-purple, 0.18); } }
+  &.green  { background: rgba($c-green,  0.12); svg { stroke: $c-green; }  @include dark { background: rgba($c-green,  0.18); } }
+}
+
+.kpi-data { flex: 1; min-width: 0; }
+
+.kpi-label {
+  display: block;
+  font-size: 0.71rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: $muted;
+  font-family: $font-en;
+  margin-bottom: 0.3rem;
+  &[lang="ar"] { font-family: $font-ar; letter-spacing: 0; }
+  @include dark { color: $dm-muted; }
+}
+
+.kpi-value-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.kpi-value {
+  font-size: 2rem;
+  font-weight: 800;
+  background: $grad;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 1;
+  font-family: $font-en;
+}
+
+.kpi-skel {
+  display: block;
+  width: 60px;
+  height: 2rem;
+  border-radius: 7px;
+  @include skel;
+}
+.kpi-skel-sm {
+  display: inline-block;
+  width: 40px;
+  height: 0.75rem;
+  border-radius: 4px;
+  @include skel;
+}
+
+.kpi-trend-icon svg { width: 15px; height: 15px; stroke: $c-green; stroke-width: 2.5; }
+
+.kpi-badge-pill {
+  padding: 0.1rem 0.45rem;
+  border-radius: 50px;
+  background: rgba($c-orange, 0.15);
+  color: $c-orange;
+  font-size: 0.68rem;
+  font-weight: 700;
+  font-family: $font-en;
+}
+
+.kpi-footer {
+  font-size: 0.77rem;
+  color: $muted;
+  font-family: $font-en;
+  &[lang="ar"] { font-family: $font-ar; }
+  strong { color: $dark; font-weight: 700; &.warn { color: $c-orange; } }
+  @include dark { color: $dm-muted; strong { color: $dm-text; } }
+}
+
+// ══════════════════════════════════════════════════════════════════════════════
+// SHARED CARD
+// ══════════════════════════════════════════════════════════════════════════════
+.card { @include card; padding: 1.25rem 1.35rem; }
+
+.card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  gap: 0.75rem;
+}
+
+.card-title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: $dark;
+  font-family: $font-en;
+  span[lang="ar"] { font-family: $font-ar; }
+  svg { width: 15px; height: 15px; stroke: $teal; stroke-width: 2; }
+  @include dark { color: $dm-text; }
+}
+
+// Animated pulse dot — matching the filled circle in the screenshot
+.pulse-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: $c-teal;
+  flex-shrink: 0;
+  position: relative;
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: -3px;
+    border-radius: 50%;
+    background: rgba($c-teal, 0.3);
+    animation: pulse-ring 2s ease-in-out infinite;
+  }
+
+  &.orange { background: $c-orange;
+    &::after { background: rgba($c-orange, 0.3); } }
+  &.blue   { background: $c-blue;
+    &::after { background: rgba($c-blue, 0.3); } }
+  &.purple { background: $c-purple;
+    &::after { background: rgba($c-purple, 0.3); } }
+  &.green  { background: $c-green;
+    &::after { background: rgba($c-green, 0.3); } }
+  &.pink   { background: $c-pink;
+    &::after { background: rgba($c-pink, 0.3); } }
+  &.gold   { background: $c-gold;
+    &::after { background: rgba($c-gold, 0.3); } }
+  &.teal   { background: $c-teal;
+    &::after { background: rgba($c-teal, 0.3); } }
+}
+
+.view-all {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: $teal;
+  text-decoration: none;
+  font-family: $font-en;
+  transition: gap 0.2s;
+  svg { width: 14px; height: 14px; stroke: $teal; stroke-width: 2.5; }
+  &:hover { gap: 0.55rem; }
+  .rtl & svg { transform: scaleX(-1); }
+}
+
+// ══════════════════════════════════════════════════════════════════════════════
+// MAIN GRID
+// ══════════════════════════════════════════════════════════════════════════════
+.main-grid {
+  display: grid;
+  grid-template-columns: 1fr 360px;
+  gap: 1.1rem;
+  margin-bottom: 1.25rem;
+  @media (max-width: 1100px) { grid-template-columns: 1fr; }
+}
+
+.activity-card {}
+
+.right-col {
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+}
+
+// ── Skeleton helpers ──────────────────────────────────────────────────────────
+.skel-av {
+  border-radius: 50%;
+  @include skel;
+  width: 40px; height: 40px; flex-shrink: 0;
+  &.sm { width: 32px; height: 32px; }
+  &.xs { width: 22px; height: 22px; }
+}
+.skel-body { flex: 1; }
+.skel-pill { width: 28px; height: 28px; border-radius: 8px; @include skel; flex-shrink: 0; }
+
+.skel-line {
+  height: 11px; border-radius: 5px; margin-bottom: 5px;
+  @include skel;
+  &.w10  { width: 10%; } &.w30  { width: 30%; } &.w50  { width: 50%; }
+  &.w60  { width: 60%; } &.w80  { width: 80%; } &.w100 { width: 100%; }
+}
+
+.empty-state {
+  display: flex; flex-direction: column; align-items: center; gap: 0.6rem;
+  padding: 2rem 0; color: $muted; font-size: 0.85rem; font-family: $font-en;
+  svg { width: 36px; height: 36px; stroke: rgba($muted, 0.5); }
+  &.sm { padding: 1.25rem 0; }
+  @include dark { color: $dm-muted; }
+}
+
+// ── Activity list ─────────────────────────────────────────────────────────────
+.act-list { display: flex; flex-direction: column; }
+
+.act-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.7rem 0.4rem;
+  border-radius: 10px;
+  transition: background 0.18s;
+  border-bottom: 1px solid rgba($blue, 0.05);
+  &:last-child { border-bottom: none; }
+  &:not(.skel):hover { background: rgba($teal, 0.04); }
+  &.skel { pointer-events: none; }
+  @include dark { border-bottom-color: rgba($dm-border, 0.4); }
+}
+
+.act-av {
+  width: 40px; height: 40px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.72rem; font-weight: 700; color: $white; flex-shrink: 0;
+  font-family: $font-en;
+}
+
+.act-body { flex: 1; min-width: 0; }
+
+.act-top {
+  display: flex; align-items: center; gap: 0.5rem;
+  flex-wrap: wrap; margin-bottom: 0.2rem;
+}
+
+.act-user {
+  font-size: 0.84rem; font-weight: 700; color: $dark; font-family: $font-en;
+  @include dark { color: $dm-text; }
+}
+
+.act-res {
+  font-size: 0.8rem; color: $muted; font-family: $font-en;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  @include dark { color: $dm-muted; }
+}
+
+.act-bot { display: flex; align-items: center; gap: 0.4rem; }
+
+.act-time { font-size: 0.72rem; color: $muted; font-family: $font-en; @include dark { color: $dm-muted; } }
+.act-sep  { font-size: 0.72rem; color: $muted; }
+.act-ip   { font-size: 0.7rem; color: $muted; font-family: $font-en; @include dark { color: $dm-muted; } }
+
+// action chips  — matching screenshot pill labels (green, blue, red, teal)
+.act-chip {
+  padding: 0.15rem 0.55rem; border-radius: 50px;
+  font-size: 0.7rem; font-weight: 600; font-family: $font-en;
+  white-space: nowrap; flex-shrink: 0;
+  &.chip-create { background: rgba($c-green,  0.12); color: $c-green; }
+  &.chip-update { background: rgba($c-teal,   0.12); color: $c-teal; }
+  &.chip-delete { background: rgba($c-red,    0.12); color: $c-red; }
+  &.chip-auth   { background: rgba($c-blue,   0.10); color: $c-blue; @include dark { color: lighten($c-blue,35%); } }
+  &.chip-view   { background: rgba($c-purple, 0.12); color: $c-purple; }
+}
+
+// right-side action badge icon box
+.act-badge {
+  width: 30px; height: 30px; border-radius: 8px;
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  svg { width: 14px; height: 14px; stroke-width: 2; }
+  &.badge-create { background: rgba($c-green,  0.1); svg { stroke: $c-green; } }
+  &.badge-update { background: rgba($c-teal,   0.1); svg { stroke: $c-teal; } }
+  &.badge-delete { background: rgba($c-red,    0.1); svg { stroke: $c-red; } }
+  &.badge-auth   { background: rgba($c-blue,   0.08); svg { stroke: $c-blue; } @include dark { svg { stroke: lighten($c-blue,35%); } } }
+  &.badge-view   { background: rgba($c-purple, 0.1); svg { stroke: $c-purple; } }
+}
+
+// ── Quick Actions ─────────────────────────────────────────────────────────────
+.qa-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.75rem;
+}
+
+.qa-btn {
+  display: flex; flex-direction: column; align-items: center; gap: 0.55rem;
+  padding: 0.9rem 0.5rem;
+  border-radius: 14px;
+  background: rgba($blue, 0.03);
+  text-decoration: none;
+  transition: all 0.2s;
+  cursor: pointer;
+  &:hover {
+    background: rgba($teal, 0.07);
+    transform: translateY(-2px);
+  }
+  span {
+    font-size: 0.73rem; font-weight: 600; color: $dark; font-family: $font-en;
+    text-align: center;
+    @include dark { color: $dm-text; }
+    &[lang="ar"] { font-family: $font-ar; }
+  }
+  @include dark { background: rgba($dm-border, 0.2); &:hover { background: rgba($teal, 0.09); } }
+}
+
+// same icon wrap colors as KPI
+.qa-icon-wrap {
+  width: 44px; height: 44px; border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  svg { width: 20px; height: 20px; stroke-width: 2; }
+  &.teal   { background: rgba($c-teal,   0.12); svg { stroke: $c-teal; } }
+  &.blue   { background: rgba($c-blue,   0.10); svg { stroke: $c-blue; } @include dark { svg { stroke: lighten($c-blue,35%); } } }
+  &.orange { background: rgba($c-orange, 0.12); svg { stroke: $c-orange; } }
+  &.purple { background: rgba($c-purple, 0.12); svg { stroke: $c-purple; } }
+  &.green  { background: rgba($c-green,  0.12); svg { stroke: $c-green; } }
+  &.pink   { background: rgba($c-pink,   0.12); svg { stroke: $c-pink; } }
+}
+
+// ── Recent Messages ───────────────────────────────────────────────────────────
+.msgs-list { display: flex; flex-direction: column; gap: 0.25rem; }
+
+.msg-row {
+  display: flex; align-items: flex-start; gap: 0.75rem;
+  padding: 0.6rem 0.5rem; border-radius: 10px; cursor: pointer;
+  position: relative; transition: background 0.18s;
+  &:hover { background: rgba($teal, 0.05); @include dark { background: rgba($teal, 0.08); } }
+  &.is-unread { background: rgba($teal, 0.04); @include dark { background: rgba($teal, 0.06); } }
+  &.skel { pointer-events: none; }
+}
+
+.msg-av {
+  width: 34px; height: 34px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.68rem; font-weight: 700; color: $white; flex-shrink: 0;
+  font-family: $font-en;
+}
+
+.msg-body { flex: 1; min-width: 0; }
+
+.msg-top {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 0.4rem; margin-bottom: 0.15rem;
+}
+
+.msg-name { font-size: 0.82rem; font-weight: 700; color: $dark; font-family: $font-en; @include dark { color: $dm-text; } }
+.msg-time { font-size: 0.69rem; color: $muted; flex-shrink: 0; font-family: $font-en; @include dark { color: $dm-muted; } }
+.msg-sub  {
+  font-size: 0.76rem; color: $muted; white-space: nowrap;
+  overflow: hidden; text-overflow: ellipsis; font-family: $font-en;
+  @include dark { color: $dm-muted; }
+}
+
+.unread-dot {
+  width: 8px; height: 8px; border-radius: 50%; background: $teal;
+  flex-shrink: 0; margin-top: 0.4rem;
+}
+
+// ══════════════════════════════════════════════════════════════════════════════
+// CHARTS ROW
+// ══════════════════════════════════════════════════════════════════════════════
+.charts-row {
+  display: grid;
+  grid-template-columns: 1fr 300px 300px;
+  gap: 1.1rem;
+  margin-bottom: 1.25rem;
+  @media (max-width: 1300px) { grid-template-columns: 1fr 1fr; }
+  @media (max-width: 900px)  { grid-template-columns: 1fr; }
+}
+
+.chart-card {}
+.chart-wide { @media (min-width: 1300px) { grid-column: 1; } }
+
+.inline-legend {
+  display: flex; align-items: center; gap: 0.55rem;
+  font-size: 0.75rem; color: $muted; font-family: $font-en;
+  @include dark { color: $dm-muted; }
+}
+.il {
+  width: 8px; height: 8px; border-radius: 50%;
+  &.green  { background: $c-green; }
+  &.orange { background: $c-orange; }
+}
+.il-txt { &[lang="ar"] { font-family: $font-ar; } }
+
+// ECharts containers
+.echart-box { width: 100%; height: 200px; }
+.echart-sm  { height: 230px; }
+
+// Chart skeletons
+.chart-skel {
+  height: 180px; display: flex; align-items: flex-end; gap: 4px; padding: 0 4px;
+  &.donut-skel { align-items: center; justify-content: center; }
+}
+.skel-bars-row { display: flex; align-items: flex-end; gap: 4px; width: 100%; height: 100%; }
+.skel-bar-item { flex: 1; min-width: 12px; border-radius: 4px 4px 0 0; @include skel; &.alt { opacity: 0.5; } }
+.skel-bar-pair { flex: 1; display: flex; align-items: flex-end; gap: 2px; height: 100%; .skel-bar-item { flex: 1; } }
+.skel-donut-ring {
+  width: 110px; height: 110px; border-radius: 50%;
+  border: 18px solid #eaecf4;
+  @include skel;
+  @include dark { border-color: #252840; }
+}
+
+// ══════════════════════════════════════════════════════════════════════════════
+// BOTTOM ROW
+// ══════════════════════════════════════════════════════════════════════════════
+.bottom-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.1rem;
+  @media (max-width: 1100px) { grid-template-columns: repeat(2, 1fr); }
+  @media (max-width: 700px)  { grid-template-columns: 1fr; }
+}
+
+// Project status bars
+.status-rows { display: flex; flex-direction: column; gap: 0.85rem; }
+
+.s-row { display: flex; align-items: center; gap: 0.65rem; &.skel { pointer-events: none; } }
+
+.s-dot {
+  width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0;
+  &.teal   { background: $c-teal; }
+  &.orange { background: $c-orange; }
+  &.purple { background: $c-purple; }
+}
+
+.s-lbl {
+  font-size: 0.82rem; font-weight: 600; color: $dark; min-width: 72px;
+  font-family: $font-en; &[lang="ar"] { font-family: $font-ar; }
+  @include dark { color: $dm-text; }
+}
+
+.s-track { flex: 1; height: 8px; background: rgba($blue, 0.08); border-radius: 50px; overflow: hidden;
+  @include dark { background: rgba($dm-border, 0.4); } }
+
+.s-fill {
+  height: 100%; border-radius: 50px; transition: width 0.85s cubic-bezier(0.4,0,0.2,1);
+  &.teal   { background: $c-teal; }
+  &.orange { background: $c-orange; }
+  &.purple { background: $c-purple; }
+}
+
+.s-num {
+  font-size: 0.83rem; font-weight: 700; color: $dark; min-width: 22px; text-align: right;
+  font-family: $font-en; @include dark { color: $dm-text; }
+  .rtl & { text-align: left; }
+}
+
+// Message stats
+.msg-stat-nums {
+  display: flex; align-items: center; justify-content: space-around;
+  padding: 0.75rem 0.5rem; background: rgba($blue, 0.03); border-radius: 12px;
+  margin-bottom: 1rem;
+  @include dark { background: rgba($dm-border, 0.2); }
+}
+
+.msn-div { width: 1px; height: 36px; background: rgba($blue, 0.1); @include dark { background: $dm-border; } }
+.msn-item { display: flex; flex-direction: column; align-items: center; gap: 0.2rem; }
+
+.msn-val {
+  font-size: 1.55rem; font-weight: 800; font-family: $font-en;
+  &.grad { background: $grad; -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  &.grn  { color: $c-green; }
+  &.org  { color: $c-orange; }
+}
+
+.msn-lbl { font-size: 0.72rem; font-weight: 600; color: $muted; font-family: $font-en;
+  &[lang="ar"] { font-family: $font-ar; } @include dark { color: $dm-muted; } }
+
+.rr-wrap  { display: flex; flex-direction: column; gap: 0.45rem; }
+.rr-row   { display: flex; align-items: center; justify-content: space-between; }
+.rr-lbl   { font-size: 0.78rem; font-weight: 600; color: $muted; font-family: $font-en;
+  &[lang="ar"] { font-family: $font-ar; } @include dark { color: $dm-muted; } }
+.rr-pct   { font-size: 0.85rem; font-weight: 800; color: $teal; font-family: $font-en; }
+.rr-track { height: 9px; background: rgba($blue, 0.08); border-radius: 50px; overflow: hidden;
+  @include dark { background: rgba($dm-border, 0.4); } }
+.rr-fill  { height: 100%; background: $grad; border-radius: 50px;
+  transition: width 0.85s cubic-bezier(0.4,0,0.2,1); }
+
+// Top users
+.top-users { display: flex; flex-direction: column; gap: 0.45rem; }
+
+.tu-row {
+  display: flex; align-items: center; gap: 0.75rem;
+  padding: 0.5rem 0.4rem; border-radius: 10px; transition: background 0.18s;
+  &:not(.skel):hover { background: rgba($teal, 0.05); @include dark { background: rgba($teal, 0.08); } }
+  &.skel { pointer-events: none; }
+}
+
+.tu-medal { font-size: 1rem; flex-shrink: 0; width: 22px; text-align: center; }
+
+.tu-av {
+  width: 34px; height: 34px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.7rem; font-weight: 700; color: $white; flex-shrink: 0; font-family: $font-en;
+}
+
+.tu-info { flex: 1; display: flex; flex-direction: column; gap: 0.08rem; font-family: $font-en; }
+.tu-name { font-size: 0.83rem; font-weight: 700; color: $dark; @include dark { color: $dm-text; } }
+.tu-role { font-size: 0.71rem; color: $teal; font-weight: 600; &[lang="ar"] { font-family: $font-ar; } }
+
+.tu-cnt {
+  display: flex; flex-direction: column; align-items: flex-end; font-family: $font-en;
+  span { font-size: 1.05rem; font-weight: 800; color: $dark; @include dark { color: $dm-text; } }
+  small { font-size: 0.65rem; color: $muted; &[lang="ar"] { font-family: $font-ar; } @include dark { color: $dm-muted; } }
+  .rtl & { align-items: flex-start; }
+}
+
+// ── RTL ───────────────────────────────────────────────────────────────────────
+.rtl {
+  .s-num { text-align: left; }
+  .tu-cnt { align-items: flex-start; }
+  .view-all svg { transform: scaleX(-1); }
+  .wb-right { align-items: flex-start; }
+  .wb-breadcrumb svg { transform: scaleX(-1); }
 }

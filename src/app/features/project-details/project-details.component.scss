@@ -25,9 +25,83 @@ $font-ar: 'IBM Plex Sans Arabic', -apple-system, BlinkMacSystemFont, 'Segoe UI',
 $font-en: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 
 // ============================================
+// LOADING STATE
+// ============================================
+.details-loading {
+  min-height: 60vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+
+  p {
+    color: $text-gray;
+    font-size: 1rem;
+    font-family: $font-en;
+  }
+}
+
+.loading-spinner {
+  width: 48px;
+  height: 48px;
+  border: 4px solid rgba(38, 202, 188, 0.15);
+  border-top-color: $primary-teal;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+// ============================================
+// ERROR STATE
+// ============================================
+.details-error {
+  min-height: 60vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.25rem;
+  padding: 2rem;
+  text-align: center;
+
+  .error-icon {
+    width: 56px;
+    height: 56px;
+    stroke: #ef4444;
+    opacity: 0.75;
+  }
+
+  p {
+    color: #ef4444;
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 0;
+    font-family: $font-en;
+  }
+}
+
+.retry-btn {
+  padding: 10px 24px;
+  border: 1.5px solid #ef4444;
+  border-radius: 10px;
+  background: transparent;
+  color: #ef4444;
+  font-size: 0.87rem;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: $font-en;
+  transition: all 0.2s;
+
+  &:hover { background: #ef4444; color: #fff; }
+}
+
+// ============================================
 // PROJECT DETAILS PAGE
 // ============================================
-
 .project-details-page {
   background: $white;
   
@@ -121,11 +195,7 @@ $font-en: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-s
   margin-bottom: 2rem;
   font-family: $font-en;
   
-  svg {
-    width: 20px;
-    height: 20px;
-    stroke-width: 2;
-  }
+  svg { width: 20px; height: 20px; stroke-width: 2; }
   
   &:hover {
     background: $primary-teal;
@@ -175,19 +245,14 @@ $font-en: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-s
   line-height: 1.2;
   font-family: $font-en;
   
-  &[lang="ar"] {
-    font-family: $font-ar;
-    font-size: 4rem;
-  }
+  &[lang="ar"] { font-family: $font-ar; font-size: 4rem; }
   
   @media (max-width: 768px) {
     font-size: 2.5rem;
     &[lang="ar"] { font-size: 3rem; }
   }
   
-  :host-context(.dark-mode) & {
-    color: $dark-text;
-  }
+  :host-context(.dark-mode) & { color: $dark-text; }
 }
 
 .project-subtitle {
@@ -197,14 +262,9 @@ $font-en: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-s
   margin: 0 0 2.5rem;
   font-family: $font-en;
   
-  &[lang="ar"] {
-    font-family: $font-ar;
-    font-size: 1.35rem;
-  }
+  &[lang="ar"] { font-family: $font-ar; font-size: 1.35rem; }
   
-  :host-context(.dark-mode) & {
-    color: #a0a0b8;
-  }
+  :host-context(.dark-mode) & { color: #a0a0b8; }
 }
 
 .project-meta-info {
@@ -213,9 +273,7 @@ $font-en: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-s
   gap: 2rem;
   flex-wrap: wrap;
   
-  @media (max-width: 768px) {
-    gap: 1.5rem;
-  }
+  @media (max-width: 768px) { gap: 1.5rem; }
 }
 
 .meta-item {
@@ -223,12 +281,7 @@ $font-en: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-s
   align-items: center;
   gap: 0.75rem;
   
-  svg {
-    width: 24px;
-    height: 24px;
-    stroke: $primary-teal;
-    flex-shrink: 0;
-  }
+  svg { width: 24px; height: 24px; stroke: $primary-teal; flex-shrink: 0; }
 }
 
 .meta-content {
@@ -242,10 +295,7 @@ $font-en: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-s
   color: $text-gray;
   font-weight: 500;
   font-family: $font-en;
-  
-  :host-context(.dark-mode) & {
-    color: #a0a0b8;
-  }
+  :host-context(.dark-mode) & { color: #a0a0b8; }
 }
 
 .meta-value {
@@ -253,10 +303,7 @@ $font-en: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-s
   color: $dark;
   font-weight: 700;
   font-family: $font-en;
-  
-  :host-context(.dark-mode) & {
-    color: $dark-text;
-  }
+  :host-context(.dark-mode) & { color: $dark-text; }
 }
 
 .visit-website-btn {
@@ -274,56 +321,42 @@ $font-en: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-s
   box-shadow: 0 8px 25px rgba(38, 202, 188, 0.3);
   font-family: $font-en;
   
-  svg {
-    width: 18px;
-    height: 18px;
-    stroke-width: 2.5;
-  }
+  svg { width: 18px; height: 18px; stroke-width: 2.5; }
   
-  &:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 12px 35px rgba(38, 202, 188, 0.4);
-  }
+  &:hover { transform: translateY(-3px); box-shadow: 0 12px 35px rgba(38, 202, 188, 0.4); }
 }
 
-// Featured Image Section
+// ── FIX: Featured Image — show full, no crop ──────────────────────────────
 .featured-image-section {
   padding: 3rem 0;
   background: $white;
-  
-  :host-context(.dark-mode) & {
-    background: $dark-bg;
-  }
+  :host-context(.dark-mode) & { background: $dark-bg; }
 }
 
 .section-container {
   max-width: 1400px;
   margin: 0 auto;
   padding: 0 2rem;
-  
-  @media (max-width: 768px) {
-    padding: 0 1.5rem;
-  }
+  @media (max-width: 768px) { padding: 0 1.5rem; }
 }
 
 .featured-image {
   position: relative;
   border-radius: 25px;
   overflow: hidden;
-  height: 600px;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
-  
+
   @media (max-width: 768px) {
-    height: 400px;
     border-radius: 20px;
   }
-  
+
   img {
     width: 100%;
-    height: 100%;
-    object-fit: cover;
+    height: auto;
+    display: block;
+    object-fit: contain;
   }
-  
+
   .image-overlay {
     position: absolute;
     top: 0;
@@ -331,6 +364,7 @@ $font-en: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-s
     width: 100%;
     height: 100%;
     background: linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 0.1) 100%);
+    pointer-events: none;
   }
 }
 
@@ -339,13 +373,9 @@ $font-en: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-s
   padding: 6rem 0;
   background: $light-gray;
   
-  :host-context(.dark-mode) & {
-    background: $dark-surface;
-  }
+  :host-context(.dark-mode) & { background: $dark-surface; }
   
-  @media (max-width: 768px) {
-    padding: 4rem 0;
-  }
+  @media (max-width: 768px) { padding: 4rem 0; }
 }
 
 .overview-grid {
@@ -366,22 +396,16 @@ $font-en: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-s
   margin: 0 0 2rem;
   font-family: $font-en;
   
-  &[lang="ar"] {
-    font-family: $font-ar;
-  }
+  &[lang="ar"] { font-family: $font-ar; }
   
   &.center {
     text-align: center;
     margin-bottom: 3rem;
   }
   
-  @media (max-width: 768px) {
-    font-size: 2rem;
-  }
+  @media (max-width: 768px) { font-size: 2rem; }
   
-  :host-context(.dark-mode) & {
-    color: $dark-text;
-  }
+  :host-context(.dark-mode) & { color: $dark-text; }
 }
 
 .overview-text {
@@ -391,17 +415,11 @@ $font-en: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-s
   margin: 0 0 3rem;
   font-family: $font-en;
   
-  &[lang="ar"] {
-    font-family: $font-ar;
-    font-size: 1.2rem;
-  }
+  &[lang="ar"] { font-family: $font-ar; font-size: 1.2rem; }
   
-  :host-context(.dark-mode) & {
-    color: #a0a0b8;
-  }
+  :host-context(.dark-mode) & { color: #a0a0b8; }
 }
 
-// Challenge & Solution
 .challenge-solution {
   display: flex;
   flex-direction: column;
@@ -416,9 +434,7 @@ $font-en: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-s
   border-radius: 20px;
   box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
   
-  :host-context(.dark-mode) & {
-    background: $dark-card;
-  }
+  :host-context(.dark-mode) & { background: $dark-card; }
   
   @media (max-width: 768px) {
     flex-direction: column;
@@ -436,26 +452,16 @@ $font-en: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-s
   justify-content: center;
   border-radius: 16px;
   
-  svg {
-    width: 32px;
-    height: 32px;
-    stroke-width: 2;
-  }
+  svg { width: 32px; height: 32px; stroke-width: 2; }
   
   &.challenge-icon {
     background: rgba(255, 152, 0, 0.1);
-    
-    svg {
-      stroke: #ff9800;
-    }
+    svg { stroke: #ff9800; }
   }
   
   &.solution-icon {
     background: rgba(76, 175, 80, 0.1);
-    
-    svg {
-      stroke: #4caf50;
-    }
+    svg { stroke: #4caf50; }
   }
 }
 
@@ -468,14 +474,8 @@ $font-en: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-s
     color: $dark;
     margin: 0 0 0.75rem;
     font-family: $font-en;
-    
-    &[lang="ar"] {
-      font-family: $font-ar;
-    }
-    
-    :host-context(.dark-mode) & {
-      color: $dark-text;
-    }
+    &[lang="ar"] { font-family: $font-ar; }
+    :host-context(.dark-mode) & { color: $dark-text; }
   }
   
   p {
@@ -484,18 +484,11 @@ $font-en: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-s
     color: $text-gray;
     margin: 0;
     font-family: $font-en;
-    
-    &[lang="ar"] {
-      font-family: $font-ar;
-    }
-    
-    :host-context(.dark-mode) & {
-      color: #a0a0b8;
-    }
+    &[lang="ar"] { font-family: $font-ar; }
+    :host-context(.dark-mode) & { color: #a0a0b8; }
   }
 }
 
-// Sidebar
 .overview-sidebar {
   display: flex;
   flex-direction: column;
@@ -508,9 +501,7 @@ $font-en: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-s
   padding: 2rem;
   box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
   
-  :host-context(.dark-mode) & {
-    background: $dark-card;
-  }
+  :host-context(.dark-mode) & { background: $dark-card; }
   
   h3 {
     font-size: 1.2rem;
@@ -518,14 +509,8 @@ $font-en: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-s
     color: $dark;
     margin: 0 0 1.5rem;
     font-family: $font-en;
-    
-    &[lang="ar"] {
-      font-family: $font-ar;
-    }
-    
-    :host-context(.dark-mode) & {
-      color: $dark-text;
-    }
+    &[lang="ar"] { font-family: $font-ar; }
+    :host-context(.dark-mode) & { color: $dark-text; }
   }
 }
 
@@ -543,10 +528,7 @@ $font-en: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-s
   font-size: 0.9rem;
   font-weight: 600;
   font-family: $font-en;
-  
-  :host-context(.dark-mode) & {
-    background: rgba(38, 202, 188, 0.15);
-  }
+  :host-context(.dark-mode) & { background: rgba(38, 202, 188, 0.15); }
 }
 
 .results-list {
@@ -565,18 +547,9 @@ $font-en: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-s
     color: $text-gray;
     font-family: $font-en;
     
-    svg {
-      width: 20px;
-      height: 20px;
-      stroke: #4caf50;
-      stroke-width: 2.5;
-      flex-shrink: 0;
-      margin-top: 2px;
-    }
+    svg { width: 20px; height: 20px; stroke: #4caf50; stroke-width: 2.5; flex-shrink: 0; margin-top: 2px; }
     
-    :host-context(.dark-mode) & {
-      color: #a0a0b8;
-    }
+    :host-context(.dark-mode) & { color: #a0a0b8; }
   }
 }
 
@@ -584,25 +557,15 @@ $font-en: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-s
 .features-section {
   padding: 6rem 0;
   background: $white;
-  
-  :host-context(.dark-mode) & {
-    background: $dark-bg;
-  }
-  
-  @media (max-width: 768px) {
-    padding: 4rem 0;
-  }
+  :host-context(.dark-mode) & { background: $dark-bg; }
+  @media (max-width: 768px) { padding: 4rem 0; }
 }
 
 .features-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
   gap: 2rem;
-  
-  @media (max-width: 768px) {
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
-  }
+  @media (max-width: 768px) { grid-template-columns: 1fr; gap: 1.5rem; }
 }
 
 .feature-card {
@@ -623,10 +586,7 @@ $font-en: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-s
     
     .feature-icon-circle {
       background: $primary-teal;
-      
-      svg {
-        stroke: $white;
-      }
+      svg { stroke: $white; }
     }
     
     .feature-number-badge {
@@ -635,9 +595,7 @@ $font-en: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-s
     }
   }
   
-  :host-context(.dark-mode) & {
-    background: $dark-card;
-  }
+  :host-context(.dark-mode) & { background: $dark-card; }
 }
 
 .feature-icons {
@@ -661,11 +619,7 @@ $font-en: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-s
   transition: all 0.3s ease;
   flex-shrink: 0;
   
-  @media (max-width: 480px) {
-    width: 60px;
-    height: 60px;
-    font-size: 1.3rem;
-  }
+  @media (max-width: 480px) { width: 60px; height: 60px; font-size: 1.3rem; }
 }
 
 .feature-icon-circle {
@@ -679,26 +633,14 @@ $font-en: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-s
   transition: all 0.3s ease;
   flex-shrink: 0;
   
-  svg {
-    width: 32px;
-    height: 32px;
-    stroke: $primary-teal;
-    stroke-width: 2.5;
-    transition: stroke 0.3s ease;
-  }
+  svg { width: 32px; height: 32px; stroke: $primary-teal; stroke-width: 2.5; transition: stroke 0.3s ease; }
   
-  :host-context(.dark-mode) & {
-    background: rgba(38, 202, 188, 0.2);
-  }
+  :host-context(.dark-mode) & { background: rgba(38, 202, 188, 0.2); }
   
   @media (max-width: 480px) {
     width: 60px;
     height: 60px;
-    
-    svg {
-      width: 28px;
-      height: 28px;
-    }
+    svg { width: 28px; height: 28px; }
   }
 }
 
@@ -709,31 +651,19 @@ $font-en: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-s
   margin: 0;
   font-family: $font-en;
   
-  &[lang="ar"] {
-    font-family: $font-ar;
-    font-size: 1.05rem;
-  }
+  &[lang="ar"] { font-family: $font-ar; font-size: 1.05rem; }
   
-  :host-context(.dark-mode) & {
-    color: #a0a0b8;
-  }
+  :host-context(.dark-mode) & { color: #a0a0b8; }
 }
 
 // ============================================
-// GALLERY SLIDER SECTION
+// GALLERY SLIDER SECTION — FIX: show full images
 // ============================================
-
 .gallery-section {
   padding: 6rem 0;
   background: $white;
-  
-  :host-context(.dark-mode) & {
-    background: $dark-bg;
-  }
-  
-  @media (max-width: 768px) {
-    padding: 4rem 0;
-  }
+  :host-context(.dark-mode) & { background: $dark-bg; }
+  @media (max-width: 768px) { padding: 4rem 0; }
 }
 
 .gallery-slider {
@@ -746,19 +676,13 @@ $font-en: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-s
   overflow: hidden;
   border-radius: 30px;
   background: transparent;
-  
-  @media (max-width: 768px) {
-    border-radius: 20px;
-  }
+  @media (max-width: 768px) { border-radius: 20px; }
 }
 
 .slider-track {
   display: flex;
   transition: transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  
-  [dir="rtl"] & {
-    direction: ltr;
-  }
+  [dir="rtl"] & { direction: ltr; }
 }
 
 .slider-slide {
@@ -766,42 +690,30 @@ $font-en: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-s
   position: relative;
 }
 
+// ── FIX: gallery slide — show full image, no crop ──────────────────────────
 .slide-image {
   position: relative;
-  height: 700px;
   cursor: pointer;
   overflow: hidden;
   border-radius: 30px;
   box-shadow: 0 25px 70px rgba(0, 0, 0, 0.2);
-  
-  @media (max-width: 1024px) {
-    height: 550px;
-  }
-  
+  background: #000; // letterbox background for non-16:9 images
+
   @media (max-width: 768px) {
-    height: 450px;
     border-radius: 20px;
   }
-  
-  @media (max-width: 480px) {
-    height: 350px;
-  }
-  
+
   img {
     width: 100%;
-    height: 100%;
-    object-fit: cover;
+    height: auto;
+    display: block;
+    object-fit: contain;
     transition: transform 0.5s ease;
   }
-  
+
   &:hover {
-    img {
-      transform: scale(1.03);
-    }
-    
-    .slide-overlay {
-      opacity: 1;
-    }
+    img { transform: scale(1.02); }
+    .slide-overlay { opacity: 1; }
   }
 }
 
@@ -826,11 +738,7 @@ $font-en: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-s
     stroke: $white;
     stroke-width: 2;
     filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
-    
-    @media (max-width: 768px) {
-      width: 48px;
-      height: 48px;
-    }
+    @media (max-width: 768px) { width: 48px; height: 48px; }
   }
   
   span {
@@ -839,10 +747,7 @@ $font-en: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-s
     font-weight: 700;
     font-family: $font-en;
     text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-    
-    @media (max-width: 768px) {
-      font-size: 1rem;
-    }
+    @media (max-width: 768px) { font-size: 1rem; }
   }
 }
 
@@ -867,19 +772,8 @@ $font-en: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-s
     border-color: rgba(38, 202, 188, 0.5);
   }
   
-  @media (max-width: 768px) {
-    bottom: 1.5rem;
-    right: 1.5rem;
-    padding: 0.75rem 1.5rem;
-    font-size: 0.95rem;
-  }
-  
-  @media (max-width: 480px) {
-    bottom: 1rem;
-    right: 1rem;
-    padding: 0.6rem 1.2rem;
-    font-size: 0.85rem;
-  }
+  @media (max-width: 768px) { bottom: 1.5rem; right: 1.5rem; padding: 0.75rem 1.5rem; font-size: 0.95rem; }
+  @media (max-width: 480px) { bottom: 1rem; right: 1rem; padding: 0.6rem 1.2rem; font-size: 0.85rem; }
 }
 
 // Navigation Arrows
@@ -901,109 +795,82 @@ $font-en: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-s
   z-index: 10;
   box-shadow: 0 10px 35px rgba(0, 0, 0, 0.15);
   
-  svg {
-    width: 32px;
-    height: 32px;
-    stroke: $primary-blue;
-    stroke-width: 2.5;
-    transition: all 0.3s ease;
-  }
+  svg { width: 32px; height: 32px; stroke: $primary-blue; stroke-width: 2.5; transition: all 0.3s ease; }
   
   &:hover:not(.disabled) {
     background: $gradient-mixed;
     border-color: transparent;
     transform: translateY(-50%) scale(1.12);
     box-shadow: 0 15px 45px rgba(38, 202, 188, 0.4);
-    
-    svg {
-      stroke: $white;
-      transform: scale(1.1);
-    }
+    svg { stroke: $white; transform: scale(1.1); }
   }
   
-  &.disabled {
-    opacity: 0.25;
-    cursor: not-allowed;
-    pointer-events: none;
-  }
+  &.disabled { opacity: 0.25; cursor: not-allowed; pointer-events: none; }
   
   :host-context(.dark-mode) & {
     background: rgba(37, 39, 60, 0.95);
     border-color: rgba(38, 202, 188, 0.3);
-    
-    svg {
-      stroke: $primary-teal;
-    }
+    svg { stroke: $primary-teal; }
   }
   
-  @media (max-width: 768px) {
-    width: 56px;
-    height: 56px;
-    
-    svg {
-      width: 26px;
-      height: 26px;
-    }
-  }
-  
-  @media (max-width: 480px) {
-    width: 48px;
-    height: 48px;
-    
-    svg {
-      width: 22px;
-      height: 22px;
-    }
-  }
+  @media (max-width: 768px) { width: 56px; height: 56px; svg { width: 26px; height: 26px; } }
+  @media (max-width: 480px) { width: 48px; height: 48px; svg { width: 22px; height: 22px; } }
 }
 
 .slider-arrow-prev {
   left: 2.5rem;
-  
-  @media (max-width: 768px) {
-    left: 1.5rem;
-  }
-  
-  @media (max-width: 480px) {
-    left: 1rem;
-  }
-  
+  @media (max-width: 768px) { left: 1.5rem; }
+  @media (max-width: 480px) { left: 1rem; }
   [dir="rtl"] & {
     left: auto;
     right: 2.5rem;
-    
-    @media (max-width: 768px) {
-      right: 1.5rem;
-    }
-    
-    @media (max-width: 480px) {
-      right: 1rem;
-    }
+    @media (max-width: 768px) { right: 1.5rem; }
+    @media (max-width: 480px) { right: 1rem; }
   }
 }
 
 .slider-arrow-next {
   right: 2.5rem;
-  
-  @media (max-width: 768px) {
-    right: 1.5rem;
-  }
-  
-  @media (max-width: 480px) {
-    right: 1rem;
-  }
-  
+  @media (max-width: 768px) { right: 1.5rem; }
+  @media (max-width: 480px) { right: 1rem; }
   [dir="rtl"] & {
     right: auto;
     left: 2.5rem;
-    
-    @media (max-width: 768px) {
-      left: 1.5rem;
-    }
-    
-    @media (max-width: 480px) {
-      left: 1rem;
-    }
+    @media (max-width: 768px) { left: 1.5rem; }
+    @media (max-width: 480px) { left: 1rem; }
+  }
+}
+
+// Dot navigation
+.slider-dots {
+  display: flex;
+  justify-content: center;
+  gap: 0.6rem;
+  margin-top: 1.5rem;
+}
+
+.slider-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(38, 202, 188, 0.3);
+  cursor: pointer;
+  padding: 0;
+  transition: all 0.3s ease;
+  
+  &.active {
+    width: 28px;
+    border-radius: 5px;
+    background: $gradient-mixed;
+    box-shadow: 0 2px 8px rgba(38, 202, 188, 0.4);
+  }
+  
+  &:hover:not(.active) { background: rgba(38, 202, 188, 0.6); transform: scale(1.2); }
+  
+  :host-context(.dark-mode) & {
+    background: rgba(38, 202, 188, 0.2);
+    &.active { background: $gradient-mixed; }
   }
 }
 
@@ -1043,17 +910,9 @@ $font-en: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-s
   transition: all 0.3s ease;
   z-index: 10001;
   
-  svg {
-    width: 24px;
-    height: 24px;
-    stroke: $white;
-    stroke-width: 2.5;
-  }
+  svg { width: 24px; height: 24px; stroke: $white; stroke-width: 2.5; }
   
-  &:hover {
-    background: rgba(255, 255, 255, 0.2);
-    transform: rotate(90deg);
-  }
+  &:hover { background: rgba(255, 255, 255, 0.2); transform: rotate(90deg); }
 }
 
 .lightbox-content {
@@ -1072,25 +931,15 @@ $font-en: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-s
 .related-projects-section {
   padding: 6rem 0;
   background: $white;
-  
-  :host-context(.dark-mode) & {
-    background: $dark-bg;
-  }
-  
-  @media (max-width: 768px) {
-    padding: 4rem 0;
-  }
+  :host-context(.dark-mode) & { background: $dark-bg; }
+  @media (max-width: 768px) { padding: 4rem 0; }
 }
 
 .related-projects-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
   gap: 2rem;
-  
-  @media (max-width: 768px) {
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
-  }
+  @media (max-width: 768px) { grid-template-columns: 1fr; gap: 1.5rem; }
 }
 
 .related-project-card {
@@ -1107,22 +956,12 @@ $font-en: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-s
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
     border-color: rgba(38, 202, 188, 0.3);
     
-    .related-project-image img {
-      transform: scale(1.1);
-    }
-    
-    .related-overlay {
-      opacity: 0.3;
-    }
-    
-    .related-arrow {
-      transform: translateX(5px);
-    }
+    .related-project-image img { transform: scale(1.1); }
+    .related-overlay { opacity: 0.3; }
+    .related-arrow { transform: translateX(5px); }
   }
   
-  :host-context(.dark-mode) & {
-    background: $dark-card;
-  }
+  :host-context(.dark-mode) & { background: $dark-card; }
 }
 
 .related-project-image {
@@ -1130,12 +969,7 @@ $font-en: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-s
   height: 220px;
   overflow: hidden;
   
-  img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.4s ease;
-  }
+  img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease; }
 }
 
 .related-overlay {
@@ -1168,10 +1002,7 @@ $font-en: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-s
   font-size: 0.75rem;
   font-weight: 700;
   font-family: $font-en;
-  
-  :host-context(.dark-mode) & {
-    background: rgba(38, 202, 188, 0.15);
-  }
+  :host-context(.dark-mode) & { background: rgba(38, 202, 188, 0.15); }
 }
 
 .related-project-content h3 {
@@ -1180,14 +1011,8 @@ $font-en: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-s
   color: $dark;
   margin: 0 0 0.75rem;
   font-family: $font-en;
-  
-  &[lang="ar"] {
-    font-family: $font-ar;
-  }
-  
-  :host-context(.dark-mode) & {
-    color: $dark-text;
-  }
+  &[lang="ar"] { font-family: $font-ar; }
+  :host-context(.dark-mode) & { color: $dark-text; }
 }
 
 .related-project-content p {
@@ -1196,14 +1021,8 @@ $font-en: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-s
   color: $text-gray;
   margin: 0 0 1rem;
   font-family: $font-en;
-  
-  &[lang="ar"] {
-    font-family: $font-ar;
-  }
-  
-  :host-context(.dark-mode) & {
-    color: #a0a0b8;
-  }
+  &[lang="ar"] { font-family: $font-ar; }
+  :host-context(.dark-mode) & { color: #a0a0b8; }
 }
 
 .related-arrow {
@@ -1211,12 +1030,7 @@ $font-en: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-s
   align-items: center;
   color: $primary-teal;
   transition: transform 0.3s ease;
-  
-  svg {
-    width: 20px;
-    height: 20px;
-    stroke-width: 2.5;
-  }
+  svg { width: 20px; height: 20px; stroke-width: 2.5; }
 }
 
 // CTA Section
@@ -1224,10 +1038,7 @@ $font-en: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-s
   position: relative;
   padding: 8rem 0;
   overflow: hidden;
-  
-  @media (max-width: 768px) {
-    padding: 5rem 0;
-  }
+  @media (max-width: 768px) { padding: 5rem 0; }
 }
 
 .cta-background {
@@ -1246,21 +1057,8 @@ $font-en: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-s
   filter: blur(100px);
   opacity: 0.3;
   
-  &.orb-1 {
-    width: 600px;
-    height: 600px;
-    background: rgba(255, 255, 255, 0.2);
-    top: -300px;
-    left: -200px;
-  }
-  
-  &.orb-2 {
-    width: 500px;
-    height: 500px;
-    background: rgba(255, 255, 255, 0.15);
-    bottom: -250px;
-    right: -150px;
-  }
+  &.orb-1 { width: 600px; height: 600px; background: rgba(255, 255, 255, 0.2); top: -300px; left: -200px; }
+  &.orb-2 { width: 500px; height: 500px; background: rgba(255, 255, 255, 0.15); bottom: -250px; right: -150px; }
 }
 
 .cta-container {
@@ -1278,10 +1076,7 @@ $font-en: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-s
   border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 30px;
   padding: 4rem 3rem;
-  
-  @media (max-width: 768px) {
-    padding: 3rem 2rem;
-  }
+  @media (max-width: 768px) { padding: 3rem 2rem; }
 }
 
 .cta-title {
@@ -1290,14 +1085,8 @@ $font-en: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-s
   color: $white;
   margin: 0 0 1.5rem;
   font-family: $font-en;
-  
-  &[lang="ar"] {
-    font-family: $font-ar;
-  }
-  
-  @media (max-width: 768px) {
-    font-size: 2rem;
-  }
+  &[lang="ar"] { font-family: $font-ar; }
+  @media (max-width: 768px) { font-size: 2rem; }
 }
 
 .cta-text {
@@ -1306,10 +1095,7 @@ $font-en: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-s
   line-height: 1.7;
   margin: 0 0 2.5rem;
   font-family: $font-en;
-  
-  &[lang="ar"] {
-    font-family: $font-ar;
-  }
+  &[lang="ar"] { font-family: $font-ar; }
 }
 
 .cta-actions {
@@ -1318,11 +1104,7 @@ $font-en: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-s
   justify-content: center;
   gap: 1rem;
   flex-wrap: wrap;
-  
-  @media (max-width: 480px) {
-    flex-direction: column;
-    width: 100%;
-  }
+  @media (max-width: 480px) { flex-direction: column; width: 100%; }
 }
 
 .cta-primary-btn,
@@ -1340,38 +1122,23 @@ $font-en: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-s
   border: none;
   cursor: pointer;
   
-  svg {
-    width: 20px;
-    height: 20px;
-    stroke-width: 2.5;
-  }
+  svg { width: 20px; height: 20px; stroke-width: 2.5; }
   
-  @media (max-width: 480px) {
-    width: 100%;
-    justify-content: center;
-  }
+  @media (max-width: 480px) { width: 100%; justify-content: center; }
 }
 
 .cta-primary-btn {
   background: $white;
   color: $primary-blue;
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
-  
-  &:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.3);
-  }
+  &:hover { transform: translateY(-3px); box-shadow: 0 12px 35px rgba(0, 0, 0, 0.3); }
 }
 
 .cta-secondary-btn {
   background: rgba(255, 255, 255, 0.15);
   color: $white;
   border: 2px solid rgba(255, 255, 255, 0.5);
-  
-  &:hover {
-    background: rgba(255, 255, 255, 0.25);
-    transform: translateY(-3px);
-  }
+  &:hover { background: rgba(255, 255, 255, 0.25); transform: translateY(-3px); }
 }
 
 // RTL Support
@@ -1380,21 +1147,13 @@ $font-en: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-s
   .related-arrow,
   .cta-primary-btn,
   .cta-secondary-btn {
-    svg {
-      transform: scaleX(-1);
-    }
+    svg { transform: scaleX(-1); }
   }
   
-  .back-button:hover {
-    transform: translateX(5px);
-  }
+  .back-button:hover { transform: translateX(5px); }
   
-  .related-project-card:hover .related-arrow {
-    transform: translateX(-5px);
-  }
+  .related-project-card:hover .related-arrow { transform: translateX(-5px); }
   
   .slider-arrow-prev svg,
-  .slider-arrow-next svg {
-    transform: scaleX(-1);
-  }
+  .slider-arrow-next svg { transform: scaleX(-1); }
 }

@@ -1,0 +1,220 @@
+<!-- ── Inline Toast ──────────────────────────────────────────────────────── -->
+<div class="ac-toast"
+     [class.ac-toast--visible]="toast.visible"
+     [class.ac-toast--error]="toast.type === 'error'"
+     [class.ac-toast--rtl]="isRtl">
+  <div class="ac-toast__icon">
+    <svg *ngIf="toast.type === 'success'" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+      <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" stroke-width="2.5" stroke-linecap="round"/>
+      <polyline points="22 4 12 14.01 9 11.01" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <svg *ngIf="toast.type === 'error'" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+      <circle cx="12" cy="12" r="10" stroke-width="2"/>
+      <line x1="15" y1="9" x2="9" y2="15" stroke-width="2.5" stroke-linecap="round"/>
+      <line x1="9"  y1="9" x2="15" y2="15" stroke-width="2.5" stroke-linecap="round"/>
+    </svg>
+  </div>
+  <div class="ac-toast__body">
+    <strong>{{ toast.message }}</strong>
+    <span>{{ toast.sub }}</span>
+  </div>
+  <button class="ac-toast__close" (click)="dismissToast()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+      <line x1="18" y1="6"  x2="6"  y2="18" stroke-width="2.5" stroke-linecap="round"/>
+      <line x1="6"  y1="6"  x2="18" y2="18" stroke-width="2.5" stroke-linecap="round"/>
+    </svg>
+  </button>
+  <div class="ac-toast__progress" [class.ac-toast__progress--run]="toast.visible"></div>
+</div>
+
+<div class="contacts-page" [class.dark]="isDark" [class.rtl]="isRtl">
+
+  <div class="page-header">
+    <div>
+      <h2>{{ isRtl ? 'رسائل التواصل' : 'Contacts' }}</h2>
+      <p>{{ isRtl ? 'رسائل العملاء والاستفسارات' : 'Customer messages and inquiries' }}</p>
+    </div>
+    <div class="header-actions">
+      <span class="unread-count">{{ unreadCount }} {{ isRtl ? 'غير مقروء' : 'unread' }}</span>
+      <button class="mark-btn" (click)="markAllRead()" [disabled]="unreadCount === 0">
+        {{ isRtl ? 'تعليم الكل مقروء' : 'Mark all read' }}
+      </button>
+    </div>
+  </div>
+
+  <!-- Filter tabs -->
+  <div class="tab-bar">
+    <button class="tab" [class.active]="activeTab==='all'" (click)="activeTab='all'">
+      {{ isRtl ? 'الكل' : 'All' }} ({{ contacts.length }})
+    </button>
+    <button class="tab" [class.active]="activeTab==='unread'" (click)="activeTab='unread'">
+      {{ isRtl ? 'غير مقروء' : 'Unread' }} ({{ unreadCount }})
+    </button>
+    <button class="tab" [class.active]="activeTab==='replied'" (click)="activeTab='replied'">
+      {{ isRtl ? 'تم الرد' : 'Replied' }} ({{ repliedCount }})
+    </button>
+  </div>
+
+  <!-- Loading state -->
+  <div *ngIf="isLoading" class="contacts-layout">
+    <div class="contacts-list">
+      <div class="skeleton-item" *ngFor="let i of [1,2,3,4,5]">
+        <div class="sk sk-avatar"></div>
+        <div class="sk-lines">
+          <div class="sk sk-name"></div>
+          <div class="sk sk-sub"></div>
+          <div class="sk sk-prev"></div>
+        </div>
+      </div>
+    </div>
+    <div class="contact-detail empty-detail">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" stroke-width="1.5"/>
+      </svg>
+      <p>{{ isRtl ? 'جارٍ التحميل...' : 'Loading...' }}</p>
+    </div>
+  </div>
+
+  <!-- Error state -->
+  <div *ngIf="!isLoading && hasError" class="error-state">
+    <div class="state-icon error-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+        <circle cx="12" cy="12" r="10" stroke-width="2"/>
+        <line x1="12" y1="8" x2="12" y2="12" stroke-width="2" stroke-linecap="round"/>
+        <line x1="12" y1="16" x2="12.01" y2="16" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <h3>{{ isRtl ? 'تعذّر التحميل' : 'Failed to load messages' }}</h3>
+    <p>{{ errorMsg }}</p>
+    <button class="retry-btn" (click)="loadMessages()">
+      {{ isRtl ? 'إعادة المحاولة' : 'Retry' }}
+    </button>
+  </div>
+
+  <!-- Two-panel layout -->
+  <div *ngIf="!isLoading && !hasError" class="contacts-layout">
+
+    <!-- List panel -->
+    <div class="contacts-list">
+
+      <div *ngIf="contacts.length === 0" class="list-empty">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" stroke-width="1.5"/>
+        </svg>
+        <p>{{ isRtl ? 'لا توجد رسائل' : 'No messages yet' }}</p>
+      </div>
+
+      <div *ngIf="contacts.length > 0 && filteredContacts.length === 0" class="list-empty">
+        <p>{{ isRtl ? 'لا توجد نتائج' : 'No messages in this filter' }}</p>
+      </div>
+
+      <div class="contact-item"
+           *ngFor="let c of filteredContacts"
+           [class.unread]="!c.read"
+           [class.replied]="c.replied"
+           [class.selected]="selectedId === c._id"
+           (click)="select(c)">
+        <div class="contact-avatar" [style.background]="c.color">{{ c.initials }}</div>
+        <div class="contact-info">
+          <div class="contact-top">
+            <span class="contact-name">{{ c.name }}</span>
+            <span class="contact-time">{{ c.time }}</span>
+          </div>
+          <span class="contact-subject">{{ c.subject }}</span>
+          <span class="contact-preview">{{ c.message }}</span>
+          <span class="replied-tag" *ngIf="c.replied">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <polyline points="9 17 4 12 9 7" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M20 18v-2a4 4 0 0 0-4-4H4" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            {{ isRtl ? 'تم الرد' : 'Replied' }}
+          </span>
+        </div>
+        <div class="unread-dot" *ngIf="!c.read && !c.replied"></div>
+      </div>
+    </div>
+
+    <!-- Detail panel -->
+    <div class="contact-detail" *ngIf="selected">
+      <div class="detail-header">
+        <div class="contact-avatar large" [style.background]="selected.color">{{ selected.initials }}</div>
+        <div>
+          <h3>{{ selected.name }}</h3>
+          <a [href]="'mailto:' + selected.email" class="detail-email">{{ selected.email }}</a>
+          <span *ngIf="selected.phone" class="detail-phone">{{ selected.phone }}</span>
+        </div>
+        <div class="detail-actions">
+          <button class="icon-btn"
+                  [class.read]="selected.read"
+                  (click)="toggleRead(selected)"
+                  [title]="selected.read ? (isRtl ? 'تعليم كغير مقروء' : 'Mark unread') : (isRtl ? 'تعليم كمقروء' : 'Mark read')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" stroke-width="2"/>
+              <circle cx="12" cy="12" r="3" stroke-width="2"/>
+            </svg>
+          </button>
+          <button class="icon-btn danger" (click)="deleteContact(selected._id)"
+                  [title]="isRtl ? 'حذف' : 'Delete'">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <polyline points="3 6 5 6 21 6" stroke-width="2"/>
+              <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" stroke-width="2"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- ✅ Chat thread — original message + sent replies -->
+      <div class="chat-thread">
+
+        <!-- client message bubble -->
+        <div class="bubble bubble--client">
+          <div class="bubble__meta">
+            <span class="bubble__name">{{ selected.name }}</span>
+            <span class="bubble__subject" *ngIf="selected.subject"> · {{ selected.subject }}</span>
+          </div>
+          <p class="bubble__text">{{ selected.message }}</p>
+          <span class="bubble__time">{{ selected.date }}</span>
+        </div>
+
+        <!-- admin reply bubbles — shown after sending -->
+        <div class="bubble bubble--admin"
+             *ngFor="let r of getSentReplies(selected._id)">
+          <div class="bubble__meta">
+            <span class="bubble__name">{{ isRtl ? 'أنت' : 'You' }}</span>
+          </div>
+          <p class="bubble__text">{{ r.text }}</p>
+          <span class="bubble__time">{{ r.time }}</span>
+        </div>
+
+      </div>
+
+      <!-- Reply box -->
+      <div class="reply-box">
+        <h4>{{ isRtl ? 'الرد' : 'Reply' }}</h4>
+        <textarea rows="4" [(ngModel)]="replyText"
+          [placeholder]="isRtl ? 'اكتب ردك هنا...' : 'Type your reply here...'"></textarea>
+        <div class="reply-footer">
+          <button class="send-btn" (click)="sendReply()" [disabled]="!replyText.trim() || isSending">
+            <svg *ngIf="!isSending" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <line x1="22" y1="2" x2="11" y2="13" stroke-width="2" stroke-linecap="round"/>
+              <polygon points="22 2 15 22 11 13 2 9 22 2" stroke-width="2"/>
+            </svg>
+            <svg *ngIf="isSending" class="spin-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+            {{ isSending ? (isRtl ? 'جارٍ الإرسال...' : 'Sending...') : (isRtl ? 'إرسال الرد' : 'Send Reply') }}
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Empty detail panel -->
+    <div class="empty-detail" *ngIf="!selected">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" stroke-width="1.5"/>
+      </svg>
+      <p>{{ isRtl ? 'اختر رسالة للعرض' : 'Select a message to view' }}</p>
+    </div>
+
+  </div>
+</div>

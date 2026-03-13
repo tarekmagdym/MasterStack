@@ -1,8 +1,11 @@
+// FIXED ROUTES — AdminLayoutComponent properly wraps all /admin/* children
+// so the sidebar is always visible on protected pages.
 import { Routes } from '@angular/router';
 import { ProjectDetailsComponent } from './features/project-details/project-details.component';
+import { AuthGuard } from './core/guards/auth.guard';
 
 export const routes: Routes = [
-  // Public Routes - User Pages
+  // ── Public Routes ─────────────────────────────────────────────
   {
     path: '',
     loadComponent: () => import('./features/home/home.component').then(m => m.HomeComponent),
@@ -23,78 +26,102 @@ export const routes: Routes = [
     path: 'projects',
     loadComponent: () => import('./features/projects-page/projects-page.component').then(m => m.ProjectsPageComponent),
   },
-    {
+  {
     path: 'projects/:id',
-    component: ProjectDetailsComponent
+    component: ProjectDetailsComponent,
   },
   {
     path: 'contact',
     loadComponent: () => import('./features/contact-page/contact-page.component').then(m => m.ContactPageComponent),
   },
 
-  // Admin Routes - Protected with Auth Guard
+  // ── Admin Routes ──────────────────────────────────────────────
   {
     path: 'admin',
     children: [
-      {
-        path: '',
-        redirectTo: 'login',
-        pathMatch: 'full'
-      },
+      { path: '', redirectTo: 'login', pathMatch: 'full' },
+
       {
         path: 'login',
-        loadComponent: () => import('./admin/login/login.component').then(m => m.LoginComponent),
-        title: 'Admin Login'
+        loadComponent: () =>
+          import('./admin/login/login.component').then(m => m.LoginComponent),
       },
+
       {
-        path: 'dashboard',
-        loadComponent: () => import('./admin/dashboard/dashboard.component').then(m => m.DashboardComponent),
-        // canActivate: [AuthGuard], // Uncomment when AuthGuard is ready
-        title: 'Admin Dashboard'
+        path: '',
+        loadComponent: () =>
+          import('./admin/layout/admin-layout.component').then(m => m.AdminLayoutComponent),
+        canActivate: [AuthGuard],
+        canActivateChild: [AuthGuard],
+        children: [
+          // ── Dashboard & Statistics ──────────────────────────
+          {
+            path: 'dashboard',
+            loadComponent: () =>
+              import('./admin/dashboard/dashboard.component').then(m => m.DashboardComponent),
+          },
+          {
+            path: 'statistics',                                   
+            loadComponent: () =>
+              import('./admin/statistics/statistics.component').then(m => m.StatisticsComponent),
+          },
+
+          // ── Content Management ──────────────────────────────
+          {
+            path: 'projects',
+            loadComponent: () =>
+              import('./admin/projects/admin-projects.component').then(m => m.AdminProjectsComponent),
+          },
+          {
+            path: 'services',
+            loadComponent: () =>
+              import('./admin/services/admin-services.component').then(m => m.AdminServicesComponent),
+          },
+          {
+            path: 'contacts',
+            loadComponent: () =>
+              import('./admin/contacts/admin-contacts.component').then(m => m.AdminContactsComponent),
+          },
+          {
+            path: 'technologies',
+            loadComponent: () =>
+              import('./admin/technologies/admin-technologies.component').then(m => m.AdminTechnologiesComponent),
+          },
+          {
+            path: 'testimonials',
+            loadComponent: () =>
+              import('./admin/testimonials/admin-testimonials.component').then(m => m.AdminTestimonialsComponent),
+          },
+
+          // ── System ──────────────────────────────────────────
+          {
+            path: 'settings',
+            loadComponent: () =>
+              import('./admin/settings/admin-settings.component').then(m => m.AdminSettingsComponent),
+          },
+          {
+            path: 'users',
+            loadComponent: () =>
+              import('./admin/users/admin-users.component').then(m => m.AdminUsersComponent),
+          },
+          {
+            path: 'activity-logs',
+            loadComponent: () =>
+              import('./admin/activity-logs/admin-activity-logs.component').then(m => m.AdminActivityLogsComponent),
+          },
+          {
+            path: 'notifications',
+            loadComponent: () =>
+              import('./admin/notifications/admin-notifications.component').then(m => m.AdminNotificationsComponent),
+          },
+
+          // fallback once past login
+          { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
+        ],
       },
-      {
-        path: 'projects-management',
-        loadComponent: () => import('./admin/projects-management/projects-management.component').then(m => m.ProjectsManagementComponent),
-        // canActivate: [AuthGuard],
-        title: 'Projects Management'
-      },
-      {
-        path: 'services-management',
-        loadComponent: () => import('./admin/services-management/services-management.component').then(m => m.ServicesManagementComponent),
-        // canActivate: [AuthGuard],
-        title: 'Services Management'
-      },
-      {
-        path: 'admins-management',
-        loadComponent: () => import('./admin/admins-management/admins-management.component').then(m => m.AdminsManagementComponent),
-        // canActivate: [AuthGuard, RoleGuard], // For super admin only
-        title: 'Admins Management'
-      },
-      {
-        path: 'notifications',
-        loadComponent: () => import('./admin/notifications/notifications.component').then(m => m.NotificationsComponent),
-        // canActivate: [AuthGuard],
-        title: 'Notifications'
-      },
-      {
-        path: 'activity-logs',
-        loadComponent: () => import('./admin/activity-logs/activity-logs.component').then(m => m.ActivityLogsComponent),
-        // canActivate: [AuthGuard],
-        title: 'Activity Logs'
-      },
-      {
-        path: 'settings',
-        loadComponent: () => import('./admin/settings/settings.component').then(m => m.SettingsComponent),
-        // canActivate: [AuthGuard],
-        title: 'Settings'
-      }
-    ]
+    ],
   },
 
-  // Wildcard Route - 404 Page
-  {
-    path: '**',
-    redirectTo: 'admin/login',
-    pathMatch: 'full'
-  }
+  // ── Wildcard ──────────────────────────────────────────────────
+  { path: '**', redirectTo: '', pathMatch: 'full' },
 ];

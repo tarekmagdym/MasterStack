@@ -1,0 +1,463 @@
+<!-- Statistics Component -->
+<div class="stats-page" [class.rtl]="currentLang === 'ar'">
+
+  <!-- ── Header ─────────────────────────────────────────────────── -->
+  <div class="page-header" [@fadeSlideDown]>
+    <div class="header-left">
+      <h1 class="page-title" [attr.lang]="currentLang">
+        {{ currentLang === 'ar' ? 'الإحصائيات والتقارير' : 'Statistics & Reports' }}
+      </h1>
+      <p class="page-sub" [attr.lang]="currentLang">
+        {{ currentLang === 'ar'
+          ? 'تحليل شامل لأداء المنصة'
+          : 'Comprehensive platform performance analytics' }}
+      </p>
+    </div>
+    <button class="btn-refresh" (click)="loadStats()" [disabled]="loading">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" [class.spinning]="loading">
+        <polyline points="23 4 23 10 17 10" stroke-width="2"/>
+        <polyline points="1 20 1 14 7 14" stroke-width="2"/>
+        <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15" stroke-width="2"/>
+      </svg>
+      <span [attr.lang]="currentLang">{{ currentLang === 'ar' ? 'تحديث' : 'Refresh' }}</span>
+    </button>
+  </div>
+
+  <!-- Error -->
+  <div class="error-bar" *ngIf="error">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+      <circle cx="12" cy="12" r="10" stroke-width="2"/>
+      <line x1="12" y1="8" x2="12" y2="12" stroke-width="2"/>
+      <circle cx="12" cy="16" r="1" fill="currentColor"/>
+    </svg>
+    <span [attr.lang]="currentLang">
+      {{ currentLang === 'ar' ? 'تعذّر تحميل البيانات.' : 'Failed to load data.' }}
+    </span>
+    <button (click)="loadStats()" [attr.lang]="currentLang">
+      {{ currentLang === 'ar' ? 'إعادة المحاولة' : 'Retry' }}
+    </button>
+  </div>
+
+  <!-- ── KPI Row ─────────────────────────────────────────────────── -->
+  <div class="kpi-row" [@fadeUp]>
+    <div class="kpi-card" *ngFor="let c of kpiCards" [@cardEnter]>
+      <div class="kpi-inner">
+        <div class="kpi-icon-wrap" [ngClass]="c.color">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" [innerHTML]="c.icon"></svg>
+        </div>
+        <div class="kpi-data">
+          <span class="kpi-label" [attr.lang]="currentLang">
+            {{ currentLang === 'ar' ? c.labelAr : c.label }}
+          </span>
+          <span class="kpi-value" *ngIf="!loading">{{ c.value }}</span>
+          <span class="kpi-skel" *ngIf="loading"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Projects Section ────────────────────────────────────────── -->
+  <div class="section-label" [@fadeUp]>
+    <div class="s-badge teal">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+        <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" stroke-width="2"/>
+      </svg>
+      <span [attr.lang]="currentLang">{{ currentLang === 'ar' ? 'المشاريع' : 'Projects' }}</span>
+    </div>
+  </div>
+
+  <div class="grid-3" [@fadeUp]>
+
+    <!-- Status Donut -->
+    <div class="card">
+      <div class="card-head">
+        <div class="card-title">
+          <div class="title-dot teal"></div>
+          <span [attr.lang]="currentLang">
+            {{ currentLang === 'ar' ? 'حالة المشاريع' : 'Project Status' }}
+          </span>
+        </div>
+      </div>
+      <div class="echart-box echart-md" *ngIf="!loading && statusPieOpt"
+           echarts [options]="statusPieOpt" [theme]="echartsTheme"
+           (chartInit)="onChartInit($event, 'statusPie')">
+      </div>
+      <div class="chart-skel donut-skel" *ngIf="loading || !statusPieOpt">
+        <div class="skel-donut-ring"></div>
+      </div>
+    </div>
+
+    <!-- Category Donut -->
+    <div class="card">
+      <div class="card-head">
+        <div class="card-title">
+          <div class="title-dot purple"></div>
+          <span [attr.lang]="currentLang">
+            {{ currentLang === 'ar' ? 'حسب الفئة' : 'By Category' }}
+          </span>
+        </div>
+      </div>
+      <div class="echart-box echart-md" *ngIf="!loading && categoryPieOpt"
+           echarts [options]="categoryPieOpt" [theme]="echartsTheme"
+           (chartInit)="onChartInit($event, 'categoryPie')">
+      </div>
+      <div class="chart-skel donut-skel" *ngIf="loading || !categoryPieOpt">
+        <div class="skel-donut-ring"></div>
+      </div>
+    </div>
+
+    <!-- Category Bars -->
+    <div class="card">
+      <div class="card-head">
+        <div class="card-title">
+          <div class="title-dot orange"></div>
+          <span [attr.lang]="currentLang">
+            {{ currentLang === 'ar' ? 'الفئات تفصيلياً' : 'Category Breakdown' }}
+          </span>
+        </div>
+      </div>
+      <div class="cat-bars" *ngIf="!loading">
+        <div class="c-bar-row" *ngFor="let c of (stats?.projects?.byCategory ?? [])">
+          <span class="c-bar-lbl" [attr.lang]="currentLang">{{ getCatLabel(c._id) }}</span>
+          <div class="c-bar-track">
+            <div class="c-bar-fill" [ngClass]="'cat-' + c._id"
+                 [style.width.%]="getCatPct(c.count, stats?.projects?.byCategory ?? [])">
+            </div>
+          </div>
+          <span class="c-bar-num">{{ c.count }}</span>
+        </div>
+        <div class="empty-note" *ngIf="!(stats?.projects?.byCategory?.length)" [attr.lang]="currentLang">
+          {{ currentLang === 'ar' ? 'لا توجد بيانات' : 'No data' }}
+        </div>
+      </div>
+      <div class="cat-bars" *ngIf="loading">
+        <div class="c-bar-row skel" *ngFor="let i of [1,2,3,4]">
+          <div class="skel-line w30"></div>
+          <div class="skel-line w60"></div>
+          <div class="skel-line w10"></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Projects Over Time — full-width line -->
+  <div class="card chart-full" [@fadeUp]>
+    <div class="card-head">
+      <div class="card-title">
+        <div class="title-dot teal"></div>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" stroke-width="2"/>
+        </svg>
+        <span [attr.lang]="currentLang">
+          {{ currentLang === 'ar' ? 'المشاريع عبر الزمن' : 'Projects Over Time' }}
+        </span>
+      </div>
+    </div>
+    <div class="echart-box echart-full" *ngIf="!loading && projectsLineOpt"
+         echarts [options]="projectsLineOpt" [theme]="echartsTheme"
+         (chartInit)="onChartInit($event, 'projectsLine')">
+    </div>
+    <div class="chart-skel line-skel" *ngIf="loading || !projectsLineOpt">
+      <div class="skel-bars-row">
+        <div class="skel-bar-item" *ngFor="let h of skelH" [style.height.%]="h"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Messages Section ────────────────────────────────────────── -->
+  <div class="section-label" [@fadeUp]>
+    <div class="s-badge orange">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" stroke-width="2"/>
+      </svg>
+      <span [attr.lang]="currentLang">{{ currentLang === 'ar' ? 'الرسائل' : 'Messages' }}</span>
+    </div>
+  </div>
+
+  <div class="grid-2" [@fadeUp]>
+
+    <!-- Message Stats -->
+    <div class="card">
+      <div class="card-head">
+        <div class="card-title">
+          <div class="title-dot orange"></div>
+          <span [attr.lang]="currentLang">
+            {{ currentLang === 'ar' ? 'حالة الرسائل' : 'Message Status' }}
+          </span>
+        </div>
+      </div>
+      <div class="msg-stat-block" *ngIf="!loading">
+        <div class="msb-nums">
+          <div class="msb-item">
+            <span class="msb-v grad">{{ stats?.summary?.totalMessages ?? 0 }}</span>
+            <span class="msb-l" [attr.lang]="currentLang">
+              {{ currentLang === 'ar' ? 'إجمالي' : 'Total' }}
+            </span>
+          </div>
+          <div class="msb-div"></div>
+          <div class="msb-item">
+            <span class="msb-v grn">{{ stats?.messages?.totalRead ?? 0 }}</span>
+            <span class="msb-l" [attr.lang]="currentLang">
+              {{ currentLang === 'ar' ? 'مقروءة' : 'Read' }}
+            </span>
+          </div>
+          <div class="msb-div"></div>
+          <div class="msb-item">
+            <span class="msb-v org">{{ stats?.summary?.totalUnread ?? 0 }}</span>
+            <span class="msb-l" [attr.lang]="currentLang">
+              {{ currentLang === 'ar' ? 'غير مقروءة' : 'Unread' }}
+            </span>
+          </div>
+        </div>
+        <div class="rr-block">
+          <div class="rr-row">
+            <span class="rr-lbl" [attr.lang]="currentLang">
+              {{ currentLang === 'ar' ? 'معدل القراءة' : 'Read Rate' }}
+            </span>
+            <span class="rr-pct">{{ readRate }}%</span>
+          </div>
+          <div class="rr-track"><div class="rr-fill" [style.width.%]="readRate"></div></div>
+        </div>
+      </div>
+      <div class="skel-line w100" style="height:100px;border-radius:12px" *ngIf="loading"></div>
+    </div>
+
+    <!-- Messages Over Time Bar -->
+    <div class="card">
+      <div class="card-head">
+        <div class="card-title">
+          <div class="title-dot green"></div>
+          <span [attr.lang]="currentLang">
+            {{ currentLang === 'ar' ? 'الرسائل عبر الزمن' : 'Messages Over Time' }}
+          </span>
+        </div>
+        <div class="inline-legend">
+          <span class="il green"></span>
+          <span class="il-txt" [attr.lang]="currentLang">
+            {{ currentLang === 'ar' ? 'مقروءة' : 'Read' }}
+          </span>
+          <span class="il orange"></span>
+          <span class="il-txt" [attr.lang]="currentLang">
+            {{ currentLang === 'ar' ? 'غير مقروءة' : 'Unread' }}
+          </span>
+        </div>
+      </div>
+      <div class="echart-box echart-md" *ngIf="!loading && messagesBarOpt"
+           echarts [options]="messagesBarOpt" [theme]="echartsTheme"
+           (chartInit)="onChartInit($event, 'messagesBar')">
+      </div>
+      <div class="chart-skel" *ngIf="loading || !messagesBarOpt">
+        <div class="skel-bars-row">
+          <div class="skel-bar-pair" *ngFor="let h of [55,80,45,90,65]">
+            <div class="skel-bar-item" [style.height.%]="h"></div>
+            <div class="skel-bar-item alt" [style.height.%]="h*0.5"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ── Activity & Services ─────────────────────────────────────── -->
+  <div class="section-label" [@fadeUp]>
+    <div class="s-badge blue">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+        <line x1="18" y1="20" x2="18" y2="10" stroke-width="2"/>
+        <line x1="12" y1="20" x2="12" y2="4" stroke-width="2"/>
+        <line x1="6" y1="20" x2="6" y2="14" stroke-width="2"/>
+      </svg>
+      <span [attr.lang]="currentLang">
+        {{ currentLang === 'ar' ? 'النشاط والخدمات' : 'Activity & Services' }}
+      </span>
+    </div>
+  </div>
+
+  <div class="grid-3" [@fadeUp]>
+
+    <!-- Services -->
+    <div class="card">
+      <div class="card-head">
+        <div class="card-title">
+          <div class="title-dot blue"></div>
+          <span [attr.lang]="currentLang">
+            {{ currentLang === 'ar' ? 'تفاصيل الخدمات' : 'Services' }}
+          </span>
+        </div>
+      </div>
+      <div class="services-grid" *ngIf="!loading">
+        <div class="svc-item" *ngFor="let s of servicesItems">
+          <div class="svc-icon" [ngClass]="s.color">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" [innerHTML]="s.icon"></svg>
+          </div>
+          <div class="svc-info">
+            <span class="svc-num">{{ s.value }}</span>
+            <span class="svc-lbl" [attr.lang]="currentLang">
+              {{ currentLang === 'ar' ? s.labelAr : s.label }}
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="services-grid" *ngIf="loading">
+        <div class="svc-skel" *ngFor="let i of [1,2,3,4]">
+          <div class="skel-av sm"></div>
+          <div class="skel-lines">
+            <div class="skel-line w60"></div>
+            <div class="skel-line w40"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Activity by Action -->
+    <div class="card">
+      <div class="card-head">
+        <div class="card-title">
+          <div class="title-dot teal"></div>
+          <span [attr.lang]="currentLang">
+            {{ currentLang === 'ar' ? 'الأنشطة حسب النوع' : 'Activity by Type' }}
+          </span>
+        </div>
+      </div>
+      <div class="act-type-list" *ngIf="!loading">
+        <div class="at-row" *ngFor="let a of (stats?.activity?.byAction ?? [])">
+          <div class="at-badge" [ngClass]="'b-' + getActionType(a._id)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                 [innerHTML]="getActionIcon(a._id)"></svg>
+          </div>
+          <div class="at-info">
+            <span class="at-name" [attr.lang]="currentLang">{{ getActionLabel(a._id) }}</span>
+            <div class="at-track">
+              <div class="at-fill" [ngClass]="'b-' + getActionType(a._id)"
+                   [style.width.%]="getActPct(a.count, stats?.activity?.byAction ?? [])">
+              </div>
+            </div>
+          </div>
+          <span class="at-num">{{ a.count }}</span>
+        </div>
+        <div class="empty-note"
+             *ngIf="!(stats?.activity?.byAction?.length)" [attr.lang]="currentLang">
+          {{ currentLang === 'ar' ? 'لا توجد بيانات' : 'No data' }}
+        </div>
+      </div>
+      <div class="act-type-list" *ngIf="loading">
+        <div class="at-row skel" *ngFor="let i of [1,2,3,4,5]">
+          <div class="skel-av xs"></div>
+          <div class="skel-line w70"></div>
+          <div class="skel-line w10"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Activity by Resource -->
+    <div class="card" *ngIf="isSuperAdmin">
+      <div class="card-head">
+        <div class="card-title">
+          <div class="title-dot purple"></div>
+          <span [attr.lang]="currentLang">
+            {{ currentLang === 'ar' ? 'الأنشطة حسب المورد' : 'By Resource' }}
+          </span>
+        </div>
+      </div>
+      <div class="res-list" *ngIf="!loading">
+        <div class="res-row" *ngFor="let r of (stats?.activity?.byResource ?? []); let i = index">
+          <span class="res-rank">{{ i + 1 }}</span>
+          <div class="res-info">
+            <span class="res-name">{{ r._id }}</span>
+            <div class="res-track">
+              <div class="res-fill"
+                   [style.width.%]="getActPct(r.count, stats?.activity?.byResource ?? [])"
+                   [style.background]="resColors[i % resColors.length]">
+              </div>
+            </div>
+          </div>
+          <span class="res-num">{{ r.count }}</span>
+        </div>
+        <div class="empty-note"
+             *ngIf="!(stats?.activity?.byResource?.length)" [attr.lang]="currentLang">
+          {{ currentLang === 'ar' ? 'لا توجد بيانات' : 'No data' }}
+        </div>
+      </div>
+      <div class="res-list" *ngIf="loading">
+        <div class="res-row skel" *ngFor="let i of [1,2,3,4,5]">
+          <div class="skel-av xs"></div>
+          <div class="skel-line w70"></div>
+          <div class="skel-line w10"></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Activity Over Time — full-width bar -->
+  <div class="card chart-full" [@fadeUp]>
+    <div class="card-head">
+      <div class="card-title">
+        <div class="title-dot purple"></div>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <line x1="18" y1="20" x2="18" y2="10" stroke-width="2"/>
+          <line x1="12" y1="20" x2="12" y2="4" stroke-width="2"/>
+          <line x1="6" y1="20" x2="6" y2="14" stroke-width="2"/>
+        </svg>
+        <span [attr.lang]="currentLang">
+          {{ currentLang === 'ar' ? 'النشاط عبر الزمن' : 'Activity Over Time' }}
+        </span>
+      </div>
+    </div>
+    <div class="echart-box echart-full" *ngIf="!loading && activityBarOpt"
+         echarts [options]="activityBarOpt" [theme]="echartsTheme"
+         (chartInit)="onChartInit($event, 'activityBar')">
+    </div>
+    <div class="chart-skel line-skel" *ngIf="loading || !activityBarOpt">
+      <div class="skel-bars-row">
+        <div class="skel-bar-item" *ngFor="let h of skelH" [style.height.%]="h"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Top Users ───────────────────────────────────────────────── -->
+  <ng-container *ngIf="isSuperAdmin">
+    <div class="section-label" [@fadeUp]>
+      <div class="s-badge green">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" stroke-width="2"/>
+          <circle cx="9" cy="7" r="4" stroke-width="2"/>
+        </svg>
+        <span [attr.lang]="currentLang">
+          {{ currentLang === 'ar' ? 'أكثر المستخدمين نشاطاً' : 'Top Active Users' }}
+        </span>
+      </div>
+    </div>
+    <div class="card top-users-card" [@fadeUp]>
+      <div class="tu-grid" *ngIf="!loading">
+        <div class="tu-card"
+             *ngFor="let u of (stats?.activity?.topUsers ?? []); let i = index">
+          <div class="tu-medal">{{ i < 3 ? ['🥇','🥈','🥉'][i] : (i + 1) }}</div>
+          <div class="tu-av" [style.background]="getColor(u.name)">{{ getInit(u.name) }}</div>
+          <div class="tu-body">
+            <span class="tu-name">{{ u.name }}</span>
+            <span class="tu-email">{{ u.email }}</span>
+            <span class="tu-role" [attr.lang]="currentLang">{{ getRoleLabel(u.role) }}</span>
+          </div>
+          <div class="tu-count">
+            <span>{{ u.count }}</span>
+            <small [attr.lang]="currentLang">
+              {{ currentLang === 'ar' ? 'نشاط' : 'actions' }}
+            </small>
+          </div>
+        </div>
+      </div>
+      <div class="tu-grid" *ngIf="loading">
+        <div class="tu-card skel" *ngFor="let i of [1,2,3,4,5]">
+          <div class="skel-av xs"></div>
+          <div class="skel-av sm"></div>
+          <div class="skel-lines">
+            <div class="skel-line w80"></div>
+            <div class="skel-line w50"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+
+</div>

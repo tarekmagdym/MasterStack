@@ -1,0 +1,195 @@
+<div class="logs-page" [class.dark]="isDark" [class.rtl]="isRtl">
+
+  <!-- Page Header -->
+  <div class="page-header">
+    <div>
+      <h2>{{ isRtl ? 'سجل النشاط' : 'Activity Logs' }}</h2>
+      <p>{{ isRtl ? 'سجل كامل لأنشطة النظام' : 'Complete system activity trail' }}</p>
+    </div>
+    <div class="header-actions">
+      <!-- Clear All Logs -->
+      <button
+        class="clear-btn"
+        (click)="promptClearLogs()"
+        [disabled]="isClearing || isLoading || logs.length === 0"
+      >
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <polyline points="3 6 5 6 21 6" stroke-width="2"/>
+          <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" stroke-width="2"/>
+          <path d="M10 11v6M14 11v6" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        {{ isRtl ? (isClearing ? 'جارٍ المسح...' : 'مسح الكل') : (isClearing ? 'Clearing...' : 'Clear All') }}
+      </button>
+
+      <!-- Export -->
+      <button class="export-btn" (click)="exportLogs()" [disabled]="isLoading || filteredLogs.length === 0">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" stroke-width="2" stroke-linecap="round"/>
+          <polyline points="7 10 12 15 17 10" stroke-width="2" stroke-linecap="round"/>
+          <line x1="12" y1="15" x2="12" y2="3" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        {{ isRtl ? 'تصدير' : 'Export' }}
+      </button>
+    </div>
+  </div>
+
+  <!-- ── Confirm Clear Dialog ── -->
+  <div class="confirm-overlay" *ngIf="showClearConfirm" (click)="cancelClear()">
+    <div class="confirm-dialog" (click)="$event.stopPropagation()">
+      <div class="confirm-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" stroke-width="2"/>
+          <line x1="12" y1="9" x2="12" y2="13" stroke-width="2" stroke-linecap="round"/>
+          <line x1="12" y1="17" x2="12.01" y2="17" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <h3>{{ isRtl ? 'مسح كل السجلات؟' : 'Clear All Logs?' }}</h3>
+      <p>{{ isRtl ? 'هذا الإجراء لا يمكن التراجع عنه. سيتم حذف جميع سجلات النشاط نهائياً.' : 'This action cannot be undone. All activity logs will be permanently deleted.' }}</p>
+      <div class="confirm-actions">
+        <button class="cancel-btn" (click)="cancelClear()">
+          {{ isRtl ? 'إلغاء' : 'Cancel' }}
+        </button>
+        <button class="confirm-delete-btn" (click)="confirmClearLogs()">
+          {{ isRtl ? 'مسح الكل' : 'Clear All' }}
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Filters -->
+  <div class="filters-bar">
+    <div class="search-wrap">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+        <circle cx="11" cy="11" r="8" stroke-width="2"/>
+        <line x1="21" y1="21" x2="16.65" y2="16.65" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+      <input
+        type="search"
+        [(ngModel)]="searchQuery"
+        (ngModelChange)="onSearchChange()"
+        [placeholder]="isRtl ? 'بحث في السجلات...' : 'Search logs...'"
+      />
+    </div>
+
+    <select class="filter-select" [(ngModel)]="actionFilter" (ngModelChange)="onActionFilterChange()">
+      <option value="all">{{ isRtl ? 'كل الأنواع' : 'All Types' }}</option>
+      <option value="LOGIN">Auth – Login</option>
+      <option value="LOGOUT">Auth – Logout</option>
+      <option value="CREATE">{{ isRtl ? 'إنشاء' : 'Create' }}</option>
+      <option value="UPDATE">{{ isRtl ? 'تحديث' : 'Update' }}</option>
+      <option value="MARK_READ">{{ isRtl ? 'تعليم كمقروء' : 'Mark Read' }}</option>
+      <option value="DELETE">{{ isRtl ? 'حذف' : 'Delete' }}</option>
+    </select>
+
+    <select class="filter-select" [(ngModel)]="userFilter" (ngModelChange)="onUserFilterChange()">
+      <option value="all">{{ isRtl ? 'كل المستخدمين' : 'All Users' }}</option>
+      <option *ngFor="let u of uniqueUsers" [value]="u">{{ u }}</option>
+    </select>
+  </div>
+
+  <!-- Table Card -->
+  <div class="log-table-card">
+
+    <!-- Loading skeleton -->
+    <div *ngIf="isLoading" class="state-container">
+      <div class="skeleton-row" *ngFor="let i of [1,2,3,4,5]">
+        <div class="sk sk-icon"></div>
+        <div class="sk-lines">
+          <div class="sk sk-title"></div>
+          <div class="sk sk-sub"></div>
+        </div>
+        <div class="sk sk-pill"></div>
+        <div class="sk sk-pill"></div>
+        <div class="sk sk-pill"></div>
+      </div>
+    </div>
+
+    <!-- Error state -->
+    <div *ngIf="!isLoading && hasError" class="state-container empty-state">
+      <div class="state-icon error-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <circle cx="12" cy="12" r="10" stroke-width="2"/>
+          <line x1="12" y1="8" x2="12" y2="12" stroke-width="2" stroke-linecap="round"/>
+          <line x1="12" y1="16" x2="12.01" y2="16" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <h3>{{ isRtl ? 'تعذّر التحميل' : 'Failed to load logs' }}</h3>
+      <p>{{ errorMsg }}</p>
+      <button class="retry-btn" (click)="loadLogs()">
+        {{ isRtl ? 'إعادة المحاولة' : 'Retry' }}
+      </button>
+    </div>
+
+    <!-- Empty state -->
+    <div *ngIf="!isLoading && !hasError && filteredLogs.length === 0" class="state-container empty-state">
+      <div class="state-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" stroke-width="2"/>
+          <polyline points="14 2 14 8 20 8" stroke-width="2"/>
+        </svg>
+      </div>
+      <h3>{{ isRtl ? 'لا توجد سجلات' : 'No logs found' }}</h3>
+      <p>{{ isRtl ? 'لم يتم العثور على نتائج مطابقة' : 'No matching activity records found' }}</p>
+    </div>
+
+    <!-- Data table -->
+    <table *ngIf="!isLoading && !hasError && filteredLogs.length > 0" class="data-table">
+      <thead>
+        <tr>
+          <th>{{ isRtl ? 'النشاط'   : 'Activity' }}</th>
+          <th>{{ isRtl ? 'المستخدم' : 'User'     }}</th>
+          <th>{{ isRtl ? 'النوع'    : 'Type'     }}</th>
+          <th>{{ isRtl ? 'الوقت'    : 'Time'     }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let log of filteredLogs">
+          <td>
+            <div class="log-action">
+              <div class="log-type-icon" [class]="log.type">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" [innerHTML]="log.icon"></svg>
+              </div>
+              <div>
+                <span class="log-title">{{ isRtl ? log.titleAr : log.title }}</span>
+                <span class="log-detail">{{ isRtl ? log.detailAr : log.detail }}</span>
+              </div>
+            </div>
+          </td>
+          <td>
+            <div class="user-cell">
+              <div class="user-av" [style.background]="log.userColor">{{ log.userInitials }}</div>
+              <span>{{ log.user }}</span>
+            </div>
+          </td>
+          <td><span class="type-badge" [class]="log.type">{{ log.type }}</span></td>
+          <td class="time-cell">{{ log.time }}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Pagination -->
+    <div *ngIf="!isLoading && !hasError && pagination.total > 0" class="pagination">
+      <span class="pag-info">
+        {{ isRtl ? 'عرض' : 'Showing' }}
+        {{ filteredLogs.length }}
+        {{ isRtl ? 'من' : 'of' }}
+        {{ pagination.total }}
+      </span>
+      <div class="pag-btns">
+        <button class="pag-btn" [disabled]="currentPage === 1" (click)="goToPage(currentPage - 1)">
+          {{ isRtl ? 'السابق' : 'Prev' }}
+        </button>
+        <button
+          *ngFor="let p of pageNumbers"
+          class="pag-btn"
+          [class.active]="p === currentPage"
+          (click)="goToPage(p)"
+        >{{ p }}</button>
+        <button class="pag-btn" [disabled]="currentPage === totalPages" (click)="goToPage(currentPage + 1)">
+          {{ isRtl ? 'التالي' : 'Next' }}
+        </button>
+      </div>
+    </div>
+
+  </div><!-- /log-table-card -->
+</div>

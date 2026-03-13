@@ -1,0 +1,156 @@
+// ============================================================
+// SHARED ADMIN PAGES BASE — import this in every page SCSS
+// ============================================================
+$blue:  #0e3581;
+$teal:  #26cabc;
+$white: #ffffff;
+$grad:  linear-gradient(135deg, $blue 0%, $teal 100%);
+
+$bg-light:      #f4f6fb;
+$surface-light: #ffffff;
+$border-light:  #e8edf5;
+$text-light:    #1a1a2e;
+$muted-light:   #6c757d;
+
+$bg-dark:      #12131f;
+$surface-dark: #1c1e30;
+$border-dark:  #2a2d45;
+$text-dark:    #e8e9f0;
+$muted-dark:   #8b8fa8;
+
+$radius: 14px;
+$t: 0.25s cubic-bezier(0.4,0,0.2,1);
+
+// ── Page wrapper ─────────────────────────────────────────────
+%page-base {
+  min-height: 100%;
+  color: $text-light;
+  font-family: 'IBM Plex Sans', sans-serif;
+
+  &.dark  { color: $text-dark; }
+  &.rtl   { direction: rtl; font-family: 'IBM Plex Sans Arabic', sans-serif; }
+}
+
+// ── Page header ───────────────────────────────────────────────
+%page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 24px;
+
+  h2 {
+    margin: 0;
+    font-size: 1.4rem;
+    font-weight: 800;
+  }
+  p {
+    margin: 4px 0 0;
+    font-size: 0.85rem;
+    color: $muted-light;
+  }
+}
+
+// ── Card base ─────────────────────────────────────────────────
+%card {
+  background: $surface-light;
+  border: 1px solid $border-light;
+  border-radius: $radius;
+  padding: 22px;
+  transition: background $t, border-color $t;
+
+  .dark & {
+    background: $surface-dark;
+    border-color: $border-dark;
+  }
+}
+
+// ── Table base ────────────────────────────────────────────────
+%data-table {
+  width: 100%;
+  border-collapse: collapse;
+
+  th {
+    text-align: left;
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    color: $muted-light;
+    padding: 10px 14px;
+    border-bottom: 1px solid $border-light;
+
+    .dark & { color: $muted-dark; border-color: $border-dark; }
+    .rtl & { text-align: right; }
+  }
+
+  td {
+    padding: 12px 14px;
+    font-size: 0.87rem;
+    border-bottom: 1px solid rgba($border-light, 0.5);
+    vertical-align: middle;
+
+    .dark & { border-color: rgba($border-dark, 0.5); }
+  }
+
+  tr:last-child td { border-bottom: none; }
+
+  tr:hover td {
+    background: rgba($teal, 0.04);
+  }
+}
+
+// ── Status badge ──────────────────────────────────────────────
+%status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 0.72rem;
+  font-weight: 700;
+
+  &::before {
+    content: '';
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: currentColor;
+  }
+}
+
+// ── Header action buttons ─────────────────────────────────────
+%action-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 18px;
+  border-radius: 10px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all $t;
+  border: none;
+
+  svg { width: 16px; height: 16px; stroke-width: 2; fill: none; }
+}
+
+%primary-btn {
+  @extend %action-btn;
+  background: $grad;
+  color: $white;
+  box-shadow: 0 4px 14px rgba($teal, 0.3);
+
+  &:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba($teal, 0.42); }
+}
+
+%secondary-btn {
+  @extend %action-btn;
+  background: transparent;
+  border: 1.5px solid $border-light !important;
+  color: $text-light;
+
+  &:hover { border-color: $teal !important; color: $teal; }
+
+  .dark & { border-color: $border-dark !important; color: $text-dark; }
+}

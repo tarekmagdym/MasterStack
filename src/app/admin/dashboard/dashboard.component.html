@@ -1,3 +1,450 @@
-<button (click)="logout()">Logout</button>
+<!-- Dashboard Component -->
+<div class="dash-page" [class.rtl]="currentLang === 'ar'">
 
+  <!-- ── Welcome Banner ────────────────────────────────────────── -->
+  <div class="welcome-banner" [@fadeSlideDown]>
+    <div class="wb-left">
+      <div class="wb-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <rect x="3" y="3" width="7" height="7" rx="1" stroke-width="2"/>
+          <rect x="14" y="3" width="7" height="7" rx="1" stroke-width="2"/>
+          <rect x="3" y="14" width="7" height="7" rx="1" stroke-width="2"/>
+          <rect x="14" y="14" width="7" height="7" rx="1" stroke-width="2"/>
+        </svg>
+      </div>
+      <div class="wb-text">
+        <h1 class="wb-title" [attr.lang]="currentLang">
+          {{ currentLang === 'ar' ? 'لوحة التحكم' : 'Dashboard' }}
+        </h1>
+        <p class="wb-sub" [attr.lang]="currentLang">
+          {{ currentLang === 'ar'
+            ? 'مرحباً، ' + (currentUser?.name || '') + ' 👋'
+            : 'Welcome back, ' + (currentUser?.name || '') + ' 👋' }}
+        </p>
+      </div>
+    </div>
+    <div class="wb-right">
+      <div class="wb-breadcrumb">
+        <span [attr.lang]="currentLang">{{ currentLang === 'ar' ? 'الرئيسية' : 'Home' }}</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <polyline points="9 18 15 12 9 6" stroke-width="2"/>
+        </svg>
+        <span class="wb-bc-active" [attr.lang]="currentLang">{{ currentLang === 'ar' ? 'لوحة التحكم' : 'Dashboard' }}</span>
+      </div>
+      <div class="wb-actions">
+        <div class="last-upd">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <circle cx="12" cy="12" r="10" stroke-width="2"/>
+            <polyline points="12 6 12 12 16 14" stroke-width="2"/>
+          </svg>
+          <span>{{ currentLang === 'ar' ? 'آخر تحديث: ' : 'Last updated: ' }}{{ lastUpdated }}</span>
+        </div>
+        <button class="btn-refresh" (click)="loadDashboard()" [disabled]="loading">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" [class.spinning]="loading">
+            <polyline points="23 4 23 10 17 10" stroke-width="2"/>
+            <polyline points="1 20 1 14 7 14" stroke-width="2"/>
+            <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15" stroke-width="2"/>
+          </svg>
+          <span [attr.lang]="currentLang">{{ currentLang === 'ar' ? 'تحديث' : 'Refresh' }}</span>
+        </button>
+      </div>
+    </div>
+    <!-- decorative circles -->
+    <div class="wb-deco wb-deco-1"></div>
+    <div class="wb-deco wb-deco-2"></div>
+    <div class="wb-deco wb-deco-3"></div>
+  </div>
 
+  <!-- ── KPI Cards ─────────────────────────────────────────────── -->
+  <div class="kpi-row">
+    <div class="kpi-card" *ngFor="let card of kpiCards; let i = index"
+         [style.--delay]="(i * 60) + 'ms'" [@cardEnter]>
+      <div class="kpi-top-bar" [ngClass]="card.color"></div>
+      <div class="kpi-inner">
+        <div class="kpi-icon-wrap" [ngClass]="card.color">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" [innerHTML]="card.icon"></svg>
+        </div>
+        <div class="kpi-data">
+          <span class="kpi-label" [attr.lang]="currentLang">
+            {{ currentLang === 'ar' ? card.labelAr : card.label }}
+          </span>
+          <div class="kpi-value-row">
+            <span class="kpi-value" *ngIf="!loading">{{ card.value }}</span>
+            <span class="kpi-skel" *ngIf="loading"></span>
+            <span class="kpi-trend-icon" *ngIf="card.trend && !loading">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <polyline points="22 7 13.5 15.5 8.5 10.5 2 17" stroke-width="2.5"/>
+              </svg>
+            </span>
+            <span class="kpi-badge-pill" *ngIf="card.badge && !loading">{{ card.badge }}</span>
+          </div>
+        </div>
+      </div>
+      <div class="kpi-footer" [attr.lang]="currentLang">
+        {{ currentLang === 'ar' ? card.footerAr : card.footer }}
+        <strong [class.warn]="card.footerWarn" *ngIf="!loading">{{ card.footerVal }}</strong>
+        <span class="kpi-skel-sm" *ngIf="loading"></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Main Grid: Activity + Right Col ───────────────────────── -->
+  <div class="main-grid">
+
+    <!-- Activity Log -->
+    <div class="card activity-card" [@fadeUp]>
+      <div class="card-head">
+        <div class="card-title">
+          <!-- pulse dot + activity icon matching screenshot -->
+          <span class="pulse-dot"></span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" stroke-width="2"/>
+          </svg>
+          <span [attr.lang]="currentLang">
+            {{ currentLang === 'ar' ? 'سجل النشاط الأخير' : 'Recent Activity' }}
+          </span>
+        </div>
+        <a routerLink="/admin/activity-logs" class="view-all">
+          {{ currentLang === 'ar' ? 'عرض الكل' : 'View All' }}
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M5 12h14M12 5l7 7-7 7" stroke-width="2"/>
+          </svg>
+        </a>
+      </div>
+
+      <!-- Skeleton -->
+      <div class="act-list" *ngIf="logsLoading">
+        <div class="act-row skel" *ngFor="let i of [1,2,3,4,5,6]">
+          <div class="skel-av"></div>
+          <div class="skel-body">
+            <div class="skel-line w80"></div>
+            <div class="skel-line w50"></div>
+          </div>
+          <div class="skel-pill"></div>
+        </div>
+      </div>
+
+      <!-- Empty -->
+      <div class="empty-state" *ngIf="!logsLoading && recentLogs.length === 0">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <circle cx="12" cy="12" r="10" stroke-width="1.5"/>
+          <line x1="12" y1="8" x2="12" y2="12" stroke-width="1.5"/>
+          <circle cx="12" cy="16" r="1" fill="currentColor"/>
+        </svg>
+        <span [attr.lang]="currentLang">{{ currentLang === 'ar' ? 'لا يوجد نشاط حديث' : 'No recent activity' }}</span>
+      </div>
+
+      <!-- Rows -->
+      <div class="act-list" *ngIf="!logsLoading && recentLogs.length > 0">
+        <div class="act-row" *ngFor="let log of recentLogs">
+          <div class="act-av" [style.background]="getColor(log.user.name)">
+            {{ getInit(log.user.name) }}
+          </div>
+          <div class="act-body">
+            <div class="act-top">
+              <strong class="act-user">{{ log.user.name }}</strong>
+              <span class="act-chip" [ngClass]="'chip-' + getActionType(log.action)">
+                {{ getActionLabel(log.action) }}
+              </span>
+              <span class="act-res">{{ log.resourceTitle || log.resourceType }}</span>
+            </div>
+            <div class="act-bot">
+              <span class="act-time">{{ timeAgo(log.createdAt) }}</span>
+              <span class="act-sep" *ngIf="log.ipAddress">·</span>
+              <span class="act-ip" *ngIf="log.ipAddress">{{ log.ipAddress }}</span>
+            </div>
+          </div>
+          <div class="act-badge" [ngClass]="'badge-' + getActionType(log.action)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                 [innerHTML]="getActionIcon(log.action)"></svg>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Column -->
+    <div class="right-col">
+
+      <!-- Quick Actions -->
+      <div class="card" [@fadeUp]>
+        <div class="card-head">
+          <div class="card-title">
+            <span class="pulse-dot orange"></span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" stroke-width="2"/>
+            </svg>
+            <span [attr.lang]="currentLang">
+              {{ currentLang === 'ar' ? 'إجراءات سريعة' : 'Quick Actions' }}
+            </span>
+          </div>
+        </div>
+        <div class="qa-grid">
+          <a *ngFor="let qa of quickActions" [routerLink]="qa.route" class="qa-btn">
+            <div class="qa-icon-wrap" [ngClass]="qa.color">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" [innerHTML]="qa.icon"></svg>
+            </div>
+            <span [attr.lang]="currentLang">
+              {{ currentLang === 'ar' ? qa.labelAr : qa.label }}
+            </span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Recent Messages -->
+      <!-- FIX: routerLink was /admin/messages → corrected to /admin/contacts -->
+      <div class="card" [@fadeUp]>
+        <div class="card-head">
+          <div class="card-title">
+            <span class="pulse-dot blue"></span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" stroke-width="2"/>
+            </svg>
+            <span [attr.lang]="currentLang">
+              {{ currentLang === 'ar' ? 'أحدث الرسائل' : 'Recent Messages' }}
+            </span>
+          </div>
+          <a routerLink="/admin/contacts" class="view-all">
+            {{ currentLang === 'ar' ? 'عرض الكل' : 'View All' }}
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path d="M5 12h14M12 5l7 7-7 7" stroke-width="2"/>
+            </svg>
+          </a>
+        </div>
+
+        <div class="msgs-list" *ngIf="messagesLoading">
+          <div class="msg-row skel" *ngFor="let i of [1,2,3]">
+            <div class="skel-av sm"></div>
+            <div class="skel-body">
+              <div class="skel-line w80"></div>
+              <div class="skel-line w50"></div>
+            </div>
+          </div>
+        </div>
+        <div class="empty-state sm" *ngIf="!messagesLoading && recentMessages.length === 0">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" stroke-width="1.5"/>
+          </svg>
+          <span [attr.lang]="currentLang">{{ currentLang === 'ar' ? 'لا توجد رسائل' : 'No messages' }}</span>
+        </div>
+        <div class="msgs-list" *ngIf="!messagesLoading && recentMessages.length > 0">
+          <div class="msg-row" *ngFor="let m of recentMessages"
+               [class.is-unread]="!m.isRead" (click)="goMsg(m._id)">
+            <div class="msg-av" [style.background]="getColor(m.name)">{{ getInit(m.name) }}</div>
+            <div class="msg-body">
+              <div class="msg-top">
+                <span class="msg-name">{{ m.name }}</span>
+                <span class="msg-time">{{ timeAgo(m.createdAt) }}</span>
+              </div>
+              <span class="msg-sub">
+                {{ (m.subject || m.message) | slice:0:55 }}{{ (m.subject || m.message).length > 55 ? '…' : '' }}
+              </span>
+            </div>
+            <div class="unread-dot" *ngIf="!m.isRead"></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── Charts Row ─────────────────────────────────────────────── -->
+  <div class="charts-row" [@fadeUp]>
+
+    <!-- Projects Over Time — Line Chart -->
+    <div class="card chart-card chart-wide">
+      <div class="card-head">
+        <div class="card-title">
+          <span class="pulse-dot teal"></span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" stroke-width="2"/>
+          </svg>
+          <span [attr.lang]="currentLang">
+            {{ currentLang === 'ar' ? 'المشاريع عبر الزمن' : 'Projects Over Time' }}
+          </span>
+        </div>
+      </div>
+      <div class="echart-box" *ngIf="!loading && projectsLineOpt"
+           echarts [options]="projectsLineOpt" [theme]="echartsTheme"
+           (chartInit)="onChartInit($event, 'projectsLine')">
+      </div>
+      <div class="chart-skel" *ngIf="loading || !projectsLineOpt">
+        <div class="skel-bars-row">
+          <div class="skel-bar-item" *ngFor="let h of skelH" [style.height.%]="h"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Category Donut -->
+    <div class="card chart-card">
+      <div class="card-head">
+        <div class="card-title">
+          <span class="pulse-dot purple"></span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M21.21 15.89A10 10 0 1 1 8 2.83" stroke-width="2"/>
+            <path d="M22 12A10 10 0 0 0 12 2v10z" stroke-width="2"/>
+          </svg>
+          <span [attr.lang]="currentLang">
+            {{ currentLang === 'ar' ? 'حسب الفئة' : 'By Category' }}
+          </span>
+        </div>
+      </div>
+      <div class="echart-box echart-sm" *ngIf="!loading && categoryPieOpt"
+           echarts [options]="categoryPieOpt" [theme]="echartsTheme"
+           (chartInit)="onChartInit($event, 'categoryPie')">
+      </div>
+      <div class="chart-skel donut-skel" *ngIf="loading || !categoryPieOpt">
+        <div class="skel-donut-ring"></div>
+      </div>
+    </div>
+
+    <!-- Messages Bar -->
+    <div class="card chart-card">
+      <div class="card-head">
+        <div class="card-title">
+          <span class="pulse-dot orange"></span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" stroke-width="2"/>
+          </svg>
+          <span [attr.lang]="currentLang">
+            {{ currentLang === 'ar' ? 'الرسائل شهرياً' : 'Monthly Messages' }}
+          </span>
+        </div>
+        <div class="inline-legend">
+          <span class="il green"></span>
+          <span class="il-txt" [attr.lang]="currentLang">{{ currentLang === 'ar' ? 'مقروءة' : 'Read' }}</span>
+          <span class="il orange"></span>
+          <span class="il-txt" [attr.lang]="currentLang">{{ currentLang === 'ar' ? 'غير مقروءة' : 'Unread' }}</span>
+        </div>
+      </div>
+      <div class="echart-box echart-sm" *ngIf="!loading && messagesBarOpt"
+           echarts [options]="messagesBarOpt" [theme]="echartsTheme"
+           (chartInit)="onChartInit($event, 'messagesBar')">
+      </div>
+      <div class="chart-skel" *ngIf="loading || !messagesBarOpt">
+        <div class="skel-bars-row">
+          <div class="skel-bar-pair" *ngFor="let h of [55,80,45,90,65]">
+            <div class="skel-bar-item" [style.height.%]="h"></div>
+            <div class="skel-bar-item alt" [style.height.%]="h * 0.55"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ── Bottom Row ─────────────────────────────────────────────── -->
+  <div class="bottom-row" [@fadeUp]>
+
+    <!-- Project Status -->
+    <div class="card">
+      <div class="card-head">
+        <div class="card-title">
+          <span class="pulse-dot green"></span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" stroke-width="2"/>
+            <polyline points="22 4 12 14.01 9 11.01" stroke-width="2"/>
+          </svg>
+          <span [attr.lang]="currentLang">{{ currentLang === 'ar' ? 'حالة المشاريع' : 'Project Status' }}</span>
+        </div>
+      </div>
+      <div class="status-rows" *ngIf="!loading">
+        <div class="s-row" *ngFor="let s of statusRows">
+          <span class="s-dot" [ngClass]="s.cls"></span>
+          <span class="s-lbl" [attr.lang]="currentLang">{{ currentLang === 'ar' ? s.ar : s.en }}</span>
+          <div class="s-track"><div class="s-fill" [ngClass]="s.cls" [style.width.%]="getStatusPct(s.value)"></div></div>
+          <span class="s-num">{{ s.value }}</span>
+        </div>
+      </div>
+      <div class="status-rows" *ngIf="loading">
+        <div class="s-row skel" *ngFor="let i of [1,2,3]">
+          <div class="skel-av xs"></div>
+          <div class="skel-line w30"></div>
+          <div class="skel-line w60"></div>
+          <div class="skel-line w10"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Read Rate -->
+    <div class="card">
+      <div class="card-head">
+        <div class="card-title">
+          <span class="pulse-dot pink"></span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <line x1="18" y1="20" x2="18" y2="10" stroke-width="2"/>
+            <line x1="12" y1="20" x2="12" y2="4" stroke-width="2"/>
+            <line x1="6" y1="20" x2="6" y2="14" stroke-width="2"/>
+          </svg>
+          <span [attr.lang]="currentLang">{{ currentLang === 'ar' ? 'إحصائيات الرسائل' : 'Message Stats' }}</span>
+        </div>
+        <a routerLink="/admin/statistics" class="view-all" [attr.lang]="currentLang">
+          {{ currentLang === 'ar' ? 'تفاصيل' : 'Details' }}
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M5 12h14M12 5l7 7-7 7" stroke-width="2"/></svg>
+        </a>
+      </div>
+      <div class="msg-stat-nums" *ngIf="!loading">
+        <div class="msn-item">
+          <span class="msn-val grad">{{ stats?.summary?.totalMessages ?? 0 }}</span>
+          <span class="msn-lbl" [attr.lang]="currentLang">{{ currentLang === 'ar' ? 'إجمالي' : 'Total' }}</span>
+        </div>
+        <div class="msn-div"></div>
+        <div class="msn-item">
+          <span class="msn-val grn">{{ stats?.messages?.totalRead ?? 0 }}</span>
+          <span class="msn-lbl" [attr.lang]="currentLang">{{ currentLang === 'ar' ? 'مقروءة' : 'Read' }}</span>
+        </div>
+        <div class="msn-div"></div>
+        <div class="msn-item">
+          <span class="msn-val org">{{ stats?.summary?.totalUnread ?? 0 }}</span>
+          <span class="msn-lbl" [attr.lang]="currentLang">{{ currentLang === 'ar' ? 'غير مقروءة' : 'Unread' }}</span>
+        </div>
+      </div>
+      <div class="rr-wrap" *ngIf="!loading">
+        <div class="rr-row">
+          <span class="rr-lbl" [attr.lang]="currentLang">{{ currentLang === 'ar' ? 'معدل القراءة' : 'Read Rate' }}</span>
+          <span class="rr-pct">{{ readRate }}%</span>
+        </div>
+        <div class="rr-track"><div class="rr-fill" [style.width.%]="readRate"></div></div>
+      </div>
+      <div class="skel-line w100" style="height:80px;border-radius:12px" *ngIf="loading"></div>
+    </div>
+
+    <!-- Top Users -->
+    <div class="card" *ngIf="isSuperAdmin">
+      <div class="card-head">
+        <div class="card-title">
+          <span class="pulse-dot gold"></span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" stroke-width="2"/>
+          </svg>
+          <span [attr.lang]="currentLang">{{ currentLang === 'ar' ? 'أكثر المستخدمين نشاطاً' : 'Top Active Users' }}</span>
+        </div>
+      </div>
+      <div class="top-users" *ngIf="!loading">
+        <div class="tu-row" *ngFor="let u of topUsers; let i = index">
+          <div class="tu-medal">{{ i < 3 ? ['🥇','🥈','🥉'][i] : (i + 1) }}</div>
+          <div class="tu-av" [style.background]="getColor(u.name)">{{ getInit(u.name) }}</div>
+          <div class="tu-info">
+            <span class="tu-name">{{ u.name }}</span>
+            <span class="tu-role" [attr.lang]="currentLang">{{ getRoleLabel(u.role) }}</span>
+          </div>
+          <div class="tu-cnt">
+            <span>{{ u.count }}</span>
+            <small [attr.lang]="currentLang">{{ currentLang === 'ar' ? 'نشاط' : 'acts' }}</small>
+          </div>
+        </div>
+      </div>
+      <div class="top-users" *ngIf="loading">
+        <div class="tu-row skel" *ngFor="let i of [1,2,3,4,5]">
+          <div class="skel-av xs"></div>
+          <div class="skel-av sm"></div>
+          <div class="skel-body">
+            <div class="skel-line w80"></div>
+            <div class="skel-line w50"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</div>

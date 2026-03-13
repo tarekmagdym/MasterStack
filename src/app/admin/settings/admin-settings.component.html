@@ -1,0 +1,237 @@
+<div class="settings-page" [class.dark]="isDark" [class.rtl]="isRtl">
+
+  <!-- ══════════════ TOAST CONTAINER ══════════════ -->
+  <div class="toast-container" [class.rtl]="isRtl">
+    <div
+      class="toast-item"
+      *ngFor="let t of toasts; trackBy: trackToast"
+      [class]="'toast-item toast-item--' + t.type"
+    >
+      <!-- Icon -->
+      <div class="toast-icon">
+        <svg *ngIf="t.type==='success'" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" stroke-width="2.5"/>
+          <polyline points="22 4 12 14.01 9 11.01" stroke-width="2.5"/>
+        </svg>
+        <svg *ngIf="t.type==='error'" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <circle cx="12" cy="12" r="10" stroke-width="2.5"/>
+          <line x1="15" y1="9" x2="9" y2="15" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="9" y1="9" x2="15" y2="15" stroke-width="2.5" stroke-linecap="round"/>
+        </svg>
+        <svg *ngIf="t.type==='warning'" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" stroke-width="2.5"/>
+          <line x1="12" y1="9" x2="12" y2="13" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="12" y1="17" x2="12.01" y2="17" stroke-width="2.5" stroke-linecap="round"/>
+        </svg>
+        <svg *ngIf="t.type==='info'" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <circle cx="12" cy="12" r="10" stroke-width="2.5"/>
+          <line x1="12" y1="8" x2="12" y2="12" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="12" y1="16" x2="12.01" y2="16" stroke-width="2.5" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <!-- Body -->
+      <div class="toast-body">
+        <p class="toast-title">{{ t.title }}</p>
+        <p class="toast-msg" *ngIf="t.message">{{ t.message }}</p>
+      </div>
+      <!-- Close -->
+      <button class="toast-close" (click)="removeToast(t.id)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <line x1="18" y1="6" x2="6" y2="18" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="6" y1="6" x2="18" y2="18" stroke-width="2.5" stroke-linecap="round"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Page Header -->
+  <div class="page-header">
+    <div>
+      <h2>{{ isRtl ? 'الإعدادات' : 'Settings' }}</h2>
+      <p>{{ isRtl ? 'إعدادات الحساب والنظام' : 'Account and system preferences' }}</p>
+    </div>
+  </div>
+
+  <div class="settings-layout">
+
+    <!-- ── Sidebar tabs ── -->
+    <div class="settings-tabs">
+      <button
+        class="stab"
+        *ngFor="let tab of tabs"
+        [class.active]="activeTab === tab.id"
+        (click)="activeTab = tab.id"
+      >
+        <div class="stab-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" [innerHTML]="tab.icon"></svg>
+        </div>
+        <span>{{ isRtl ? tab.labelAr : tab.label }}</span>
+      </button>
+    </div>
+
+    <!-- ── Content panels ── -->
+    <div class="settings-content">
+
+      <!-- ═══════════ PROFILE ═══════════ -->
+      <div class="settings-panel" *ngIf="activeTab === 'profile'">
+        <div class="panel-header">
+          <h3>{{ isRtl ? 'الملف الشخصي' : 'Profile' }}</h3>
+          <p>{{ isRtl ? 'معلوماتك الشخصية' : 'Your personal information' }}</p>
+        </div>
+
+        <!-- Avatar -->
+        <div class="avatar-section">
+          <div class="avatar-upload-wrap">
+            <div class="big-avatar" *ngIf="!currentUser?.avatar">{{ getInitials() }}</div>
+            <img *ngIf="currentUser?.avatar" [src]="currentUser!.avatar!" class="big-avatar-img" alt="avatar"/>
+            <label class="avatar-edit-btn" [class.loading]="avatarUploading" [title]="isRtl ? 'تغيير الصورة' : 'Change photo'">
+              <input type="file" accept="image/jpeg,image/png,image/webp" (change)="onAvatarChange($event)" [disabled]="avatarUploading" hidden/>
+              <svg *ngIf="!avatarUploading" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" stroke-width="2"/>
+                <circle cx="12" cy="13" r="4" stroke-width="2"/>
+              </svg>
+              <span class="avatar-spinner" *ngIf="avatarUploading"></span>
+            </label>
+          </div>
+          <div class="avatar-info">
+            <p class="avatar-name">{{ currentUser?.name }}</p>
+            <p class="avatar-role">{{ getRoleLabel() }}</p>
+          </div>
+        </div>
+
+        <!-- Form -->
+        <div class="form-grid">
+          <div class="form-row full">
+            <label>{{ isRtl ? 'الاسم الكامل' : 'Full Name' }}</label>
+            <input type="text" [(ngModel)]="profileForm.name" [placeholder]="isRtl ? 'اسمك الكامل' : 'Your full name'"/>
+          </div>
+          <div class="form-row full">
+            <label>{{ isRtl ? 'البريد الإلكتروني' : 'Email' }}</label>
+            <input type="email" [(ngModel)]="profileForm.email" disabled class="disabled-input"/>
+            <span class="field-hint">{{ isRtl ? 'لا يمكن تغيير البريد الإلكتروني' : 'Email cannot be changed' }}</span>
+          </div>
+          <div class="form-row full">
+            <label>{{ isRtl ? 'الصلاحية' : 'Role' }}</label>
+            <input type="text" [value]="getRoleLabel()" disabled class="disabled-input"/>
+          </div>
+        </div>
+
+        <div class="panel-actions">
+          <button class="save-btn" (click)="saveProfile()" [disabled]="profileSaving">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" *ngIf="!profileSaving">
+              <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" stroke-width="2"/>
+              <polyline points="17 21 17 13 7 13 7 21" stroke-width="2"/>
+            </svg>
+            <span class="spinner" *ngIf="profileSaving"></span>
+            {{ profileSaving ? (isRtl ? 'جارٍ الحفظ...' : 'Saving...') : (isRtl ? 'حفظ التغييرات' : 'Save Changes') }}
+          </button>
+        </div>
+      </div>
+
+      <!-- ═══════════ SECURITY ═══════════ -->
+      <div class="settings-panel" *ngIf="activeTab === 'security'">
+        <div class="panel-header">
+          <h3>{{ isRtl ? 'الأمان' : 'Security' }}</h3>
+          <p>{{ isRtl ? 'تغيير كلمة المرور' : 'Update your password' }}</p>
+        </div>
+
+        <div class="form-grid">
+          <div class="form-row full">
+            <label>{{ isRtl ? 'كلمة المرور الحالية' : 'Current Password' }}</label>
+            <div class="pass-wrap">
+              <input [type]="showCurrent ? 'text' : 'password'" [(ngModel)]="securityForm.currentPassword" placeholder="••••••••"/>
+              <button class="eye-btn" type="button" (click)="showCurrent = !showCurrent">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" *ngIf="!showCurrent"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" stroke-width="2"/><circle cx="12" cy="12" r="3" stroke-width="2"/></svg>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" *ngIf="showCurrent"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94" stroke-width="2" stroke-linecap="round"/><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19" stroke-width="2" stroke-linecap="round"/><line x1="1" y1="1" x2="23" y2="23" stroke-width="2" stroke-linecap="round"/></svg>
+              </button>
+            </div>
+          </div>
+
+          <div class="form-row full">
+            <label>{{ isRtl ? 'كلمة المرور الجديدة' : 'New Password' }}</label>
+            <div class="pass-wrap">
+              <input [type]="showNew ? 'text' : 'password'" [(ngModel)]="securityForm.newPassword" placeholder="••••••••"/>
+              <button class="eye-btn" type="button" (click)="showNew = !showNew">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" *ngIf="!showNew"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" stroke-width="2"/><circle cx="12" cy="12" r="3" stroke-width="2"/></svg>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" *ngIf="showNew"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94" stroke-width="2" stroke-linecap="round"/><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19" stroke-width="2" stroke-linecap="round"/><line x1="1" y1="1" x2="23" y2="23" stroke-width="2" stroke-linecap="round"/></svg>
+              </button>
+            </div>
+            <div class="strength-wrap" *ngIf="securityForm.newPassword">
+              <div class="strength-bar">
+                <div class="strength-fill" [class]="passwordStrengthClass" [style.width.%]="passwordStrength * 20"></div>
+              </div>
+              <span class="strength-label" [class]="passwordStrengthClass">{{ passwordStrengthLabel }}</span>
+            </div>
+          </div>
+
+          <div class="form-row full">
+            <label>{{ isRtl ? 'تأكيد كلمة المرور' : 'Confirm Password' }}</label>
+            <div class="pass-wrap">
+              <input [type]="showConfirm ? 'text' : 'password'" [(ngModel)]="securityForm.confirmPassword" placeholder="••••••••"
+                [class.mismatch]="securityForm.confirmPassword && securityForm.newPassword !== securityForm.confirmPassword"/>
+              <button class="eye-btn" type="button" (click)="showConfirm = !showConfirm">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" *ngIf="!showConfirm"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" stroke-width="2"/><circle cx="12" cy="12" r="3" stroke-width="2"/></svg>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" *ngIf="showConfirm"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94" stroke-width="2" stroke-linecap="round"/><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19" stroke-width="2" stroke-linecap="round"/><line x1="1" y1="1" x2="23" y2="23" stroke-width="2" stroke-linecap="round"/></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel-actions">
+          <button class="save-btn" (click)="savePassword()" [disabled]="securitySaving">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" *ngIf="!securitySaving">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke-width="2"/>
+            </svg>
+            <span class="spinner" *ngIf="securitySaving"></span>
+            {{ securitySaving ? (isRtl ? 'جارٍ الحفظ...' : 'Saving...') : (isRtl ? 'تغيير كلمة المرور' : 'Update Password') }}
+          </button>
+        </div>
+      </div>
+
+      <!-- ═══════════ APPEARANCE ═══════════ -->
+      <div class="settings-panel" *ngIf="activeTab === 'appearance'">
+        <div class="panel-header">
+          <h3>{{ isRtl ? 'المظهر' : 'Appearance' }}</h3>
+          <p>{{ isRtl ? 'تخصيص شكل لوحة التحكم' : 'Customize the look of your dashboard' }}</p>
+        </div>
+
+        <div class="appear-section">
+          <label class="appear-label">{{ isRtl ? 'السمة' : 'Theme' }}</label>
+          <div class="theme-options">
+            <button class="theme-opt" [class.active]="!isDark" (click)="setTheme('light')">
+              <div class="theme-preview light-preview">
+                <div class="tp-sidebar"></div>
+                <div class="tp-content"><div class="tp-bar"></div><div class="tp-bar short"></div></div>
+              </div>
+              <span>{{ isRtl ? 'فاتح' : 'Light' }}</span>
+              <div class="check-dot" *ngIf="!isDark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="20 6 9 17 4 12" stroke-width="2.5"/></svg></div>
+            </button>
+            <button class="theme-opt" [class.active]="isDark" (click)="setTheme('dark')">
+              <div class="theme-preview dark-preview">
+                <div class="tp-sidebar"></div>
+                <div class="tp-content"><div class="tp-bar"></div><div class="tp-bar short"></div></div>
+              </div>
+              <span>{{ isRtl ? 'داكن' : 'Dark' }}</span>
+              <div class="check-dot" *ngIf="isDark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="20 6 9 17 4 12" stroke-width="2.5"/></svg></div>
+            </button>
+          </div>
+        </div>
+
+        <div class="appear-section">
+          <label class="appear-label">{{ isRtl ? 'اللغة' : 'Language' }}</label>
+          <div class="lang-options">
+            <button class="lang-opt" [class.active]="!isRtl" (click)="setLang('en')">
+              <span class="flag">🇺🇸</span><span>English</span>
+              <div class="check-dot" *ngIf="!isRtl"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="20 6 9 17 4 12" stroke-width="2.5"/></svg></div>
+            </button>
+            <button class="lang-opt" [class.active]="isRtl" (click)="setLang('ar')">
+              <span class="flag">🇸🇦</span><span>العربية</span>
+              <div class="check-dot" *ngIf="isRtl"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="20 6 9 17 4 12" stroke-width="2.5"/></svg></div>
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

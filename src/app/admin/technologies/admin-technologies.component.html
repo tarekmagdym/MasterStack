@@ -1,0 +1,237 @@
+<div class="page" [class.dark]="isDark" [class.rtl]="isRtl">
+
+  <!-- ── Toast ────────────────────────────────────────────── -->
+  <div class="toast-container" [class.rtl]="isRtl">
+    <div class="toast-item" *ngFor="let t of toasts; trackBy: trackToast" [class]="'toast-item toast-item--'+t.type">
+      <div class="toast-icon">
+        <svg *ngIf="t.type==='success'" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" stroke-width="2.5"/><polyline points="22 4 12 14.01 9 11.01" stroke-width="2.5"/></svg>
+        <svg *ngIf="t.type==='error'"   viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10" stroke-width="2.5"/><line x1="15" y1="9" x2="9" y2="15" stroke-width="2.5" stroke-linecap="round"/><line x1="9" y1="9" x2="15" y2="15" stroke-width="2.5" stroke-linecap="round"/></svg>
+        <svg *ngIf="t.type==='warning'" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" stroke-width="2.5"/><line x1="12" y1="9" x2="12" y2="13" stroke-width="2.5" stroke-linecap="round"/><line x1="12" y1="17" x2="12.01" y2="17" stroke-width="2.5" stroke-linecap="round"/></svg>
+        <svg *ngIf="t.type==='info'"    viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10" stroke-width="2.5"/><line x1="12" y1="8" x2="12" y2="12" stroke-width="2.5" stroke-linecap="round"/><line x1="12" y1="16" x2="12.01" y2="16" stroke-width="2.5" stroke-linecap="round"/></svg>
+      </div>
+      <div class="toast-body">
+        <p class="toast-title">{{ t.title }}</p>
+        <p class="toast-msg"  *ngIf="t.message">{{ t.message }}</p>
+      </div>
+      <button class="toast-close" (click)="removeToast(t.id)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="18" y1="6" x2="6" y2="18" stroke-width="2.5" stroke-linecap="round"/><line x1="6" y1="6" x2="18" y2="18" stroke-width="2.5" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- ── Page header ──────────────────────────────────────── -->
+  <div class="page-header">
+    <div>
+      <h2>{{ isRtl ? 'التقنيات' : 'Technologies' }}</h2>
+      <p>{{ isRtl ? 'إدارة التقنيات المستخدمة' : 'Manage your technology stack' }}</p>
+    </div>
+    <button class="add-btn" (click)="openCreate()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="12" y1="5" x2="12" y2="19" stroke-width="2.5" stroke-linecap="round"/><line x1="5" y1="12" x2="19" y2="12" stroke-width="2.5" stroke-linecap="round"/></svg>
+      {{ isRtl ? 'إضافة تقنية' : 'Add Technology' }}
+    </button>
+  </div>
+
+  <!-- ── Filters ───────────────────────────────────────────── -->
+  <div class="filters-bar">
+    <div class="search-wrap">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="11" cy="11" r="8" stroke-width="2"/><line x1="21" y1="21" x2="16.65" y2="16.65" stroke-width="2" stroke-linecap="round"/></svg>
+      <input type="text" [(ngModel)]="search" (ngModelChange)="applyFilter()"
+             [placeholder]="isRtl ? 'ابحث عن تقنية...' : 'Search technologies...'"/>
+    </div>
+
+    <select [(ngModel)]="filterCategory" (ngModelChange)="applyFilter()">
+      <option value="">{{ isRtl ? 'كل الفئات' : 'All Categories' }}</option>
+      <option *ngFor="let c of categories" [value]="c">{{ getCategoryLabel(c) }}</option>
+    </select>
+
+    <select [(ngModel)]="filterLevel" (ngModelChange)="applyFilter()">
+      <option value="">{{ isRtl ? 'كل المستويات' : 'All Levels' }}</option>
+      <option *ngFor="let l of levels" [value]="l">{{ getLevelLabel(l) }}</option>
+    </select>
+
+    <select [(ngModel)]="filterStatus" (ngModelChange)="applyFilter()">
+      <option value="">{{ isRtl ? 'كل الحالات' : 'All Status' }}</option>
+      <option value="published">{{ isRtl ? 'منشور' : 'Published' }}</option>
+      <option value="unpublished">{{ isRtl ? 'غير منشور' : 'Unpublished' }}</option>
+    </select>
+
+    <button class="clear-btn" *ngIf="search || filterCategory || filterLevel || filterStatus" (click)="clearFilters()">
+      {{ isRtl ? 'مسح الفلاتر' : 'Clear Filters' }}
+    </button>
+  </div>
+
+  <!-- ── Loading ────────────────────────────────────────────── -->
+  <div class="skeleton-grid" *ngIf="loading">
+    <div class="skeleton-card" *ngFor="let i of [1,2,3,4,5,6]"></div>
+  </div>
+
+  <!-- ── Empty ──────────────────────────────────────────────── -->
+  <div class="empty-state" *ngIf="!loading && filtered.length === 0">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10" stroke-width="1.5"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" stroke-width="1.5" stroke-linecap="round"/><line x1="12" y1="17" x2="12.01" y2="17" stroke-width="2" stroke-linecap="round"/></svg>
+    <h3>{{ isRtl ? 'لا توجد تقنيات' : 'No technologies found' }}</h3>
+    <p>{{ isRtl ? 'حاول تغيير الفلاتر أو أضف تقنية جديدة' : 'Try changing filters or add a new technology' }}</p>
+  </div>
+
+  <!-- ── Grid ──────────────────────────────────────────────── -->
+  <div class="tech-grid" *ngIf="!loading && filtered.length > 0">
+    <div class="tech-card" *ngFor="let tech of filtered; trackBy: trackBy">
+
+      <!-- Logo -->
+      <div class="tech-logo-wrap">
+        <img [src]="tech.logo" [alt]="getName(tech)" class="tech-logo" (error)="$any($event.target).src='assets/images/placeholder-tech.svg'"/>
+        <div class="tech-status-badge" [class.published]="tech.isPublished" [class.unpublished]="!tech.isPublished">
+          {{ tech.isPublished ? (isRtl ? 'منشور' : 'Published') : (isRtl ? 'مخفي' : 'Hidden') }}
+        </div>
+      </div>
+
+      <!-- Info -->
+      <div class="tech-info">
+        <h3 class="tech-name">{{ getName(tech) }}</h3>
+        <div class="tech-tags">
+          <span class="tag cat-tag">{{ getCategoryLabel(tech.category) }}</span>
+          <span class="tag lvl-tag" [class]="'lvl-'+tech.proficiencyLevel">{{ getLevelLabel(tech.proficiencyLevel) }}</span>
+        </div>
+        <p class="tech-order">{{ isRtl ? 'الترتيب:' : 'Order:' }} {{ tech.order }}</p>
+      </div>
+
+      <!-- Actions -->
+      <div class="tech-actions">
+        <button class="action-btn toggle-btn"
+                (click)="togglePublish(tech)"
+                [title]="tech.isPublished ? (isRtl ? 'إخفاء' : 'Hide') : (isRtl ? 'نشر' : 'Publish')">
+          <svg *ngIf="tech.isPublished" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94" stroke-width="2" stroke-linecap="round"/><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19" stroke-width="2" stroke-linecap="round"/><line x1="1" y1="1" x2="23" y2="23" stroke-width="2" stroke-linecap="round"/></svg>
+          <svg *ngIf="!tech.isPublished" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" stroke-width="2"/><circle cx="12" cy="12" r="3" stroke-width="2"/></svg>
+        </button>
+        <button class="action-btn edit-btn" (click)="openEdit(tech)" [title]="isRtl ? 'تعديل' : 'Edit'">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" stroke-width="2" stroke-linecap="round"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" stroke-width="2" stroke-linecap="round"/></svg>
+        </button>
+        <button class="action-btn delete-btn" (click)="confirmDelete(tech)" [title]="isRtl ? 'حذف' : 'Delete'">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="3 6 5 6 21 6" stroke-width="2" stroke-linecap="round"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" stroke-width="2" stroke-linecap="round"/><path d="M10 11v6" stroke-width="2" stroke-linecap="round"/><path d="M14 11v6" stroke-width="2" stroke-linecap="round"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2" stroke-width="2"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════
+       CREATE / EDIT MODAL
+  ═════════════════════════════════════ -->
+  <div class="modal-overlay" *ngIf="modalOpen" (click)="closeModal()">
+    <div class="modal" (click)="$event.stopPropagation()">
+      <div class="modal-head">
+        <h3>{{ isEditing ? (isRtl ? 'تعديل التقنية' : 'Edit Technology') : (isRtl ? 'إضافة تقنية' : 'Add Technology') }}</h3>
+        <button class="close-btn" (click)="closeModal()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="18" y1="6" x2="6" y2="18" stroke-width="2.5" stroke-linecap="round"/><line x1="6" y1="6" x2="18" y2="18" stroke-width="2.5" stroke-linecap="round"/></svg>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <div class="form-grid">
+
+          <!-- Name EN -->
+          <div class="form-row">
+            <label>{{ isRtl ? 'الاسم (إنجليزي)' : 'Name (English)' }} <span class="req">*</span></label>
+            <input type="text" [(ngModel)]="form.name.en" placeholder="e.g. Angular"/>
+          </div>
+
+          <!-- Name AR -->
+          <div class="form-row">
+            <label>{{ isRtl ? 'الاسم (عربي)' : 'Name (Arabic)' }} <span class="req">*</span></label>
+            <input type="text" [(ngModel)]="form.name.ar" placeholder="مثال: أنجولار" dir="rtl"/>
+          </div>
+
+          <!-- Logo URL -->
+          <div class="form-row full">
+            <label>{{ isRtl ? 'رابط الشعار' : 'Logo URL' }} <span class="req">*</span></label>
+            <input type="text" [(ngModel)]="form.logo" placeholder="https://..."/>
+            <div class="logo-preview" *ngIf="form.logo">
+              <img [src]="form.logo" alt="preview" (error)="$any($event.target).style.display='none'"/>
+            </div>
+          </div>
+
+          <!-- Category -->
+          <div class="form-row">
+            <label>{{ isRtl ? 'الفئة' : 'Category' }}</label>
+            <select [(ngModel)]="form.category">
+              <option *ngFor="let c of categories" [value]="c">{{ getCategoryLabel(c) }}</option>
+            </select>
+          </div>
+
+          <!-- Level -->
+          <div class="form-row">
+            <label>{{ isRtl ? 'مستوى الإتقان' : 'Proficiency Level' }}</label>
+            <select [(ngModel)]="form.proficiencyLevel">
+              <option *ngFor="let l of levels" [value]="l">{{ getLevelLabel(l) }}</option>
+            </select>
+          </div>
+
+          <!-- Order -->
+          <div class="form-row">
+            <label>{{ isRtl ? 'الترتيب' : 'Order' }}</label>
+            <input type="number" [(ngModel)]="form.order" min="0"/>
+          </div>
+
+          <!-- Published toggle -->
+          <div class="form-row toggle-row">
+            <label>{{ isRtl ? 'منشور' : 'Published' }}</label>
+            <label class="toggle-wrap">
+              <input type="checkbox" [(ngModel)]="form.isPublished"/>
+              <span class="toggle"></span>
+            </label>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="cancel-btn" (click)="closeModal()">{{ isRtl ? 'إلغاء' : 'Cancel' }}</button>
+        <button class="save-btn" (click)="save()" [disabled]="saving">
+          <span class="spinner" *ngIf="saving"></span>
+          {{ saving ? (isRtl ? 'جارٍ الحفظ...' : 'Saving...') : (isRtl ? 'حفظ' : 'Save') }}
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════
+       DELETE CONFIRM MODAL
+  ═════════════════════════════════════ -->
+  <div class="modal-overlay" *ngIf="deleteTarget" (click)="cancelDelete()">
+    <div class="modal modal--sm" (click)="$event.stopPropagation()">
+      <div class="modal-danger-strip"></div>
+      <div class="modal-head">
+        <h3 class="danger-title">
+          <span class="danger-dot"></span>
+          {{ isRtl ? 'تأكيد الحذف' : 'Confirm Delete' }}
+        </h3>
+        <button class="close-btn" (click)="cancelDelete()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="18" y1="6" x2="6" y2="18" stroke-width="2.5" stroke-linecap="round"/><line x1="6" y1="6" x2="18" y2="18" stroke-width="2.5" stroke-linecap="round"/></svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="delete-info">
+          <img [src]="deleteTarget!.logo" [alt]="getName(deleteTarget!)" class="delete-logo"
+               (error)="$any($event.target).style.display='none'"/>
+          <div>
+            <p class="delete-name">{{ getName(deleteTarget!) }}</p>
+            <p class="delete-sub">{{ getCategoryLabel(deleteTarget!.category) }} · {{ getLevelLabel(deleteTarget!.proficiencyLevel) }}</p>
+          </div>
+        </div>
+        <p class="delete-desc">{{ isRtl ? 'هذا الإجراء لا يمكن التراجع عنه.' : 'This action cannot be undone.' }}</p>
+        <label class="confirm-check">
+          <input type="checkbox" [(ngModel)]="deleteConfirmed"/>
+          <span class="chk-box">
+            <svg viewBox="0 0 12 12" fill="none" stroke="currentColor"><polyline points="2 6 5 9 10 3" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+          <span>{{ isRtl ? 'نعم، أريد حذف هذه التقنية' : 'Yes, I want to delete this technology' }}</span>
+        </label>
+      </div>
+      <div class="modal-footer">
+        <button class="cancel-btn" (click)="cancelDelete()">{{ isRtl ? 'إلغاء' : 'Cancel' }}</button>
+        <button class="delete-confirm-btn" (click)="doDelete()" [disabled]="!deleteConfirmed">
+          {{ isRtl ? 'حذف' : 'Delete' }}
+        </button>
+      </div>
+    </div>
+  </div>
+
+</div>

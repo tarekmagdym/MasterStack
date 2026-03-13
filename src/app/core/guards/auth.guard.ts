@@ -1,28 +1,46 @@
-import { Injectable } from '@angular/core';
-import { CanActivate, CanActivateChild,Router, UrlTree } from '@angular/router';
+import { Injectable, inject } from '@angular/core';
+import {
+  CanActivate,
+  CanActivateChild,
+  ActivatedRouteSnapshot,
+  RouterStateSnapshot,
+  Router,
+  UrlTree
+} from '@angular/router';
 import { AuthService } from '../services/auth.service';
 
 @Injectable({ providedIn: 'root' })
 export class AuthGuard implements CanActivate, CanActivateChild {
 
-  constructor(
-    private auth:   AuthService,
-    private router: Router
-  ) {}
+  private auth   = inject(AuthService);
+  private router = inject(Router);
 
-  canActivate(): boolean | UrlTree {
-    return this.check();
+  // ── CanActivate ───────────────────────────────────────────────
+  canActivate(
+    _route: ActivatedRouteSnapshot,
+    state:  RouterStateSnapshot
+  ): boolean | UrlTree {
+    return this.check(state.url);
   }
 
-  canActivateChild(): boolean | UrlTree {
-    return this.check();
+  // ── CanActivateChild ──────────────────────────────────────────
+  canActivateChild(
+    _childRoute: ActivatedRouteSnapshot,
+    state:       RouterStateSnapshot
+  ): boolean | UrlTree {
+    return this.check(state.url);
   }
 
-  private check(): boolean | UrlTree {
+  // ── Core logic ────────────────────────────────────────────────
+  private check(returnUrl: string): boolean | UrlTree {
     if (this.auth.isAuthenticated()) {
       return true;
     }
-    // Mirror backend: no token → redirect to login
-    return this.router.createUrlTree(['/admin/login']);
+
+    // Preserve the intended URL so login can redirect back after success
+    return this.router.createUrlTree(
+      ['/admin/login'],
+      { queryParams: { returnUrl } }
+    );
   }
 }

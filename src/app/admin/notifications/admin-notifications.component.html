@@ -1,0 +1,101 @@
+<div class="notifications-page" [class.dark]="isDark" [class.rtl]="isRtl">
+
+  <div class="page-header">
+    <div>
+      <h2>{{ isRtl ? 'الإشعارات' : 'Notifications' }}</h2>
+      <p>{{ isRtl ? 'جميع إشعارات النظام' : 'All system notifications' }}</p>
+    </div>
+    <div class="header-actions">
+      <button class="mark-btn" (click)="markAllRead()" [disabled]="unreadCount === 0">
+        {{ isRtl ? 'تعليم الكل مقروء' : 'Mark all read' }}
+      </button>
+      <button class="clear-btn" (click)="clearAll()">
+        {{ isRtl ? 'مسح الكل' : 'Clear all' }}
+      </button>
+    </div>
+  </div>
+
+  <!-- Filter -->
+  <div class="filter-bar">
+    <button class="pill" [class.active]="filter==='all'" (click)="filter='all'">
+      {{ isRtl ? 'الكل' : 'All' }}
+      <span class="pill-count">{{ notifications.length }}</span>
+    </button>
+    <button class="pill" [class.active]="filter==='unread'" (click)="filter='unread'">
+      {{ isRtl ? 'غير مقروء' : 'Unread' }}
+      <span class="pill-count" *ngIf="unreadCount > 0">{{ unreadCount }}</span>
+    </button>
+    <button class="pill" [class.active]="filter==='system'" (click)="filter='system'">
+      {{ isRtl ? 'النظام' : 'System' }}
+      <span class="pill-count" *ngIf="systemCount > 0">{{ systemCount }}</span>
+    </button>
+    <button class="pill" [class.active]="filter==='alert'" (click)="filter='alert'">
+      {{ isRtl ? 'تنبيهات' : 'Alerts' }}
+      <span class="pill-count" *ngIf="alertCount > 0">{{ alertCount }}</span>
+    </button>
+  </div>
+
+  <!-- Loading -->
+  <div class="loading-state" *ngIf="loading">
+    <div class="notif-skeleton" *ngFor="let i of [1,2,3,4,5]">
+      <div class="skel-icon"></div>
+      <div class="skel-body">
+        <div class="skel-line wide"></div>
+        <div class="skel-line short"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Error -->
+  <div class="error-banner" *ngIf="error && !loading">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+      <circle cx="12" cy="12" r="10" stroke-width="2"/>
+      <line x1="12" y1="8" x2="12" y2="12" stroke-width="2" stroke-linecap="round"/>
+      <circle cx="12" cy="16" r="1" fill="currentColor"/>
+    </svg>
+    {{ error }}
+  </div>
+
+  <!-- List -->
+  <div class="notif-list" *ngIf="!loading && !error">
+    <div class="notif-date-group" *ngFor="let group of groupedNotifs">
+      <div class="date-label">{{ isRtl ? group.labelAr : group.label }}</div>
+      <div class="notif-item"
+           *ngFor="let n of group.items"
+           [class.unread]="!n.read"
+           (click)="onNotifClick(n)">
+
+        <div class="notif-icon" [class]="n.uiType">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" [innerHTML]="n.icon"></svg>
+        </div>
+
+        <div class="notif-body">
+          <p class="notif-title">{{ isRtl ? n.titleAr : n.title }}</p>
+          <p class="notif-desc">{{ isRtl ? n.descAr : n.desc }}</p>
+          <span class="notif-time">{{ n.time }}</span>
+        </div>
+
+        <div class="notif-dot" *ngIf="!n.read"></div>
+
+        <button class="dismiss-btn"
+                (click)="$event.stopPropagation(); dismiss(n.id)"
+                [title]="isRtl ? 'حذف' : 'Delete'">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <line x1="18" y1="6"  x2="6"  y2="18" stroke-width="2" stroke-linecap="round"/>
+            <line x1="6"  y1="6"  x2="18" y2="18" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Empty -->
+    <div class="empty-state" *ngIf="filteredNotifs.length === 0">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+        <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" stroke-width="1.5"/>
+        <path d="M13.73 21a2 2 0 0 1-3.46 0" stroke-width="1.5"/>
+      </svg>
+      <p>{{ isRtl ? 'لا توجد إشعارات' : 'No notifications' }}</p>
+    </div>
+  </div>
+
+</div>

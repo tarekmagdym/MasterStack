@@ -1,0 +1,533 @@
+<div class="projects-page" [class.dark]="isDark" [class.rtl]="isRtl">
+
+  <!-- ── Header ──────────────────────────────────────────────────────────── -->
+  <div class="page-header">
+    <div>
+      <h2>{{ isRtl ? 'المشاريع' : 'Projects' }}</h2>
+      <p>{{ isRtl ? 'إجمالي:' : 'Total:' }} <strong>{{ totalItems }}</strong> {{ isRtl ? 'مشروع' : 'projects' }}</p>
+    </div>
+    <button class="add-btn" (click)="openAddModal()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+        <line x1="12" y1="5" x2="12" y2="19" stroke-width="2" stroke-linecap="round"/>
+        <line x1="5" y1="12" x2="19" y2="12" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+      {{ isRtl ? 'إضافة مشروع' : 'Add Project' }}
+    </button>
+  </div>
+
+  <!-- ── Filters ─────────────────────────────────────────────────────────── -->
+  <div class="filters-bar">
+    <div class="search-wrap">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+        <circle cx="11" cy="11" r="8" stroke-width="2"/>
+        <line x1="21" y1="21" x2="16.65" y2="16.65" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+      <input type="search" [formControl]="searchCtrl"
+             [placeholder]="isRtl ? 'بحث عن مشروع...' : 'Search projects...'" />
+    </div>
+    <div class="filter-pills">
+      <button class="pill" [class.active]="activeFilter==='all'"       (click)="setFilter('all')">       {{ isRtl ? 'الكل'  : 'All'      }}</button>
+      <button class="pill" [class.active]="activeFilter==='published'" (click)="setFilter('published')"> {{ isRtl ? 'منشور' : 'Published' }}</button>
+      <button class="pill" [class.active]="activeFilter==='draft'"     (click)="setFilter('draft')">     {{ isRtl ? 'مسودة' : 'Draft'     }}</button>
+      <button class="pill" [class.active]="activeFilter==='featured'"  (click)="setFilter('featured')">  {{ isRtl ? 'مميز'  : 'Featured'  }}</button>
+    </div>
+  </div>
+
+  <!-- ── Error banner ────────────────────────────────────────────────────── -->
+  <div class="error-banner" *ngIf="error">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+      <circle cx="12" cy="12" r="10" stroke-width="2"/>
+      <line x1="12" y1="8" x2="12" y2="12" stroke-width="2" stroke-linecap="round"/>
+      <circle cx="12" cy="16" r="1" fill="currentColor"/>
+    </svg>
+    {{ error }}
+    <button (click)="loadProjects()">{{ isRtl ? 'إعادة المحاولة' : 'Retry' }}</button>
+  </div>
+
+  <!-- ── Loading skeleton ────────────────────────────────────────────────── -->
+  <div class="projects-grid" *ngIf="loading">
+    <div class="project-card skeleton" *ngFor="let i of [1,2,3,4,5,6]">
+      <div class="skel-header"></div>
+      <div class="skel-line"></div>
+      <div class="skel-line short"></div>
+      <div class="skel-tags"></div>
+    </div>
+  </div>
+
+  <!-- ── Empty state ─────────────────────────────────────────────────────── -->
+  <div class="empty-state" *ngIf="!loading && !error && filteredProjects.length === 0">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+      <rect x="2" y="3" width="20" height="14" rx="2" stroke-width="2"/>
+      <line x1="8"  y1="21" x2="16" y2="21" stroke-width="2" stroke-linecap="round"/>
+      <line x1="12" y1="17" x2="12" y2="21" stroke-width="2" stroke-linecap="round"/>
+    </svg>
+    <p>{{ isRtl ? 'لا توجد مشاريع' : 'No projects found' }}</p>
+    <button class="add-btn" (click)="openAddModal()">
+      {{ isRtl ? 'أضف أول مشروع' : 'Add your first project' }}
+    </button>
+  </div>
+
+  <!-- ── Projects Grid ───────────────────────────────────────────────────── -->
+  <div class="projects-grid" *ngIf="!loading && filteredProjects.length > 0">
+    <div class="project-card" *ngFor="let p of filteredProjects">
+
+      <div class="project-header">
+        <div class="project-icon" [style.background]="color(p) + '1a'" [style.color]="color(p)">
+          {{ initials(p) }}
+        </div>
+        <div class="project-meta">
+          <h4>{{ title(p) }}</h4>
+          <span class="project-client">{{ p.clientName || '—' }}</span>
+        </div>
+        <div class="project-actions">
+          <button class="icon-btn" (click)="openEditModal(p)" [title]="isRtl ? 'تعديل' : 'Edit'">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" stroke-width="2" stroke-linecap="round"/>
+              <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </button>
+          <button class="icon-btn danger" (click)="confirmDelete(p._id)" [title]="isRtl ? 'حذف' : 'Delete'">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <polyline points="3 6 5 6 21 6" stroke-width="2"/>
+              <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" stroke-width="2" stroke-linecap="round"/>
+              <path d="M10 11v6M14 11v6" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <p class="project-desc">{{ desc(p) }}</p>
+
+      <!-- Gallery indicator -->
+      <div class="gallery-badge" *ngIf="(p.images ?? []).length > 0">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <rect x="3" y="3" width="18" height="18" rx="2" stroke-width="2"/>
+          <circle cx="8.5" cy="8.5" r="1.5" stroke-width="2"/>
+          <polyline points="21 15 16 10 5 21" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        {{ (p.images ?? []).length }} {{ isRtl ? 'صورة في المعرض' : 'gallery images' }}
+      </div>
+
+      <!-- Tags -->
+      <div class="project-tags" *ngIf="(p.tags ?? []).length > 0">
+        <span class="tag tag--label" *ngFor="let t of (p.tags ?? []).slice(0,3)">
+          {{ isRtl ? t.ar : t.en }}
+        </span>
+        <span class="tag more" *ngIf="(p.tags?.length ?? 0) > 3">+{{ (p.tags?.length ?? 0) - 3 }}</span>
+      </div>
+
+      <!-- Technologies -->
+      <div class="project-tags" *ngIf="(p.technologies ?? []).length > 0">
+        <span class="tag" *ngFor="let t of (p.technologies ?? []).slice(0,4)">{{ t }}</span>
+        <span class="tag more" *ngIf="(p.technologies?.length ?? 0) > 4">+{{ (p.technologies?.length ?? 0) - 4 }}</span>
+      </div>
+
+      <div class="project-footer">
+        <span class="status-badge" [class.published]="p.isPublished" [class.draft]="!p.isPublished">
+          <span class="dot"></span>
+          {{ p.isPublished ? (isRtl ? 'منشور' : 'Published') : (isRtl ? 'مسودة' : 'Draft') }}
+        </span>
+        <div class="badge-row">
+          <span class="category-badge">{{ categoryLabel(p) }}</span>
+          <span class="featured-badge" *ngIf="p.isFeatured">★ {{ isRtl ? 'مميز' : 'Featured' }}</span>
+          <span class="project-date">{{ formatDate(p.createdAt) }}</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── Pagination ───────────────────────────────────────────────────────── -->
+  <div class="pagination" *ngIf="totalPages > 1 && !loading">
+    <button class="page-btn" [disabled]="currentPage === 1" (click)="goToPage(currentPage - 1)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="15 18 9 12 15 6" stroke-width="2" stroke-linecap="round"/></svg>
+    </button>
+    <span class="page-info">{{ currentPage }} / {{ totalPages }}</span>
+    <button class="page-btn" [disabled]="currentPage === totalPages" (click)="goToPage(currentPage + 1)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="9 18 15 12 9 6" stroke-width="2" stroke-linecap="round"/></svg>
+    </button>
+  </div>
+
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════════════
+     ADD / EDIT MODAL
+════════════════════════════════════════════════════════════════════════════ -->
+<div class="modal-overlay" *ngIf="showModal" (click)="closeModal()">
+  <div class="modal" [class.dark]="isDark" (click)="$event.stopPropagation()">
+
+    <div class="modal-head">
+      <h3>{{ isEditMode ? (isRtl ? 'تعديل المشروع' : 'Edit Project') : (isRtl ? 'إضافة مشروع جديد' : 'Add New Project') }}</h3>
+      <button class="close-btn" (click)="closeModal()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <line x1="18" y1="6"  x2="6"  y2="18" stroke-width="2" stroke-linecap="round"/>
+          <line x1="6"  y1="6"  x2="18" y2="18" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </button>
+    </div>
+
+    <div class="modal-body">
+
+      <div class="save-error" *ngIf="saveError">{{ saveError }}</div>
+
+      <!-- ══ TITLE ═══════════════════════════════════════════════════════ -->
+      <p class="section-label">{{ isRtl ? 'العنوان' : 'Title' }}</p>
+      <div class="form-row two-col">
+        <div [class.has-error]="formErrors['title.en']">
+          <label>{{ isRtl ? 'الاسم (إنجليزي)' : 'Title (EN)' }} <span class="req">*</span></label>
+          <input type="text" [(ngModel)]="form.title.en" placeholder="Project name in English" />
+          <span class="field-error" *ngIf="formErrors['title.en']">{{ formErrors['title.en'] }}</span>
+        </div>
+        <div [class.has-error]="formErrors['title.ar']">
+          <label>{{ isRtl ? 'الاسم (عربي)' : 'Title (AR)' }} <span class="req">*</span></label>
+          <input type="text" [(ngModel)]="form.title.ar" dir="rtl" placeholder="اسم المشروع بالعربي" />
+          <span class="field-error" *ngIf="formErrors['title.ar']">{{ formErrors['title.ar'] }}</span>
+        </div>
+      </div>
+
+      <!-- ══ SHORT DESCRIPTION ════════════════════════════════════════════ -->
+      <p class="section-label">{{ isRtl ? 'الوصف المختصر' : 'Short Description' }}</p>
+      <div class="form-row two-col">
+        <div>
+          <label>{{ isRtl ? 'مختصر (إنجليزي)' : 'Short desc (EN)' }}</label>
+          <input type="text" [(ngModel)]="form.shortDescription!.en" placeholder="Brief description in English" />
+        </div>
+        <div>
+          <label>{{ isRtl ? 'مختصر (عربي)' : 'Short desc (AR)' }}</label>
+          <input type="text" [(ngModel)]="form.shortDescription!.ar" dir="rtl" placeholder="وصف مختصر بالعربي" />
+        </div>
+      </div>
+
+      <!-- ══ FULL DESCRIPTION ═════════════════════════════════════════════ -->
+      <p class="section-label">{{ isRtl ? 'الوصف الكامل' : 'Full Description' }}</p>
+      <div class="form-row two-col">
+        <div [class.has-error]="formErrors['desc.en']">
+          <label>{{ isRtl ? 'الوصف (إنجليزي)' : 'Description (EN)' }} <span class="req">*</span></label>
+          <textarea rows="3" [(ngModel)]="form.description.en" placeholder="Full project description in English"></textarea>
+          <span class="field-error" *ngIf="formErrors['desc.en']">{{ formErrors['desc.en'] }}</span>
+        </div>
+        <div [class.has-error]="formErrors['desc.ar']">
+          <label>{{ isRtl ? 'الوصف (عربي)' : 'Description (AR)' }} <span class="req">*</span></label>
+          <textarea rows="3" [(ngModel)]="form.description.ar" dir="rtl" placeholder="الوصف الكامل للمشروع بالعربي"></textarea>
+          <span class="field-error" *ngIf="formErrors['desc.ar']">{{ formErrors['desc.ar'] }}</span>
+        </div>
+      </div>
+
+      <!-- ══ TAGS ═════════════════════════════════════════════════════════ -->
+      <p class="section-label">{{ isRtl ? 'التسميات — تظهر على بطاقة المشروع' : 'Tags — shown on the project card' }}</p>
+
+      <div class="tags-preview" *ngIf="(form.tags ?? []).length > 0">
+        <div class="tag-chip" *ngFor="let tag of form.tags; let i = index">
+          <span class="tag-chip__label">{{ tag.en }}</span>
+          <span class="tag-chip__sep">/</span>
+          <span class="tag-chip__label tag-chip__label--ar">{{ tag.ar }}</span>
+          <button class="tag-chip__remove" type="button" (click)="removeTag(i)">×</button>
+        </div>
+      </div>
+
+      <div class="form-row two-col tag-add-row">
+        <div>
+          <label>{{ isRtl ? 'التسمية (إنجليزي)' : 'Tag (EN)' }}</label>
+          <input type="text" [(ngModel)]="tagInputEn"
+                 [placeholder]="isRtl ? 'مثال: Web App' : 'e.g. Web App'"
+                 (keydown.enter)="$event.preventDefault(); addTag()" />
+        </div>
+        <div>
+          <label>{{ isRtl ? 'التسمية (عربي)' : 'Tag (AR)' }}</label>
+          <input type="text" [(ngModel)]="tagInputAr" dir="rtl"
+                 placeholder="مثال: تطبيق ويب"
+                 (keydown.enter)="$event.preventDefault(); addTag()" />
+        </div>
+      </div>
+      <button class="add-tag-btn" type="button" (click)="addTag()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <line x1="12" y1="5" x2="12" y2="19" stroke-width="2" stroke-linecap="round"/>
+          <line x1="5" y1="12" x2="19" y2="12" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        {{ isRtl ? 'إضافة تسمية' : 'Add Tag' }}
+      </button>
+
+      <!-- ══ PROJECT DETAILS ══════════════════════════════════════════════ -->
+      <p class="section-label">{{ isRtl ? 'تفاصيل المشروع' : 'Project Details' }}</p>
+
+      <div class="form-row two-col">
+        <div [class.has-error]="formErrors['category']">
+          <label>{{ isRtl ? 'التصنيف' : 'Category' }} <span class="req">*</span></label>
+          <select [(ngModel)]="form.category">
+            <option value="" disabled>{{ isRtl ? 'اختر تصنيفاً' : 'Select category' }}</option>
+            <option *ngFor="let cat of categoryOptions" [value]="cat.value">
+              {{ isRtl ? cat.labelAr : cat.labelEn }}
+            </option>
+          </select>
+          <span class="field-error" *ngIf="formErrors['category']">{{ formErrors['category'] }}</span>
+        </div>
+        <div>
+          <label>{{ isRtl ? 'العميل' : 'Client' }}</label>
+          <input type="text" [(ngModel)]="form.clientName" [placeholder]="isRtl ? 'اسم العميل' : 'Client name'" />
+        </div>
+      </div>
+
+      <!-- Thumbnail -->
+      <div class="form-row" [class.has-error]="formErrors['thumbnail']">
+        <label>
+          {{ isRtl ? 'رابط الصورة الرئيسية' : 'Thumbnail URL' }} <span class="req">*</span>
+          <span class="field-hint">{{ isRtl ? '(تظهر على بطاقة المشروع)' : '(shown on the project card)' }}</span>
+        </label>
+        <input type="url" [(ngModel)]="form.thumbnail" placeholder="https://..." />
+        <div class="img-preview" *ngIf="form.thumbnail?.trim()">
+          <img [src]="form.thumbnail" alt="preview" (error)="$any($event.target).style.display='none'" />
+        </div>
+        <span class="field-error" *ngIf="formErrors['thumbnail']">{{ formErrors['thumbnail'] }}</span>
+      </div>
+
+      <!-- ══ GALLERY IMAGES ════════════════════════════════════════════════ -->
+      <p class="section-label">
+        {{ isRtl ? 'معرض الصور (اختياري)' : 'Gallery Images (optional)' }}
+        <span class="section-hint">
+          {{ isRtl ? '— تظهر في صفحة تفاصيل المشروع' : '— shown in the project details slider' }}
+        </span>
+      </p>
+
+      <div class="gallery-list" *ngIf="(form.images ?? []).length > 0">
+        <div class="gallery-item" *ngFor="let img of form.images; let i = index">
+          <div class="gallery-item__thumb">
+            <img [src]="img" [alt]="'img ' + (i+1)" (error)="$any($event.target).style.display='none'" />
+          </div>
+          <span class="gallery-item__url" [title]="img">{{ img }}</span>
+          <div class="gallery-item__controls">
+            <button type="button" class="gallery-item__btn" [disabled]="i === 0"
+                    (click)="moveGalleryImageUp(i)" [title]="isRtl ? 'لأعلى' : 'Up'">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <polyline points="18 15 12 9 6 15" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+            <button type="button" class="gallery-item__btn"
+                    [disabled]="i === (form.images?.length ?? 0) - 1"
+                    (click)="moveGalleryImageDown(i)" [title]="isRtl ? 'لأسفل' : 'Down'">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <polyline points="6 9 12 15 18 9" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+            <button type="button" class="gallery-item__btn gallery-item__btn--remove"
+                    (click)="removeGalleryImage(i)" [title]="isRtl ? 'حذف' : 'Remove'">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <line x1="18" y1="6" x2="6"  y2="18" stroke-width="2.5" stroke-linecap="round"/>
+                <line x1="6"  y1="6" x2="18" y2="18" stroke-width="2.5" stroke-linecap="round"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="gallery-add-row">
+        <input type="url" [(ngModel)]="galleryInput"
+               [placeholder]="isRtl ? 'أدخل رابط الصورة...' : 'Enter image URL...'"
+               (keydown.enter)="$event.preventDefault(); addGalleryImage()" />
+        <button type="button" class="gallery-add-btn" (click)="addGalleryImage()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <rect x="3" y="3" width="18" height="18" rx="2" stroke-width="2"/>
+            <line x1="12" y1="8"  x2="12" y2="16" stroke-width="2" stroke-linecap="round"/>
+            <line x1="8"  y1="12" x2="16" y2="12" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          {{ isRtl ? 'إضافة صورة' : 'Add Image' }}
+        </button>
+      </div>
+
+      <!-- ══ URLS & TECHNOLOGIES ══════════════════════════════════════════ -->
+      <p class="section-label">{{ isRtl ? 'روابط المشروع' : 'Project URLs' }}</p>
+
+      <div class="form-row two-col">
+        <div>
+          <label>{{ isRtl ? 'رابط المشروع المباشر' : 'Live Project URL' }}
+            <span class="field-hint">{{ isRtl ? '(زر الرابط الخارجي)' : '(external link button)' }}</span>
+          </label>
+          <input type="url" [(ngModel)]="form.projectUrl" placeholder="https://..." />
+        </div>
+        <div>
+          <label>GitHub URL</label>
+          <input type="url" [(ngModel)]="form.githubUrl" placeholder="https://github.com/..." />
+        </div>
+      </div>
+
+      <div class="form-row">
+        <label>{{ isRtl ? 'التقنيات (مفصولة بفاصلة)' : 'Technologies (comma-separated)' }}</label>
+        <input type="text" [(ngModel)]="techInput" placeholder="Angular, Node.js, MongoDB" />
+      </div>
+
+      <div class="form-row half-col">
+        <div>
+          <label>{{ isRtl ? 'تاريخ الانتهاء' : 'Completion Date' }}
+            <span class="field-hint">{{ isRtl ? '(يُعرض السنة فقط)' : '(year shown on card)' }}</span>
+          </label>
+          <input type="date" [(ngModel)]="form.completionDate" />
+        </div>
+      </div>
+
+      <!-- Toggles -->
+      <div class="form-row toggles-row">
+        <label class="toggle-label">
+          <input type="checkbox" [(ngModel)]="form.isPublished" />
+          <span class="toggle-track"></span>
+          {{ isRtl ? 'منشور' : 'Published' }}
+        </label>
+        <label class="toggle-label">
+          <input type="checkbox" [(ngModel)]="form.isFeatured" />
+          <span class="toggle-track"></span>
+          {{ isRtl ? 'مميز' : 'Featured' }}
+        </label>
+      </div>
+
+    </div><!-- /modal-body -->
+
+    <div class="modal-footer">
+      <button class="cancel-btn" (click)="closeModal()" [disabled]="saving">{{ isRtl ? 'إلغاء' : 'Cancel' }}</button>
+      <button class="save-btn" (click)="save()" [disabled]="saving">
+        <span class="btn-spinner" *ngIf="saving"></span>
+        {{ saving ? (isRtl ? 'جاري الحفظ...' : 'Saving...') : (isRtl ? 'حفظ المشروع' : 'Save Project') }}
+      </button>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════════════
+     DELETE CONFIRM MODAL — improved design
+════════════════════════════════════════════════════════════════════════════ -->
+<div class="modal-overlay" *ngIf="showDeleteConfirm" (click)="cancelDelete()">
+  <div class="modal confirm-modal" [class.dark]="isDark" (click)="$event.stopPropagation()">
+
+    <!-- Animated danger strip -->
+    <div class="modal-danger-strip"></div>
+
+    <!-- Header -->
+    <div class="modal-head">
+      <h3 class="confirm-modal__title">
+        <span class="confirm-modal__dot"></span>
+        {{ isRtl ? 'إجراء خطير' : 'Destructive Action' }}
+      </h3>
+      <button class="close-btn" (click)="cancelDelete()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <line x1="18" y1="6"  x2="6"  y2="18" stroke-width="2" stroke-linecap="round"/>
+          <line x1="6"  y1="6"  x2="18" y2="18" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Body -->
+    <div class="modal-body">
+
+      <!-- Icon + title row -->
+      <div class="delete-icon-row">
+        <div class="delete-icon-ring">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <polyline points="3 6 5 6 21 6" stroke-width="2" stroke-linecap="round"/>
+            <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" stroke-width="2" stroke-linecap="round"/>
+            <path d="M10 11v6M14 11v6" stroke-width="2" stroke-linecap="round"/>
+            <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2" stroke-width="2"/>
+          </svg>
+        </div>
+        <div class="delete-icon-text">
+          <p class="delete-icon-text__title">
+            {{ isRtl ? 'حذف هذا المشروع؟' : 'Delete this project?' }}
+          </p>
+          <p class="delete-icon-text__sub">
+            {{ isRtl ? 'هذا الإجراء لا يمكن التراجع عنه' : 'This action cannot be undone' }}
+          </p>
+        </div>
+      </div>
+
+      <!-- Description -->
+      <p class="confirm-modal__desc">
+        {{ isRtl
+          ? 'سيتم حذف المشروع وجميع بياناته نهائياً.'
+          : 'This will permanently remove the project and all its associated data.' }}
+        <strong>{{ isRtl ? 'لا توجد طريقة لاستعادته.' : 'There\'s no way to recover it.' }}</strong>
+      </p>
+
+      <!-- Confirmation checkbox -->
+      <label class="delete-confirm-check">
+        <input type="checkbox" [(ngModel)]="deleteConfirmed" />
+        <span class="chk-box">
+          <svg viewBox="0 0 12 12" fill="none" stroke="currentColor">
+            <polyline points="2 6 5 9 10 3" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </span>
+        <span class="chk-label">
+          {{ isRtl ? 'أفهم أن هذا الإجراء' : 'I understand this action is' }}
+          <strong>{{ isRtl ? 'لا رجعة فيه' : 'irreversible' }}</strong>
+        </span>
+      </label>
+
+    </div><!-- /modal-body -->
+
+    <!-- Footer -->
+    <div class="modal-footer">
+      <button class="cancel-btn" (click)="cancelDelete()">
+        {{ isRtl ? 'إلغاء' : 'Keep Project' }}
+      </button>
+      <button class="delete-confirm-btn" (click)="doDelete()" [disabled]="!deleteConfirmed">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <polyline points="3 6 5 6 21 6" stroke-width="2" stroke-linecap="round"/>
+          <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" stroke-width="2"/>
+        </svg>
+        {{ isRtl ? 'حذف نهائياً' : 'Delete Permanently' }}
+      </button>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════════════
+     TOAST NOTIFICATIONS — embedded directly, no component/service
+════════════════════════════════════════════════════════════════════════════ -->
+<div class="toast-wrap" [class.dark]="isDark" [class.rtl]="isRtl" aria-live="polite">
+  <div
+    *ngFor="let t of toasts; trackBy: trackToastId"
+    class="toast toast--{{ t.type }}"
+    role="alert"
+    (click)="dismissToast(t.id)">
+
+    <!-- Icon -->
+    <div class="toast__icon">
+      <svg *ngIf="t.type==='success'" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" stroke-width="2.5" stroke-linecap="round"/>
+        <polyline points="22 4 12 14.01 9 11.01" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <svg *ngIf="t.type==='error'" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+        <circle cx="12" cy="12" r="10" stroke-width="2.5"/>
+        <line x1="15" y1="9"  x2="9"  y2="15" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="9"  y1="9"  x2="15" y2="15" stroke-width="2.5" stroke-linecap="round"/>
+      </svg>
+      <svg *ngIf="t.type==='warning'" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+        <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"
+              stroke-width="2.5" stroke-linejoin="round"/>
+        <line x1="12" y1="9"  x2="12" y2="13" stroke-width="2.5" stroke-linecap="round"/>
+        <circle cx="12" cy="17" r="1.2" fill="currentColor" stroke="none"/>
+      </svg>
+      <svg *ngIf="t.type==='info'" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+        <circle cx="12" cy="12" r="10" stroke-width="2.5"/>
+        <line x1="12" y1="16" x2="12" y2="12" stroke-width="2.5" stroke-linecap="round"/>
+        <circle cx="12" cy="8" r="1.2" fill="currentColor" stroke="none"/>
+      </svg>
+    </div>
+
+    <!-- Text -->
+    <div class="toast__body">
+      <p class="toast__title">{{ isRtl ? t.titleAr : t.titleEn }}</p>
+      <p class="toast__msg"  >{{ isRtl ? t.msgAr   : t.msgEn   }}</p>
+    </div>
+
+    <!-- Close -->
+    <button class="toast__close"
+            (click)="dismissToast(t.id); $event.stopPropagation()"
+            [attr.aria-label]="isRtl ? 'إغلاق' : 'Close'">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+        <line x1="18" y1="6"  x2="6"  y2="18" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="6"  y1="6"  x2="18" y2="18" stroke-width="2.5" stroke-linecap="round"/>
+      </svg>
+    </button>
+
+    <!-- Auto-dismiss progress bar -->
+    <span class="toast__bar toast__bar--{{ t.type }}"></span>
+  </div>
+</div>
