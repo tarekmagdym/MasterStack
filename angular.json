@@ -36,6 +36,15 @@
           },
           "configurations": {
             "production": {
+              "optimization": {
+                "styles": {
+                    "inlineCritical": true,
+                    "removeSpecialComments": true
+                },
+                "fonts": {
+                    "inline": false
+                  }
+                },
               "fileReplacements": [
                 {
                   "replace": "src/environment/environment.ts",
